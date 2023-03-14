@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, deleteUser, getUser, getUsers, updateUser, } = require("../controllers/user.controller")
+const { createUser, deleteUser, getUser, getUsers, updateUser, resetPassword } = require("../controllers/user.controller")
 const validationMiddleware = require('../middlewares/validation.middleware')
 const { object, string, } = require('yup');
 const authenticationMiddleware = require('../middlewares/auth.middleware');
@@ -26,6 +26,8 @@ const requestResetPasswordValidationSchema = object({
 
 const router = express.Router();
 
+
+router.post('/reset-password', validationMiddleware(resetPassowrdValidationSchema), resetPassword)
 
 router.post('/', validationMiddleware(createUserValidationSchema), createUser)
 router.get('/', getUsers)
