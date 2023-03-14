@@ -50,4 +50,19 @@ const refreshToken = async (req, res) => {
     return res.status(200).json({ accessToken })
 }
 
-module.exports = { login, logout, refreshToken }
+const revoke = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id);;
+        if (!user) {
+            return res.status(400).json({ error: 'Bad Request can not revoke token' })
+        }
+        user.tokenVersion++
+        await user.save();
+        return res.status(200).json({ message: 'Token successfully revoked' })
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
+    }
+}
+
+module.exports = { login, logout, refreshToken, refreshToken, revoke }
