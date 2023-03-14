@@ -33,4 +33,21 @@ const logout = (req, res) => {
 
 }
 
-module.exports = { login ,logout}
+const refreshToken = async (req, res) => {
+    let refreshToken = req.cookies?.jwt;
+    let payload = jwt.decode(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+    console.log(payload)
+    let isRefreshTokenValid = payload.exp * 1000 > Date.now()
+
+    if (!isRefreshTokenValid) {
+        res.clearCookie('jwt');
+        return res.status(403).json({ message: 'Invalid Refesh token' })
+    }
+    const user = await User.findById(payload.id);
+    const accessToken = generateToken(user, 'access_token');
+    refreshToken = generateToken(user, 'refresh_token');
+    res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 3600000 })
+    return res.status(200).json({ accessToken })
+}
+
+module.exports = { login, logout, refreshToken }
