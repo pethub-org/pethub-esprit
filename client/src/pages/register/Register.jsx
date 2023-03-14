@@ -1,7 +1,28 @@
 import { Link } from "react-router-dom";
 import "./register.scss";
-
+import axios from 'axios';
+import { useState } from "react";
 const Register = () => {
+  const BASE_URL = 'http://localhost:8080';
+  const [email,setEmail] = useState('')
+  const [firstname,setFirstname] = useState('')
+  const [lastname,setLastname] = useState('')
+  const [password,setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('');
+  
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post(`${BASE_URL}/users`, { email, firstname, lastname, password, confirmPassword })
+    } catch (error) {
+      console.log({error})
+      // setError(...error)
+    }
+    
+  }
+
   return (
     <div className="register">
       <div className="card">
@@ -18,11 +39,13 @@ const Register = () => {
         <div className="right">
           <h1>Register</h1>
           <form>
-            <input type="text" placeholder="Username" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <input type="text" placeholder="Name" />
-            <button>Register</button>
+            <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+            <input type="text" placeholder="Firstname" onChange={(e) => setFirstname(e.target.value)} />
+            <input type="text" placeholder="Lastname" onChange={(e) => setLastname(e.target.value)} />
+            <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+            <input type="password" placeholder="Confirm Password"  onChange={(e) => setConfirmPassword(e.target.value)}/>
+            {error && <p> {error}</p>}
+            <button onClick={handleRegister}>Register</button>
           </form>
         </div>
       </div>

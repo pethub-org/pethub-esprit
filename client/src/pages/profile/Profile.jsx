@@ -9,8 +9,47 @@ import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts"
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/authContext";
+import axios from "axios";
 
 const Profile = () => {
+  const [toggleUpdate, setToggleUpdate] = useState(true);
+  const BASE_URL = 'http://localhost:8080/users';
+  const [email,setEmail] = useState('')
+  const [firstname,setFirstname] = useState('')
+  const [lastname,setLastname] = useState('')
+  const [password,setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('');
+
+  const { currentUser } = useContext(AuthContext);
+  useEffect(() => {
+    setEmail(currentUser.email)
+    setFirstname(currentUser.firstname)
+    setLastname(currentUser.lastname)
+  },[])
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(`${BASE_URL}/${currentUser.id}`)
+      const res = await axios.put(`${BASE_URL}/${currentUser.id}`, {
+      email,
+      firstname,
+      lastname,
+      password
+      }, {
+        headers: {
+          'Authorization': 'Bearer ' + currentUser.token,
+          'Content-Type':'application/json'
+        },
+        // withCredentials: true
+      });
+    } catch (error) {
+      console.log(error)
+      // setEmail(error.message)
+    }
+  }
   return (
     <div className="profile">
       <div className="images">
@@ -56,7 +95,19 @@ const Profile = () => {
                 <span>lama.dev</span>
               </div>
             </div>
-            <button>follow</button>
+            <div style={{marginTop:'5px'}}>
+              <button style={{marginRight:'20px'}}>follow</button>
+              <button onClick={handleUpdate}>update</button>
+            </div>
+            <div>
+               <form>
+              <input type="email" value={currentUser.email} palceholder="email" onChange={(e) => setEmail(e.target.value)}/>
+              <input type="text" value={currentUser.firstname} palceholder="Firstname" onChange={(e) => setFirstname(e.target.value)}/>
+              <input type="text" value={currentUser.lastname} palceholder="Lastname" onChange={(e) => setLastname(e.target.value)}/>
+              <input type="text" value={password} placeholder='Enter New Password'onChange={(e) => setPassword(e.target.value)}/>
+              <input type="text" value={confirmPassword} placeholder='Confirm New Password'  onChange={(e) => setConfirmPassword(e.target.value)}/>
+            </form>
+           </div>
           </div>
           <div className="right">
             <EmailOutlinedIcon />
