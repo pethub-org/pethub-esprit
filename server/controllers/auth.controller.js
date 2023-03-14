@@ -26,5 +26,11 @@ const login = async (req, res) => {
         return res.status(500).json({ error: error.message })
     }
 }
+const logout = (req, res) => {
+    res.clearCookie('jwt');
+    // revokeToken();
+    return res.status(200).json({ message: 'logged out successfuly' });
 
-module.exports = { login }
+}
+
+module.exports = { login ,logout}
