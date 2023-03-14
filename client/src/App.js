@@ -18,7 +18,7 @@ import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
 
 function App() {
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   const { darkMode } = useContext(DarkModeContext);
 
@@ -40,6 +40,12 @@ function App() {
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
       return <Navigate to="/login" />;
+    }
+    if (!currentUser.role === 'user') {
+      return <Navigate to='/' />
+    }
+    if (!currentUser.role === 'admin') {
+      return <Navigate to='/dashboard' />
     }
 
     return children;
