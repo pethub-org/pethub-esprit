@@ -76,6 +76,28 @@ const getUsers = async (req, res) => {
     }
 }
 
+const resetPassword = async (req, res) => {
+    try {
+        const { token, password, confirmPassword } = req.body;
+
+        if (password !== confirmPassword) {
+            return res.status(401).json({ message: "Password and Confirm Password Must match" })
+        }
+
+        const payload = jwt.verify(token, process.env.EMAIL_TOKEN_SECRET);
+        // const user = await User.findById(payload.id);
+
+        // TODO : extract crypting & hashing password into utils function
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await User.findByIdAndUpdate(payload.id, { password: hashedPassword });
+
+        return res.status(200).json({ user });
+    } catch (error) {
+        return res.status(500).json({ error })
+    }
+}
+
 
 
 
@@ -84,5 +106,6 @@ module.exports = {
     getUsers,
     getUser,
     deleteUser,
-    updateUser
+    updateUser,
+    resetPassword
 }
