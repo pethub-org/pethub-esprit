@@ -65,4 +65,23 @@ const revoke = async (req, res) => {
     }
 }
 
-module.exports = { login, logout, refreshToken, refreshToken, revoke }
+
+const confirmAccount = async (req, res) => {
+    try {
+        const { token } = req.params;
+        console.log(token)
+        const payload = jwt.verify(token, process.env.EMAIL_TOKEN_SECRET);
+
+        console.log({ payload })
+
+        const user = await User.findByIdAndUpdate(payload.id, { accountConfirmed: true })
+        // await user.save();
+        console.log({ user })
+
+        return res.status(200).json({ message: "Account has been confirmed" });
+    } catch (error) {
+        return res.status(500).json({ error: "Something went wrong when confirming account : " + error.message });
+    }
+}
+
+module.exports = { login, logout, refreshToken, refreshToken, revoke, confirmAccount }
