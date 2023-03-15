@@ -27,7 +27,7 @@ const createUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         let user = new User({ firstname, lastname, password: hashedPassword, email })
         await user.save();
-     
+
 
         return res.status(201).json({ firstname: user.firstname, lastname: user.lastname, email: user.email, _id: user._id })
     } catch (error) {
@@ -93,5 +93,4 @@ module.exports = {
     getUser,
     deleteUser,
     updateUser
-  
 }
