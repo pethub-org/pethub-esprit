@@ -2,7 +2,8 @@ const User = require("../models/UserSchema");
 const bcrypt = require("bcrypt");
 const { create } = require("../services/user.service");
 const jwt = require("jsonwebtoken");
-
+const generateToken = require("../services/token.service");
+const sendEmail = require('../services/email.service');
 
 const createUser = async (req, res) => {
     try {
@@ -20,6 +21,17 @@ const createUser = async (req, res) => {
         let user = new User({ firstname, lastname, password: hashedPassword, email })
         await user.save();
 
+        const emailToken = generateToken(user, 'email_token');
+
+        // const body = `<h3> ${user.firstname} </h3> to confirm your account please click this link ${process.env.FRONT_URL}/confirm/${emailToken}.<h1>This link will expire in 30m.</h1>`;
+        const body = `<span style="text-align: center; font-weight: 700;"> ${user.firstname} </span> <span>to confirm your account please
+        click
+        this link</span>
+     <a href="${process.env.FRONT_URL}/auth/confirm/${emailToken}" style="color:cornflowerblue; text-decoration: none; font-size: 20px;">here</a>.<p
+        style="color:red; margin-left: 12px; font-size: 20px; ">This link will expire
+        in 30m.</p>`
+
+        await sendEmail(user.email, "Confirm your Account.", body);
 
         return res.status(201).json({ firstname: user.firstname, lastname: user.lastname, email: user.email, _id: user._id })
     } catch (error) {
@@ -43,6 +55,9 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const { id } = req.params
+        if (!id) {
+            return res.status(400).json({ error: "id is missing" });
+        }
         const user = await User.findById(id);
         await user.deleteOne();
         return res.status(200).json({ message: `user ${id} deleted successfully` })
@@ -53,6 +68,10 @@ const deleteUser = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         const { id } = req.params;
+        if (!id) {
+            return res.status(400).json({ error: "id is missing" });
+        }
+
         const user = await User.findById(id);
         if (!user) {
             return res.status(200).json({ message: 'User not found' });
@@ -99,8 +118,6 @@ const resetPassword = async (req, res) => {
 }
 
 
-
-
 module.exports = {
     createUser,
     getUsers,
@@ -108,4 +125,5 @@ module.exports = {
     deleteUser,
     updateUser,
     resetPassword
+
 }
