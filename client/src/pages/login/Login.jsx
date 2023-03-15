@@ -1,10 +1,19 @@
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
+import ReCAPTCHA from 'react-google-recaptcha';
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import "./login.scss";
 
+const SITE_KEY = '6LeJ9_8kAAAAAAScC7C2MVw9GFoprdscmW9iNLOS';
+
 const Login = () => {
   const { login } = useContext(AuthContext);
+
+  ///recaptcha
+  const  {recaptchaValue,setRecaptchaValue} = useState('');
+  const onChange = value =>{
+    setRecaptchaValue(value)
+  }
 
   const handleLogin = () => {
     login();
@@ -32,6 +41,12 @@ const Login = () => {
             <input type="password" placeholder="Password" />
             <button onClick={handleLogin}>Login</button>
           </form>
+          <div className="form-groupe mt-5 ">
+              <ReCAPTCHA 
+                 sitekey={SITE_KEY}
+                 onChange={onChange}
+              />
+          </div>
         </div>
       </div>
     </div>
