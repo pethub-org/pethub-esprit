@@ -31,8 +31,8 @@ router.post('/reset-password', validationMiddleware(resetPassowrdValidationSchem
 
 router.post('/', validationMiddleware(createUserValidationSchema), createUser)
 router.get('/', getUsers)
-router.delete('/:id', deleteUser)
-router.put('/:id', updateUser)
+router.delete('/:id', authenticationMiddleware, deleteUser)
+router.put('/:id', authenticationMiddleware, validationMiddleware(createUserValidationSchema), updateUser)
 
 router.get('/:id', getUser)
 
