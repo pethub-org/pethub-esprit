@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import "./login.scss";
+import Logo from '../../assets/logo.png'
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -25,7 +26,15 @@ const Login = () => {
     <div className="login">
       <div className="card">
         <div className="left">
-          <img src="../../assets/1.png" alt="logo" />
+          <div style={{
+            margin: 'auto'
+          }}>
+            <img src={Logo} alt="logo" style={{
+            width: 100,
+            borderRadius: 25
+            
+          }} />
+          </div>
           <h1>PetHub</h1>
             
           <h2>With PetHub, share and stay in touch with those around you.</h2>
