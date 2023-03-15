@@ -7,15 +7,17 @@ const Login = () => {
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      login({ email, password });
+      await login({ email, password });
       navigate('/')
     } catch (error) {
-      
+      console.log({error})
+      setError(error.message)
     }
   };
 
@@ -25,10 +27,8 @@ const Login = () => {
         <div className="left">
           <img src="../../assets/1.png" alt="logo" />
           <h1>PetHub</h1>
-          <p>
             
-<h2>With PetHub, share and stay in touch with those around you.</h2>
-          </p>
+          <h2>With PetHub, share and stay in touch with those around you.</h2>
           <span>Don't you have an account?</span>
           <Link to="/register">
             <button>Register</button>
@@ -38,7 +38,8 @@ const Login = () => {
           <h1>Login</h1>
           <form>
             <input type="text" placeholder="Username" onChange={(e) => setEmail(e.target.value)}  value={email}/>
-            <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}  value={password}/>
+            <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password} />
+            {error.length > 0 &&<p className="error"> {error} </p>}
             <button onClick={handleLogin}>Login</button>
           </form>
         </div>

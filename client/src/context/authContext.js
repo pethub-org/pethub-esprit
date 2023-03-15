@@ -11,7 +11,6 @@ export const AuthContextProvider = ({ children }) => {
   const BASE_URL = 'http://localhost:8080'
 
   const login = async ({ email, password }) => {
-    //TO DO
     try {
       const res = await axios.post(`${BASE_URL}/auth/login`, { email, password })
       console.log({ res })
@@ -24,9 +23,9 @@ export const AuthContextProvider = ({ children }) => {
         tokenVerison: res.data.tokenVerison,
         id: res.data._id
       });
+
     } catch (error) {
-      console.log({ error })
-      throw Error(error);
+      throw Error(error.response.data.error);
     }
   };
 
