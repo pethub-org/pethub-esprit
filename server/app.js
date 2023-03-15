@@ -2,17 +2,17 @@ const express = require("express");
 const connectDB = require('./configs/db.config')
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const helmet = require("helmet");
-const multer = require("multer");
-
 require('dotenv').config()
-
 const PORT = process.env.PORT || 8080
 
 const userRouter = require("./routes/user.routes");
 const authRouter = require("./routes/auth.routes");
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 
 // Middlewares

@@ -4,6 +4,7 @@ const { create } = require("../services/user.service");
 const jwt = require("jsonwebtoken");
 const generateToken = require("../services/token.service");
 const sendEmail = require('../services/email.service');
+const cloudinaryUpload = require('../configs/cloundiary.config')
 
 const createUser = async (req, res) => {
     try {
@@ -76,7 +77,7 @@ const getUser = async (req, res) => {
         if (!user) {
             return res.status(200).json({ message: 'User not found' });
         }
-        return res.status(200).json({ email: user.email, username: user.username, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed, ban: user.ban });
+        return res.status(200).json({ email: user.email, username: user.username, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed, ban: user.ban, photos: user.photos });
 
     } catch (error) {
         return res.status(500).json({ error: error.message })
@@ -87,7 +88,7 @@ const getUsers = async (req, res) => {
     try {
         let users = await User.find({});
         users = users.map(user => {
-            return { email: user.email, username: user.username, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed, ban: user.ban }
+            return { email: user.email, username: user.username, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed, ban: user.ban, photos: user.photos }
         })
         return res.status(200).json(users);
     } catch (error) {
@@ -150,6 +151,39 @@ const updateRole = async (req, res) => {
 
 }
 
+const uploadPhoto = async (req, res) => {
+    const { userId } = req.params;
+    let { isMain } = req.body;
+    try {
+        if (!userId) {
+            return res.status(400).json({ error: "ID must be provided" })
+        }
+        if (!isMain) {
+            isMain = false;
+        }
+        const user = await User.findById(userId);
+        const file = req.file;
+        const data = await cloudinaryUpload(file.path);
+        console.log({ user })
+        if (user.photos.length == 0) {
+            user.photos.push({
+                url: data.url,
+                isMain: true
+            })
+        } else {
+            user.photos.push({
+                url: data.url,
+                isMain
+            })
+        }
+        await user.save();
+
+        return res.status(200).json({ message: 'successfully uploaded ', email: user.email, firstname: user.firstname, lastname: user.lastname, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed, ban: user.ban, photos: user.photos })
+    } catch (error) {
+        return res.status(200).json({ error })
+    }
+
+}
 module.exports = {
     createUser,
     getUsers,
@@ -158,6 +192,7 @@ module.exports = {
     updateUser,
     resetPassword,
     banAccount,
-    updateRole
+    updateRole,
+    uploadPhoto
 
 }
