@@ -17,6 +17,7 @@ import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
 import Admin from "./pages/admin/Admin";
+import EditProfile from './pages/admin/EditProfile';
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -81,7 +82,17 @@ function App() {
     },
     {
       path: '/admin',
-      element: <Admin />
+      element: <Admin />,
+      // children: [
+      //   {
+      //     path: '/update/user/:id',
+      //     element: <div>test</div>
+      //   }
+      // ]
+    },
+    {
+      path: '/admin/update/user/:id',
+      element: <EditProfile />
     }
   ]);
 

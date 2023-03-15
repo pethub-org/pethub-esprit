@@ -182,8 +182,33 @@ const uploadPhoto = async (req, res) => {
     } catch (error) {
         return res.status(200).json({ error })
     }
-
 }
+
+const confirmAccountAdmin = async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({ error: 'ID must be provided' });
+    }
+    try {
+        const user = await User.findByIdAndUpdate(id, { accountConfirmed: true })
+        return res.status(200).json({ message: `Account ${id} has been confirmed.` })
+    } catch (error) {
+        return res.status(500).json({ error })
+    }
+}
+
+
+const adminUpdateUser = async (req, res) => {
+    try {
+        const { firstname, lastname, email } = req.body;
+        const { id } = req.params;
+        const user = await User.findByIdAndUpdate(id, { email, firstname, lastname })
+        return res.status(200).json({ user })
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
+    }
+}
+
 module.exports = {
     createUser,
     getUsers,
@@ -193,6 +218,8 @@ module.exports = {
     resetPassword,
     banAccount,
     updateRole,
-    uploadPhoto
+    uploadPhoto,
+    confirmAccountAdmin,
+    adminUpdateUser
 
 }

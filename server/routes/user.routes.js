@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, deleteUser, getUser, getUsers, updateUser, resetPassword, banAccount, updateRole, uploadPhoto } = require("../controllers/user.controller")
+const { createUser, deleteUser, getUser, getUsers, updateUser, resetPassword, banAccount, updateRole, uploadPhoto, confirmAccountAdmin, adminUpdateUser } = require("../controllers/user.controller")
 const validationMiddleware = require('../middlewares/validation.middleware')
 const { object, string, } = require('yup');
 const authenticationMiddleware = require('../middlewares/auth.middleware');
@@ -12,6 +12,13 @@ const createUserValidationSchema = object({
     lastname: string().required(),
     email: string().email().required(),
     password: string().required()
+});
+
+const adminUpdateUserSchema = object({
+    firstname: string().required(),
+    lastname: string().required(),
+    email: string().email().required(),
+    // password: string().required()
 });
 
 const resetPassowrdValidationSchema = object({
@@ -38,11 +45,14 @@ router.get('/', getUsers)
 router.put('/ban/:id', authenticationMiddleware, hasRoleMiddleware('admin'), banAccount)
 
 router.put('/update/role/:id', authenticationMiddleware, hasRoleMiddleware('admin'), validationMiddleware(updateRoleSchema), updateRole)
+router.put('/admin/confirm/:id', authenticationMiddleware, hasRoleMiddleware('admin'), confirmAccountAdmin)
 router.post('/update/photos/:userId', authenticationMiddleware, upload.single('image'), uploadPhoto)
 
-router.delete('/:id', authenticationMiddleware, hasRoleMiddleware('admin'), deleteUser)
+router.delete('/:id', hasRoleMiddleware('admin'), deleteUser)
 
 router.put('/:id', authenticationMiddleware, validationMiddleware(createUserValidationSchema), updateUser)
+
+router.put('/admin/update/user/:id', validationMiddleware(adminUpdateUserSchema), adminUpdateUser)
 
 router.get('/:id', getUser)
 

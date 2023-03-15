@@ -13,7 +13,6 @@ export const AuthContextProvider = ({ children }) => {
   const login = async ({ email, password }) => {
     try {
       const res = await axios.post(`${BASE_URL}/auth/login`, { email, password })
-      console.log({ res })
       setCurrentUser({
         email: res.data.email,
         firstname: res.data.firstname,
@@ -23,6 +22,7 @@ export const AuthContextProvider = ({ children }) => {
         tokenVerison: res.data.tokenVerison,
         id: res.data._id
       });
+      return res.data.role;
 
     } catch (error) {
       throw Error(error.response.data.error);

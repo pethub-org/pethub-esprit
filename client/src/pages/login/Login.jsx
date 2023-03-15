@@ -14,10 +14,13 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await login({ email, password });
-      navigate('/')
+      const role = await login({ email, password });
+      if (role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/')
+      }
     } catch (error) {
-      console.log({error})
       setError(error.message)
     }
   };

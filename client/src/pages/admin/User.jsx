@@ -1,26 +1,55 @@
-import React from 'react'
+import React,{useContext, useState}from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash,faPen,faBan,faCheck } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import { AuthContext } from '../../context/authContext';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
+const BASE_URL = 'http://localhost:8080'
 
-
-const editAccount = () => {
-    toast.info('Account Edited !', {
-    position: "top-right",
-    autoClose: 1000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    });
-}
-const banAccount = () => {
-        toast.error('Account banned !', {
+    
+const User = ({ users ,setUsers,user}) => {
+    const { currentUser } = useContext(AuthContext);
+    const navigate = useNavigate();
+    
+    const editAccount = () => {
+        navigate(`/admin/update/user/${user._id}`)
+    }
+    
+    
+const banAccount = async () => {
+    const response = await axios.put(`${BASE_URL}/users/ban/${user._id}`,{},
+        {
+            headers: {
+            'Authorization':`Bearer ${currentUser.token}`
+            }
+        }
+        
+    )
+    if (response.status === 200)
+    {
+        const filteredUsers = users.filter(u =>u._id !== user._id)
+        setUsers([...filteredUsers, {
+            ...user,
+            ban:true
+        }])
+        
+        toast.error(`Account is now ${user.email} banned ! `, {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+ 
+    } else {
+        toast.error(`Something went wrong while banning ${user.email} !`, {
         position: "top-right",
         autoClose: 1000,
         hideProgressBar: false,
@@ -30,9 +59,22 @@ const banAccount = () => {
         progress: undefined,
         theme: "light",
     });
+    }
+    
 }
-const deleteAccount = () => { 
-    toast.error('Account deleted !', {
+    const deleteAccount = async () => { 
+    
+    const response = await axios.delete(`${BASE_URL}/users/${user._id}`,{},
+        {
+            headers: {
+            'Authorization':`Bearer ${currentUser.token}`
+            }
+        }
+        
+    )
+  
+    if(response.status === 200){
+        toast.error('Account deleted !', {
         position: "top-right",
         autoClose: 1000,
         hideProgressBar: false,
@@ -41,18 +83,52 @@ const deleteAccount = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-    });
+        });
+    } else {
+          toast.error('Something went wrong !', {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    }
 }
 
- const confirmAccount =  () => {
+    const confirmAccount =async () => {
+     const response = await axios.put(`${BASE_URL}/users/admin/confirm/${user._id}`,{},
+        {
+            headers: {
+            'Authorization':`Bearer ${currentUser.token}`
+            }
+        });
+            
+        if (response.status === 200) {
+             const filteredUsers = users.filter(u =>u._id !== user._id)
+            setUsers([...filteredUsers, {
+            ...user,
+            accountConfirmed:true
+            }])
             toast.success('Account confirmed !', {
             position: toast.POSITION.TOP_RIGHT
-        });
+            });
+        }
+        else {
+            toast.error('Something went wrong !', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+        }
 }
-    
-const User = ({ user }) => {
-   
-
     return (
         <tr>
             <td >{user?.email}</td>
