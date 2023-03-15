@@ -2,11 +2,19 @@ const User = require("../models/UserSchema");
 const bcrypt = require("bcrypt");
 const { create } = require("../services/user.service");
 const jwt = require("jsonwebtoken");
+const axios =require ('axios').default;
 
-
+const SECRET_KEY ='6LeJ9_8kAAAAAHSlPVx3_pxwlewyjjp2joHrOctg'
 const createUser = async (req, res) => {
     try {
-        const { firstname, lastname, password, confirmPassword, email } = req.body;
+        const { firstname, lastname, password, confirmPassword, email ,recaptchaValue} = req.body;
+        axios({
+            url:'https://www.google.com/recaptcha/api/siteverify?secret=${SECRET_KEY}&response=${recaptchaValue}',
+            method: 'POST'
+        }).then(({data})=>{
+            console.log(date);
+          
+        })
 
         if (password !== confirmPassword) {
             return res.status(400).json({ message: "Password and Confirm Password must be the same" })

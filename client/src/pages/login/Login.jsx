@@ -1,13 +1,28 @@
+import { useContext, useRef, useState } from "react";
+import ReCAPTCHA from 'react-google-recaptcha';
+import { Link } from "react-router-dom";
+
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import "./login.scss";
+
+const SITE_KEY = '6LeJ9_8kAAAAAAScC7C2MVw9GFoprdscmW9iNLOS';
 
 const Login = () => {
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  ///recaptcha
+  const  {recaptchaValue,setRecaptchaValue} = useState('');
+  const onChange = value =>{
+    setRecaptchaValue(value)
+  }
+
+  const handleLogin = () => {
+    login();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -41,6 +56,12 @@ const Login = () => {
             <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}  value={password}/>
             <button onClick={handleLogin}>Login</button>
           </form>
+          <div className="form-groupe mt-5 ">
+              <ReCAPTCHA 
+                 sitekey={SITE_KEY}
+                 onChange={onChange}
+              />
+          </div>
         </div>
       </div>
     </div>
