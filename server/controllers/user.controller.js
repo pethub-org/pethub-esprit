@@ -76,7 +76,7 @@ const getUser = async (req, res) => {
         if (!user) {
             return res.status(200).json({ message: 'User not found' });
         }
-        return res.status(200).json({ email: user.email, username: user.username, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed });
+        return res.status(200).json({ email: user.email, username: user.username, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed, ban: user.ban });
 
     } catch (error) {
         return res.status(500).json({ error: error.message })
@@ -87,7 +87,7 @@ const getUsers = async (req, res) => {
     try {
         let users = await User.find({});
         users = users.map(user => {
-            return { email: user.email, username: user.username, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed }
+            return { email: user.email, username: user.username, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed, ban: user.ban }
         })
         return res.status(200).json(users);
     } catch (error) {
@@ -117,6 +117,20 @@ const resetPassword = async (req, res) => {
     }
 }
 
+const banAccount = async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({ error: "ID must be provided" });
+    }
+
+    try {
+        const user = await User.findByIdAndUpdate(id, { ban: true });
+        return res.status(200).json({ message: `Account ID : ${id} has been banned` });
+    } catch (error) {
+        return res.status(500).json({ error })
+    }
+
+}
 
 module.exports = {
     createUser,
@@ -124,6 +138,7 @@ module.exports = {
     getUser,
     deleteUser,
     updateUser,
-    resetPassword
+    resetPassword,
+    banAccount
 
 }
