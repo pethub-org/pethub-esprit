@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, deleteUser, getUser, getUsers, updateUser, resetPassword } = require("../controllers/user.controller")
+const { createUser, deleteUser, getUser, getUsers, updateUser, resetPassword, banAccount } = require("../controllers/user.controller")
 const validationMiddleware = require('../middlewares/validation.middleware')
 const { object, string, } = require('yup');
 const authenticationMiddleware = require('../middlewares/auth.middleware');
@@ -31,10 +31,13 @@ router.post('/reset-password', validationMiddleware(resetPassowrdValidationSchem
 
 router.post('/', validationMiddleware(createUserValidationSchema), createUser)
 router.get('/', getUsers)
+router.put('/ban/:id', authenticationMiddleware, hasRoleMiddleware('admin'), banAccount)
+
 router.delete('/:id', authenticationMiddleware, deleteUser)
 router.put('/:id', authenticationMiddleware, validationMiddleware(createUserValidationSchema), updateUser)
 
 router.get('/:id', getUser)
+
 
 
 module.exports = router;
