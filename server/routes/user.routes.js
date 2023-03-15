@@ -33,7 +33,8 @@ router.post('/', validationMiddleware(createUserValidationSchema), createUser)
 router.get('/', getUsers)
 router.put('/ban/:id', authenticationMiddleware, hasRoleMiddleware('admin'), banAccount)
 
-router.delete('/:id', authenticationMiddleware, deleteUser)
+router.delete('/:id', authenticationMiddleware, hasRoleMiddleware('admin'), deleteUser)
+
 router.put('/:id', authenticationMiddleware, validationMiddleware(createUserValidationSchema), updateUser)
 
 router.get('/:id', getUser)
