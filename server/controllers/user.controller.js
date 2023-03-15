@@ -131,6 +131,24 @@ const banAccount = async (req, res) => {
     }
 
 }
+const updateRole = async (req, res) => {
+    const { id } = req.params;
+    const { role } = req.body;
+    if (!id) {
+        return res.status(400).json({ error: "ID must be provided" })
+    }
+    if (role !== 'admin' && role !== 'user') {
+        return res.status(400).json({ error: "Role must be admin or user" })
+    }
+
+    try {
+        const user = await User.findByIdAndUpdate(id, { role });
+        return res.status(200).json({ message: `Account ID : ${id} has been updated to admin.` });
+    } catch (error) {
+        return res.status(500).json({ error })
+    }
+
+}
 
 module.exports = {
     createUser,
@@ -139,6 +157,7 @@ module.exports = {
     deleteUser,
     updateUser,
     resetPassword,
-    banAccount
+    banAccount,
+    updateRole
 
 }
