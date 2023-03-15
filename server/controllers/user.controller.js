@@ -144,7 +144,7 @@ const updateRole = async (req, res) => {
 
     try {
         const user = await User.findByIdAndUpdate(id, { role });
-        return res.status(200).json({ message: `Account ID : ${id} has been updated to admin.` });
+        return res.status(200).json({ message: `Account ID : ${id} has been updated to ${role}.` });
     } catch (error) {
         return res.status(500).json({ error })
     }

@@ -19,5 +19,8 @@
   "homepage": "https://github.com/amriOmaar/PetHUB#readme",
   "devDependencies": {
     "nodemon": "^2.0.21"
+  },
+  "dependencies": {
+    "cloudinary": "^1.35.0"
   }
 }
