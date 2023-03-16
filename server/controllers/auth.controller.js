@@ -19,7 +19,7 @@ const login = async (req, res) => {
         const accessToken = generateToken(user, 'access_token');
         const refreshToken = generateToken(user, 'refresh_token');
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 3600000 })
-        return res.status(200).json({ email, firstname: user.firstname, lastname: user.lastname, token: accessToken, tokenVersion: user.tokenVersion, role: user.role, _id: user._id })
+        return res.status(200).json({ email, firstname: user.firstname, lastname: user.lastname, token: accessToken, tokenVersion: user.tokenVersion, role: user.role, _id: user._id, photos: user.photos })
 
     }
     catch (error) {

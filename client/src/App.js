@@ -18,6 +18,9 @@ import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
 import Admin from "./pages/admin/Admin";
 import EditProfile from './pages/admin/EditProfile';
+import ConfirmAccount from './pages/admin/ConfirmAccount';
+import ResetPassword from "./pages/reset-psasword/ResetPassword";
+import ResetPasswordForm from "./pages/reset-password-form/ResetPasswordForm";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -73,6 +76,10 @@ function App() {
       ],
     },
     {
+      path: "/auth/confirm/:token",
+      element: <ConfirmAccount />
+    },
+    {
       path: "/login",
       element: <Login />,
     },
@@ -81,14 +88,20 @@ function App() {
       element: <Register />,
     },
     {
+      path: "/reset-password",
+      element: <ResetPassword />,
+    },
+    {
+      path: "/reset-password",
+      element: <ResetPassword />,
+    },
+    {
+      path: "/users/reset-password/:token",
+      element: <ResetPasswordForm />,
+    },
+    {
       path: '/admin',
       element: <Admin />,
-      // children: [
-      //   {
-      //     path: '/update/user/:id',
-      //     element: <div>test</div>
-      //   }
-      // ]
     },
     {
       path: '/admin/update/user/:id',

@@ -1,13 +1,23 @@
-import React from 'react'
+import { width } from '@mui/system';
+import React, { useContext } from 'react'
+import { AuthContext } from '../../context/authContext';
 
 const Header = () => {
+  const {currentUser} =useContext(AuthContext)
   return (
       <>
            <nav>
       <div className="sidebar-button">
         <i className='bx bx-menu sidebarBtn'></i>
-        <span className="dashboard">Dashboard</span>
-      </div>
+          <span className="dashboard">Dashboard</span>
+        </div>
+        <p style={{
+          marginLeft: '18px',
+          width:'max-content'
+        }}> You're now logged in as : <bold style={{
+            fontWeight: 'bold'
+        }}>{currentUser.firstname} {currentUser.lastname} </bold></p>
+
       <div className="search-box">
         {/* <input type="text" placeholder="Search..."> */}
         <i className='bx bx-search' ></i>

@@ -20,7 +20,8 @@ export const AuthContextProvider = ({ children }) => {
         lastname: res.data.lastname,
         role: res.data.role,
         tokenVerison: res.data.tokenVerison,
-        id: res.data._id
+        id: res.data._id,
+        photos: res.data.photos
       });
       return res.data.role;
 

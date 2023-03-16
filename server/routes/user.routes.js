@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, deleteUser, getUser, getUsers, updateUser, resetPassword, banAccount, updateRole, uploadPhoto, confirmAccountAdmin, adminUpdateUser } = require("../controllers/user.controller")
+const { createUser, deleteUser, getUser, getUsers, updateUser, resetPassword, banAccount, updateRole, uploadPhoto, confirmAccountAdmin, adminUpdateUser, resetPasswordEmail } = require("../controllers/user.controller")
 const validationMiddleware = require('../middlewares/validation.middleware')
 const { object, string, } = require('yup');
 const authenticationMiddleware = require('../middlewares/auth.middleware');
@@ -40,6 +40,8 @@ const router = express.Router();
 
 router.post('/reset-password', validationMiddleware(resetPassowrdValidationSchema), resetPassword)
 
+router.post('/email/reset-password', validationMiddleware(requestResetPasswordValidationSchema), resetPasswordEmail)
+
 router.post('/', validationMiddleware(createUserValidationSchema), createUser)
 router.get('/', getUsers)
 router.put('/ban/:id', authenticationMiddleware, hasRoleMiddleware('admin'), banAccount)
@@ -48,7 +50,7 @@ router.put('/update/role/:id', authenticationMiddleware, hasRoleMiddleware('admi
 router.put('/admin/confirm/:id', authenticationMiddleware, hasRoleMiddleware('admin'), confirmAccountAdmin)
 router.post('/update/photos/:userId', authenticationMiddleware, upload.single('image'), uploadPhoto)
 
-router.delete('/:id', hasRoleMiddleware('admin'), deleteUser)
+router.delete('/:id', deleteUser)
 
 router.put('/:id', authenticationMiddleware, validationMiddleware(createUserValidationSchema), updateUser)
 

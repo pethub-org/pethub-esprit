@@ -209,6 +209,69 @@ const adminUpdateUser = async (req, res) => {
     }
 }
 
+const resetPasswordEmail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(200).json({ message: 'Invalid email' });
+        }
+        const emailToken = generateToken(user, 'email_token');
+
+        // const body = `<form action="http://localhost:8080/auth/email/reset-password" method="POST"
+        //     style="display: flex; align-items: center; justify-content: center;  height: 400px;">
+        //     <div style="display: flex;
+        //     flex-direction: column;
+        //     justify-content: space-between;
+        //     align-items: center;
+        //     margin-top:20px
+        //     ">
+        //         <input value="${emailToken}" name="token" hidden/>
+        //         <div>
+        //             <input type="text" name="password" placeholder="password" style="
+        //                         border-radius:25px;
+        //                         border:1px solid #3E54AC;
+        //                         padding:10px;
+        //                         font-size: 16px;
+        //                         text-align: center;
+        //                         ">
+        //         </div>
+
+        //         <div style="margin-top:20px; margin-bottom: 20px;">
+        //             <input style="
+        //                          border-radius:25px;
+        //                          border:1px solid #3E54AC;
+        //                         padding:10px;
+        //                         font-size: 16px;
+        //                         text-align: center;
+        //                                 " type="text" name="confirm" placeholder="confirm password">
+
+        //         </div>
+        //         <div>
+        //             <button type="submit" style="
+        //                             border-radius:25px;  
+        //                             padding:12px;           
+        //                             font-size: 16px;
+        //                             text-align: center;
+        //                             color:white;
+        //                             background-color: #3E54AC;
+        //                             border:1px solid #3E54AC;
+        //                             cursor: pointer;
+        //                             ">Change Your Passwords</button>
+        //         </div>
+        //     </div>
+        // </form>`;
+        const body = `Forgot Password ? to Change Your Passwords Click <a href="${process.env.FRONT_URl}/users/reset-password/${emailToken}" target="_blank"> here</a>.
+            <small> (If you did not request this password. Please Contact Admin</small>
+        `;
+        await sendEmail(email, 'Forgot your password ?', body);
+        return res.status(200).json({ message: 'Reset Password Email has been sent successfully.' })
+    } catch (error) {
+        return res.status(500).json({ error })
+    }
+}
+
+
 module.exports = {
     createUser,
     getUsers,
@@ -220,6 +283,7 @@ module.exports = {
     updateRole,
     uploadPhoto,
     confirmAccountAdmin,
-    adminUpdateUser
+    adminUpdateUser,
+    resetPasswordEmail
 
 }

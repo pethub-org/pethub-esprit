@@ -73,7 +73,9 @@ const banAccount = async () => {
         
     )
   
-    if(response.status === 200){
+        if (response.status === 200) {
+         const filteredUsers = users.filter(u =>u._id !== user._id)
+        setUsers([...filteredUsers])
         toast.error('Account deleted !', {
         position: "top-right",
         autoClose: 1000,
