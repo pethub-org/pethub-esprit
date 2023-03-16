@@ -186,18 +186,18 @@ const Profile = () => {
               flexDirection: 'column',
             padding:'18px'
           }}>
-              <input type="email" value={currentUser.email} palceholder="email" onChange={(e) => setEmail(e.target.value)} />
+              <input type="email" value={email} palceholder="email" onChange={(e) => setEmail(e.target.value)} />
               <br/>
-              <input type="text" value={currentUser.firstname} palceholder="Firstname" onChange={(e) => setFirstname(e.target.value)} />
+              <input type="text" value={firstname} palceholder="Firstname" onChange={(e) => setFirstname(e.target.value)} />
                             <br/>
 
-              <input type="text" value={currentUser.lastname} palceholder="Lastname" onChange={(e) => setLastname(e.target.value)} />
+              <input type="text" value={lastname} palceholder="Lastname" onChange={(e) => setLastname(e.target.value)} />
                             <br/>
 
-              <input type="text" value={password} placeholder='Enter New Password' onChange={(e) => setPassword(e.target.value)} />
+              <input type="password" value={password} placeholder='Enter New Password' onChange={(e) => setPassword(e.target.value)} />
                             <br/>
 
-              <input type="text" value={confirmPassword} placeholder='Confirm New Password' onChange={(e) => setConfirmPassword(e.target.value)} />
+              <input type="password" value={confirmPassword} placeholder='Confirm New Password' onChange={(e) => setConfirmPassword(e.target.value)} />
               <br />
               <button className="btn btn-primary" onClick={handleUpdate}>Save Changes</button>
 

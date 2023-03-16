@@ -1,6 +1,6 @@
 import React,{useContext, useState}from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash,faPen,faBan,faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faTrash,faPen,faBan,faCheck,faUserTie } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -17,6 +17,54 @@ const User = ({ users ,setUsers,user}) => {
     
     const editAccount = () => {
         navigate(`/admin/update/user/${user._id}`)
+    }
+
+    const upgradeToAdmin = async () => {
+        try {
+            const response = await axios.put(`${BASE_URL}/users/update/role/${user._id}`, {
+                role:'admin'
+            },
+        {
+            headers: {
+            'Authorization':`Bearer ${currentUser.token}`
+            }
+        })
+        if (response.status === 200)
+        {
+            const filteredUsers = users.filter(u =>u._id !== user._id)
+            setUsers([...filteredUsers, {
+                ...user,
+                role:'admin'
+            }])
+            
+            toast.error(`Account is now ${user.email} Admin ! `, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+    
+        } else {
+            toast.error(`Something went wrong while changing ${user.email} to admin !`, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+        }
+
+        } catch (error) {
+            console.log({error})
+        }
+
     }
     
     
@@ -147,7 +195,9 @@ const banAccount = async () => {
                 <button className="btn btn-success btn-sm" style={{marginRight:'12px'}}><FontAwesomeIcon icon={faCheck} onClick={confirmAccount} /></button>
                 <button className="btn btn-primary btn-sm" style={{marginRight:'12px'}}><FontAwesomeIcon icon={faPen} onClick={editAccount}/></button>
                 <button className="btn btn-danger btn-sm" style={{marginRight:'12px'}}><FontAwesomeIcon icon={faTrash} onClick={deleteAccount}/></button>
-                <button className="btn btn-danger btn-sm" style={{marginRight:'12px'}}><FontAwesomeIcon icon={faBan} onClick={banAccount}/></button>
+                    <button className="btn btn-danger btn-sm" style={{ marginRight: '12px' }}><FontAwesomeIcon icon={faBan} onClick={banAccount} /></button>
+                    
+                <button className="btn btn-primary btn-sm" style={{marginRight:'12px'}}><FontAwesomeIcon icon={faUserTie} onClick={upgradeToAdmin}/></button>
                     
                     
                 </div>

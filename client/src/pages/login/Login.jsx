@@ -54,6 +54,8 @@ const Login = () => {
             {error.length > 0 &&<p className="error"> {error} </p>}
             <button onClick={handleLogin}>Login</button>
           </form>
+            <Link to="/reset-password">Forgot Password?</Link>
+
         </div>
       </div>
     </div>

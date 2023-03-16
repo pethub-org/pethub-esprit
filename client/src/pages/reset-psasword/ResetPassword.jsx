@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 import "./resetPassword.scss";
 
 
@@ -42,6 +43,7 @@ const ResetPassword = () => {
             {success && <p>Please Check Your Email ! !</p>}
             <button onClick={handleResetPassword}>Reset Password</button>
           </form>
+          <Link to="/login">Login ?</Link>
         </div>
       </div>
     </div>

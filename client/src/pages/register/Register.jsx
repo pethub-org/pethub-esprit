@@ -52,6 +52,7 @@ const Register = () => {
             {error && <p className="error"> {error}</p>}
             {success && <p>Please confirm the registration by checking your email !</p>}
             <button onClick={handleRegister}>Register</button>
+            <Link to="/reset-password">Forgot Password?</Link>
           </form>
         </div>
       </div>
