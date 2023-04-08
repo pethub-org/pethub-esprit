@@ -24,7 +24,7 @@ const User = ({ users ,setUsers,user}) => {
             const response = await axios.put(`${BASE_URL}/users/update/role/${user._id}`, {
                 role:'admin'
             },
-        {
+            {
             headers: {
             'Authorization':`Bearer ${currentUser.token}`
             }
@@ -184,9 +184,13 @@ const banAccount = async () => {
             <td >{user?.email}</td>
             <td >{user?.firstname}</td>
             <td >{user?.lastname}</td>
-            <td >{user?.role}</td>
-            <td >{user.ban ? 'true' : 'false'}</td>
-            <td >{user.accountConfirmed ? 'true' : 'false'}</td>
+            <td style={{
+                color: user.role === 'admin' ? 'blue': 'green'
+            }}>
+               <strong> {user?.role}</strong>
+            </td>
+            <td >{user.ban ? 'Yes' : 'No'}</td>
+            <td >{user.accountConfirmed ? 'Yes' : 'No'}</td>
             <td >
                 <div>
                     {/* <div className='d-flex'> */}

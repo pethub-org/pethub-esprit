@@ -90,6 +90,15 @@ const Profile = () => {
   }
   return (
     <div className="profile">
+      <button onClick={async() => {
+        const response = await axios.get(`${BASE_URL}/users`, {withCredentials:true}, {
+          headers: {
+            'Authorization': 'Bearer ' + currentUser.token,
+            'Content-Type': 'application/json'
+          },
+        });
+        console.log({response});
+      }}>Test http</button>
       <div className="images">
         <img
           src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"

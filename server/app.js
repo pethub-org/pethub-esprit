@@ -13,6 +13,7 @@ const authRouter = require("./routes/auth.routes");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(cookieParser());
 
 
 // Middlewares
@@ -20,8 +21,7 @@ app.use(express.json())
 app.use(cors({
     origin: 'http://localhost:3000'
 }))
-app.use(helmet())
-app.use(cookieParser());
+// app.use(helmet())
 
 
 // Rooutes

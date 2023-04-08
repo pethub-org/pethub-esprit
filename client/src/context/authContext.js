@@ -10,6 +10,19 @@ export const AuthContextProvider = ({ children }) => {
 
   const BASE_URL = 'http://localhost:8080'
 
+  const refreshUser = async () => {
+    // const user = JSON.parse(localStorage.getItem('user'))
+    // const resposne = await axios.get(`${BASE_URL}/users/${user.id}`, {}, {
+    //   headers: {
+    //     'Authorization': `Bearer ${currentUser.token}`
+    //   }
+    // });
+    // console.log({ resposne })
+
+    // console.log('refresh user')
+    // setCurrentUser()
+  }
+
   const login = async ({ email, password }) => {
     try {
       const res = await axios.post(`${BASE_URL}/auth/login`, { email, password })
@@ -35,7 +48,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login }}>
+    <AuthContext.Provider value={{ currentUser, login, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

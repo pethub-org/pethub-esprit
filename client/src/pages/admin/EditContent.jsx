@@ -8,7 +8,7 @@ const BASE_URL = 'http://localhost:8080'
 
 const EditContent = () => {
     const { id } = useParams();
-    const { currentUser } = useContext(AuthContext)
+    const { currentUser ,refreshUser} = useContext(AuthContext)
     const navigate = useNavigate();
     const [editUser, setEditUser] = useState({
         email: "",
@@ -29,6 +29,7 @@ const EditContent = () => {
                 }
             }
         )
+         await refreshUser();
         console.log({response})
     }
 

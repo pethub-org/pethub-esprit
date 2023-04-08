@@ -86,6 +86,7 @@ const getUser = async (req, res) => {
 }
 const getUsers = async (req, res) => {
     try {
+        console.log(req)
         let users = await User.find({});
         users = users.map(user => {
             return { email: user.email, username: user.username, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed, ban: user.ban, photos: user.photos, firstname: user.firstname, lastname: user.lastname }

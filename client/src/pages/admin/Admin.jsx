@@ -23,8 +23,16 @@ const Admin = () => {
   
 
   const fecthUsers = async () => {
-  const response = await axios.get(`${BASE_URl}/users`)
-  setUsers(response.data);
+  const response = await axios.get(`${BASE_URl}/users`, {
+                // role:'admin',
+                withCredentials:true
+            },
+            {
+            headers: {
+            'Authorization':`Bearer ${currentUser.token}`
+            }
+        })
+    setUsers(response.data);
   }
 
   useEffect(() => { 

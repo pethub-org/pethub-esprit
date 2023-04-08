@@ -6,7 +6,6 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 
 const Share = () => {
-
   const {currentUser} = useContext(AuthContext)
   return (
     <div className="share">

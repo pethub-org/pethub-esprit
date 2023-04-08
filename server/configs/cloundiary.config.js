@@ -11,4 +11,5 @@ cloudinary.config({
 
 module.exports = async (filePath) => {
     return await cloudinary.uploader.upload(filePath)
+    // return await cloudinary.uploader.
 }

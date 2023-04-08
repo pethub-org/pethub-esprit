@@ -43,20 +43,21 @@ router.post('/reset-password', validationMiddleware(resetPassowrdValidationSchem
 router.post('/email/reset-password', validationMiddleware(requestResetPasswordValidationSchema), resetPasswordEmail)
 
 router.post('/', validationMiddleware(createUserValidationSchema), createUser)
-router.get('/', getUsers)
+
+router.get('/', authenticationMiddleware, getUsers)
 router.put('/ban/:id', authenticationMiddleware, hasRoleMiddleware('admin'), banAccount)
 
 router.put('/update/role/:id', authenticationMiddleware, hasRoleMiddleware('admin'), validationMiddleware(updateRoleSchema), updateRole)
 router.put('/admin/confirm/:id', authenticationMiddleware, hasRoleMiddleware('admin'), confirmAccountAdmin)
 router.post('/update/photos/:userId', authenticationMiddleware, upload.single('image'), uploadPhoto)
 
-router.delete('/:id', deleteUser)
+router.delete('/:id', authenticationMiddleware, hasRoleMiddleware('admin'), deleteUser)
 
 router.put('/:id', authenticationMiddleware, validationMiddleware(createUserValidationSchema), updateUser)
 
-router.put('/admin/update/user/:id', validationMiddleware(adminUpdateUserSchema), adminUpdateUser)
+router.put('/admin/update/user/:id', authenticationMiddleware, hasRoleMiddleware('admin'), validationMiddleware(adminUpdateUserSchema), adminUpdateUser)
 
-router.get('/:id', getUser)
+router.get('/:id', authenticationMiddleware, getUser)
 
 
 
