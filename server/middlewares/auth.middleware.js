@@ -21,11 +21,12 @@ const authenticationMiddleware = async (req, res, next) => {
     if (user.tokenVersion !== payload.tokenVersion) {
         return res.status(401).json({ error: 'Token has been revoked' });
     }
-    req.user = {
-        id: payload.id,
-        role: payload.role,
-        tokenVersion: payload.tokenVersion
-    }
+    // req.user = {
+    //     id: payload.id,
+    //     role: payload.role,
+    //     tokenVersion: payload.tokenVersion
+    // }
+    req.user = user;
 
     next();
 }
