@@ -21,6 +21,8 @@ import EditProfile from './pages/admin/EditProfile';
 import ConfirmAccount from './pages/admin/ConfirmAccount';
 import ResetPassword from "./pages/reset-psasword/ResetPassword";
 import ResetPasswordForm from "./pages/reset-password-form/ResetPasswordForm";
+import Event from "./pages/Event/event";
+import EditEvent from "./pages/Event/EditEvent";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -73,6 +75,14 @@ function App() {
           path: "/profile/:id",
           element: <Profile />,
         },
+        {
+          path: "/events",
+          element: <Event />
+        },
+        {
+          path: "/events/:id",
+          element: <EditEvent />
+        }
       ],
     },
     {

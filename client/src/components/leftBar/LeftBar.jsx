@@ -14,10 +14,18 @@ import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
 import { AuthContext } from "../../context/authContext";
 import { useContext } from "react";
+import {Link, useNavigate} from 'react-router-dom'
+
 
 const LeftBar = () => {
 
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const goToEventPage = () => {
+      navigate('/events')
+    }
+
 
   return (
     <div className="leftBar">
@@ -54,9 +62,9 @@ const LeftBar = () => {
         <hr />
         <div className="menu">
           <span>Your shortcuts</span>
-          <div className="item">
-            <img src={Events} alt="" />
-            <span>Events</span>
+          <div className="item" onClick={goToEventPage}>
+             <img src={Events} alt="" />
+             <span>Events</span>
           </div>
           <div className="item">
             <img src={Gaming} alt="" />
