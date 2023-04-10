@@ -10,20 +10,29 @@ const NotificationSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    description: {
-        type: String,
-        required: true
-    },
-    creatorId: {
+    // description: {
+    //     type: String,
+    //     required: true
+    // },
+    sender: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }
+    },
+    receiver: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    content: {
+        type: mongoose.Schema.Types.Mixed,
+        required: true
+    },
 }, {
     timestamps: true,
-    strict: true
+    // strict: true,
 });
 
-const Notification = mongoose.model('Event', NotificationSchema);
+const Notification = mongoose.model('Notification', NotificationSchema);
 
 module.exports = Notification;

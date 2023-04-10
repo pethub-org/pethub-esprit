@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const UserSchema = require('../models/UserSchema');
 
 const authenticationMiddleware = async (req, res, next) => {
-    console.log(req.cookies)
     const authorization = req.headers.authorization;
 
     if (!authorization) {

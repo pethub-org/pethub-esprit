@@ -12,7 +12,6 @@ const Event = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [eventDate, setEventDate] = useState('');
-  const [showEditoForm, setShowEditoForm] = useState(false);
   const id = useId()
 
   const navigate = useNavigate();
