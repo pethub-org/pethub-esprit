@@ -15,7 +15,9 @@ import ProfilePicture from '../../assets/defaultUser.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDoorClosed,faDoorOpen } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
-
+import Notification from "../notifications/Notification";
+import dropdown from "./dropdown";
+import Dropdown from "./dropdown";
 
 
 
@@ -25,9 +27,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const logout = async (e) => {
     e.preventDefault();
-    const response = await axios.post('http://localhost:8080/auth/logout', {});
+    await axios.post('http://localhost:8080/auth/logout', {});
     localStorage.removeItem('user');
-    console.log({response})
     navigate('/login')
   }
 
@@ -51,6 +52,18 @@ const Navbar = () => {
         </div>
       </div>
       <div className="right">
+        <div style={{
+          display: 'flex',
+          alignContent: 'center',
+          justifyContent: 'center',
+          
+        }}>
+          <div style={{marginRight:'20px'}}>
+             <Dropdown/>
+          </div>
+          {/* <Notification/> */}
+     
+       </div>
 
         <FontAwesomeIcon icon={faDoorOpen} onClick={logout} style={{cursor:'pointer'}}/>
 
@@ -58,12 +71,14 @@ const Navbar = () => {
           <PersonOutlinedIcon />
         </Link>
       
-        <EmailOutlinedIcon />
-        <NotificationsOutlinedIcon />
+     
+          {/* <div><NotificationsOutlinedIcon /></div> */}
+      
         <div className="user">
           
           <img
-            src={currentUser.photos.length > 0 ?  currentUser.photos[0].url : {ProfilePicture}}
+            // src={currentUser.photos.length > 0 ?  currentUser.photos[0]?.url : {ProfilePicture}}
+            src={ProfilePicture}
             alt=""
           />
           <span>{currentUser.firstname}</span>

@@ -5,6 +5,8 @@ const authenticationMiddleware = require('../middlewares/auth.middleware');
 const validationMiddleware = require('../middlewares/validation.middleware');
 const yup = require('yup');
 
+
+// TODO : add validation middleware & authentication middleware
 // TODO : get event by dates
 // TODO : get event by categories
 // TODO : get Event by name
