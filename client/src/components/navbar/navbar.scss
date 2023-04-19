@@ -1,84 +1,66 @@
-@import "../../style.scss";
 
-.navbar {
-  @include themify($themes) {
+.navbar{
+   
+    
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
     height: 50px;
-    border-bottom: 1px solid themed("border");
+    border-bottom: 1px solid lightgray;
     position: sticky;
-    top: 0;
-    background-color: themed("bg");
-    color:themed("textColor");
+    background-color: white;
+    top:0;
     z-index: 999;
 
-    .left {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-
-      span {
-        font-weight: bold;
-        font-size: 20px;
-        color: themed("logo");
-      }
-
-      .search {
+    .left{
         display: flex;
         align-items: center;
-        gap: 10px;
-        border: 1px solid themed("border");
-        border-radius: 5px;
-        padding: 5px;
-
-        input {
-          border: none;
-          width: 500px;
-          background-color: transparent;
-          color: themed("textColor");
-
-          @include mobile{
-            display: none;
-          }
-
-          @include tablet{
-            width: 200px;
-          }
+        gap:30px;
+        h2{
+            color: #5271ff;
         }
-      }
+        span{
+            font-weight: bold;
+            font-size: 20px;
+            color: greenyellow;
+
+        }
+        .search{
+            display: flex;
+            align-items: center;
+            gap:10px;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+            padding: 5px;
+            input{
+                border: none;
+                width: 500px;
+
+            }
+        }
     }
-
-    .right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-
-      @include mobile{
-        display: none;
-      }
-
-      .user {
+    .right{
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap:20px;
         font-weight: 500;
 
-        @include tablet{
-          display: none;
-        }
+        .user{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            img{
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                object-fit: cover;
 
-        img {
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
+            }
+            span{
 
-        span {
+            }
         }
-      }
     }
-  }
 }

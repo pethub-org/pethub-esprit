@@ -1,7 +1,7 @@
-@import "../../style.scss";
+
 
 .comments {
-  @include themify($themes) {
+  
     img {
       width: 40px;
       height: 40px;
@@ -19,9 +19,9 @@
       input{
         flex:5;
         padding: 10px;
-        border: 1px solid themed("border");
+        border: 1px solid lightgray ;
         background-color: transparent;
-        color: themed("textColor");
+        color: grey;
       }
 
       button{
@@ -52,7 +52,7 @@
         }
 
         p{
-          color:themed("textColorSoft")
+          color:gray
         }
       }
 
@@ -64,4 +64,4 @@
       }
     }
   }
-}
+

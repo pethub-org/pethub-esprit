@@ -1,56 +1,80 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/authContext";
-import "./rightBar.scss";
-import UserInfo from "./UserInfo";
-import ChatBox from "../messages/ChatBox";
-import useAuthContext from "../../hooks/useAuth";
-import useAuth from "../../hooks/useAuth";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-
-
-const RightBar = () => {
-  const { auth } = useAuth();
-  // all users conversations
-  const [conversations, setConversations] = useState([]);
-  const axiosPrivate = useAxiosPrivate();
-
-  useEffect(() => {
-    axiosPrivate.get(`/conversations/${auth._id}`).then(res => {
-      setConversations(res.data)
-    })
-  },[auth._id])
-
-  // show private chatbox
-  const [showChatBox, setShowChatBox] = useState(false);
-  
-  // current chat data
-  const [chatData, setChatData] = useState();
-
-  // current chatbox messages
-  const [messages, setMessages] = useState([]);
-
-
-  
-  const friends = auth?.friendList?.map(friend => <UserInfo key={friend._id}
-                                                setShowChatBox={setShowChatBox}
-                                                userInfo={friend} setChatData={setChatData} 
-                                                setMessages={setMessages}
-                                                />)
+import './rightBar.scss'
+const rightBar = () => {
   return (
-    <div className="rightBar">
-      <div className="container" >
-  
-        <div className="item" style={{overflowY:'visible' , height:'800px'}}>
-          <span>Friends</span>
-  
-            {friends}
-          {showChatBox && <ChatBox chatData={chatData} setShowChatBox={setShowChatBox} messages={messages}/>}
-    
-   
+    <div className='rightBar'>
+      <div className="container">
+         <div className="item">
+          <span>
+            Suggestions For You
+          </span>
+          <div className="user">
+            <div className="userInfo">
+            <img src="https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg" alt="" />
+                <span>Anis Ammar</span>
+            </div>
+            <div className="buttons">
+               <button>Follow</button>
+               <button>Dismiss</button>
+            </div>
+            
+          </div>
+          <div className="user">
+            <div className="userInfo">
+            <img src="https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg" alt="" />
+                <span>Anis Ammar</span>
+            </div>
+            <div className="buttons">
+               <button>Follow</button>
+               <button>Dismiss</button>
+            </div>
+      
+          </div>
+          <div className="user">
+            <div className="userInfo">
+            <img src="https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg" alt="" />
+                <span>Anis Ammar</span>
+            </div>
+            <div className="buttons">
+               <button>Follow</button>
+               <button>Dismiss</button>
+            </div>
+            
+          </div>
+         </div>
+      
+        <div className="item">
+          <span>Latest Activities</span>
+          <div className="user">
+            <div className="userInfo">
+            <img src="https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg" alt="" />
+                <span>Anis Ammar</span>
+            </div>
+            <span>1min ago </span>
+           
+          </div>
+          <div className="user">
+            <div className="userInfo">
+            <img src="https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg" alt="" />
+                <p>
+                <span>Anis Ammar</span>
+                  </p>
+            </div>
+            <span>1min ago </span>
+           
+          </div>
+          <div className="user">
+            <div className="userInfo">
+            <img src="https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg" alt="" />
+                <span>Anis Ammar</span>
+            </div>
+            <span>1min ago </span>
+           
+          </div>
         </div>
+        
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RightBar;
+export default rightBar
