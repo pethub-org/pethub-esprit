@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import "./register.scss";
-import axios from 'axios';
 import { useState } from "react";
+import axios from "../../api/axios";
 const Register = () => {
-  const BASE_URL = 'http://localhost:8080';
   const [email,setEmail] = useState('')
   const [firstname,setFirstname] = useState('')
   const [lastname,setLastname] = useState('')
@@ -18,7 +17,7 @@ const Register = () => {
     setSuccess(false);
 
     try {
-      const response = await axios.post(`${BASE_URL}/users`, { email, firstname, lastname, password, confirmPassword })
+      const response = await axios.post(`/users`, { email, firstname, lastname, password, confirmPassword })
       console.log("sucess => ", { response })
       if (response.status === 201) {
         setSuccess(true)

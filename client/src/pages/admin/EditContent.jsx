@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Header from './Header'
-import axios from 'axios';
-import { AuthContext } from '../../context/authContext';
+import useAuth from '../../hooks/useAuth';
+import { axiosPrivate } from '../../api/axios';
 
-const BASE_URL = 'http://localhost:8080'
 
 const EditContent = () => {
     const { id } = useParams();
-    const { currentUser ,refreshUser} = useContext(AuthContext)
+    const { auth ,setAuth} = useAuth()
     const navigate = useNavigate();
     const [editUser, setEditUser] = useState({
         email: "",
@@ -18,31 +17,22 @@ const EditContent = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await axios.put(`${BASE_URL}/users/admin/update/user/${id}`, {
+        const response = await axiosPrivate.put(`/users/admin/update/user/${id}`, {
             email: editUser.email,
             firstname: editUser.firstname,
-            lastname:editUser.lastname
-        },
-            {
-                headers: {
-                    'Authorization': `${currentUser.token}`
-                }
-            }
-        )
-         await refreshUser();
-        console.log({response})
+            lastname: editUser.lastname
+        });
+        //  await refreshUser();
+        console.log({ response })
+        // TODO : refresh local state
+        setAuth()
     }
 
     useEffect(() => {
-         if (currentUser.role !== 'admin') {
+         if (auth.role !== 'admin') {
             navigate('/login')
         }
-         axios.get(`${BASE_URL}/users/${id}`, {},
-        {
-            headers: {
-                'Authorization': `${currentUser.token}`
-            }
-             }).then((res) => {
+         axiosPrivate.get(`/users/${id}`, {}).then((res) => {
                  console.log({ res });
                  setEditUser(res.data)
             })

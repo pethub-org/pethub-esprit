@@ -1,20 +1,30 @@
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/authContext";
 import "./login.scss";
 import Logo from '../../assets/logo.png'
+import useAuth from "../../hooks/useAuth";
+import axios from '../../api/axios';
+
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { auth, setAuth } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+
+  
+const loginService = async({email,password}) => {
+  const res = await axios.post('/auth/login', { email, password })
+  setAuth(res.data)
+  return res.data.role;
+}
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const role = await login({ email, password });
+      const role = await loginService({ email, password });
       if (role === 'admin') {
         navigate('/admin')
       } else {

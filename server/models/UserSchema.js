@@ -35,6 +35,7 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+
     photos: [
         {
             url: {
@@ -45,7 +46,15 @@ const UserSchema = new Schema({
                 default: false
             }
         }
-    ]
+    ],
+    friendList: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    friendRequests: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'FriendRequest',
+    }],
 
 });
 

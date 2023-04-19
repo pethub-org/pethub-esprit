@@ -1,10 +1,11 @@
 const User = require("../models/UserSchema");
 const bcrypt = require("bcrypt");
-const { create } = require("../services/user.service");
+const { sendFriendRequestService, getUserByNameService, accept, decline, deleteFriendNew, getUserFriendRequests } = require("../services/user.service");
 const jwt = require("jsonwebtoken");
 const generateToken = require("../services/token.service");
 const sendEmail = require('../services/email.service');
-const cloudinaryUpload = require('../configs/cloundiary.config')
+const { uploadImg } = require('../configs/cloundiary.config')
+const { deleteImage } = require('../services/image.service')
 
 const createUser = async (req, res) => {
     try {
@@ -73,11 +74,14 @@ const getUser = async (req, res) => {
             return res.status(400).json({ error: "id is missing" });
         }
 
-        const user = await User.findById(id);
+        // const user = await User.findById(id, { password: 0, __v: 0 });
+        const user = await User.findById(id, { password: 0, __v: 0 })
+            .populate({ path: "friendList", model: 'User' })
+            .populate({ path: 'friendRequests', model: 'User' })
         if (!user) {
             return res.status(200).json({ message: 'User not found' });
         }
-        return res.status(200).json({ email: user.email, username: user.username, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed, ban: user.ban, photos: user.photos, firstname: user.firstname, lastname: user.lastname });
+        return res.status(200).json({ user });
 
     } catch (error) {
         return res.status(500).json({ error: error.message })
@@ -86,11 +90,13 @@ const getUser = async (req, res) => {
 }
 const getUsers = async (req, res) => {
     try {
-        console.log(req)
-        let users = await User.find({});
-        users = users.map(user => {
-            return { email: user.email, username: user.username, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed, ban: user.ban, photos: user.photos, firstname: user.firstname, lastname: user.lastname }
-        })
+        // todo : fix me sort photos.isMain by true photos[0] = {isMain:true, url:'http..'} 
+        // const users = await User.find({}, { password: 0, __v: 0 }).sort({ 'photos.isMain': -1 });
+        const users = await User.find({}, { password: 0, __v: 0 }).sort({ 'photos.isMain': -1 })
+            .populate({ path: 'friendList', model: 'User' })
+            .populate({ path: 'friendRequests', model: 'User' })
+
+
         return res.status(200).json(users);
     } catch (error) {
         return res.status(500).json({ error: error.message });
@@ -155,33 +161,61 @@ const updateRole = async (req, res) => {
 const uploadPhoto = async (req, res) => {
     const { userId } = req.params;
     let { isMain } = req.body;
+    const file = req.file;
+
     try {
         if (!userId) {
             return res.status(400).json({ error: "ID must be provided" })
         }
         if (!isMain) {
-            isMain = false;
+            return res.status(400).json({ error: "isMain must be provided" })
         }
-        const user = await User.findById(userId);
-        const file = req.file;
-        const data = await cloudinaryUpload(file.path);
-        console.log({ user })
+        const user = await User.findById(userId, { password: 0, __v: 0 });
+        const public_id = req.image;
+        console.log({ public_id })
+        console.log({ file })
         if (user.photos.length == 0) {
             user.photos.push({
-                url: data.url,
+                url: file.path,
                 isMain: true
             })
         } else {
+            if (isMain) {
+                const i = user.photos.findIndex(img => img.isMain === true);
+                user.photos[i].isMain = false;
+            }
+
             user.photos.push({
-                url: data.url,
+                url: file.path,
                 isMain
             })
         }
+
         await user.save();
 
-        return res.status(200).json({ message: 'successfully uploaded ', email: user.email, firstname: user.firstname, lastname: user.lastname, _id: user._id, role: user.role, tokenVersion: user.tokenVersion, accountConfirmed: user.accountConfirmed, ban: user.ban, photos: user.photos })
+        return res.status(200).json(user)
     } catch (error) {
         return res.status(200).json({ error })
+    }
+}
+
+const deletePhoto = async (req, res, next) => {
+    try {
+        const { imageUrl } = req.body;
+        const userId = req.user._id;
+        const { photoId } = req.params;
+        const result = await deleteImage(imageUrl);
+        if (result.result !== 'ok') {
+            throw Error('Something went wrong')
+        }
+
+        const user = User.findByIdAndUpdate(userId, {
+            $pull: { photos: { _id: photoId } }
+        }, { strict: true, new: true }).exec();
+
+        return res.status(200).json({ message: `${user.firstname} image deleted successfully` })
+    } catch (error) {
+        next(error)
     }
 }
 
@@ -272,7 +306,115 @@ const resetPasswordEmail = async (req, res) => {
     }
 }
 
+const sendFriendRequest = async (req, res, next) => {
+    try {
+        const senderId = req.user._id.toString();
+        const recieverId = req.params.id;
+        await sendFriendRequestService({ senderId, recieverId, status: 'pending' })
+        return res.status(200).json({ message: `user ${senderId} sent a friend request to ${recieverId}` })
+    } catch (error) {
+        next(error)
+    }
 
+
+}
+const declineFriendRequest = async (req, res, next) => {
+    try {
+        const senderId = req.user._id.toString();
+        const recieverId = req.params.id;
+        await declineFriendRequestService({ senderId, recieverId })
+        return res.status(200).json({ message: `user ${senderId} declined a friend request from ${recieverId}` })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const acceptFriendRequest = async (req, res, next) => {
+    try {
+        const senderId = req.user._id.toString();
+        const recieverId = req.params.id;
+        await acceptFriendRequestService({ senderId, recieverId })
+        return res.status(200).json({ message: `user ${senderId} accepted a friend request from ${recieverId}` })
+    } catch (error) {
+        next(error)
+    }
+}
+
+// todo: should return all users except logged in user & sort photos by isMain=true
+const getUserByName = async (req, res, next) => {
+    try {
+        const { name } = req.params;
+        const loggedInUserId = req.user._id;
+        const users = await getUserByNameService(name, loggedInUserId)
+        return res.status(200).json(users)
+    } catch (error) {
+        next(error)
+    }
+}
+
+const deleteFriend = async (req, res, next) => {
+    try {
+        const { deleteUserId } = req.params
+        const id = req.user._id.toString();
+        await deleteFriendService(id, deleteUserId)
+        return res.status(200).json({ message: `user ${id} deleted from your friend list` })
+    } catch (error) {
+        next(error)
+    }
+}
+
+// TODO :
+const sendFriendRequestController = async (req, res, next) => {
+    try {
+        const senderId = req.user.id;
+        const { recieverId } = req.params;
+        const r = await sendFriendRequestService({ senderId, recieverId, status: 'pending' })
+        return res.status(200).json(r)
+    } catch (error) {
+        next(error);
+    }
+}
+const acceptFriendRequestController = async (req, res, next) => {
+    try {
+        const { friendRequestId } = req.params;
+
+        const r = await accept(friendRequestId)
+        return res.status(200).json(r)
+    } catch (error) {
+        next(error);
+    }
+}
+const declineFriendRequestController = async (req, res, next) => {
+    try {
+        const { friendRequestId } = req.params;
+
+        const r = await decline(friendRequestId)
+        return res.status(200).json(r)
+    } catch (error) {
+        next(error);
+    }
+}
+
+const getUserFriendRequestsController = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const friendRequests = await getUserFriendRequests(userId)
+        return res.status(200).json(friendRequests)
+    } catch (error) {
+        next(error)
+    }
+}
+
+const deleteFriendRequestcontroller = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const { friendId } = req.params;
+        const isSuccess = await deleteFriendNew(userId, friendId)
+        return res.status(200).json(isSuccess)
+    } catch (error) {
+        next(error)
+    }
+}
 module.exports = {
     createUser,
     getUsers,
@@ -285,6 +427,19 @@ module.exports = {
     uploadPhoto,
     confirmAccountAdmin,
     adminUpdateUser,
-    resetPasswordEmail
+    resetPasswordEmail,
+    sendFriendRequest,
+    declineFriendRequest,
+    acceptFriendRequest,
+    getUserByName,
+    deleteFriend,
+    deletePhoto,
+
+
+    sendFriendRequestController,
+    acceptFriendRequestController,
+    getUserFriendRequestsController,
+    declineFriendRequestController,
+    deleteFriendRequestcontroller
 
 }

@@ -1,14 +1,16 @@
 import React from 'react'
 import './style.css'
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from '../../api/axios';
+import useAuth from '../../hooks/useAuth';
 
-const BASE_URL = 'http://localhost:8080'
 
 const Sidebar = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
+  const {setAuth} = useAuth();
   const logout = async () => {
-    axios.post(`${BASE_URL}/auth/logout`).then((res) => console.log({ res }))
+    await axios.post(`/auth/logout`).then((res) => console.log({ res }))
+    setAuth({})
     localStorage.removeItem('user');
     navigate('/login')
 }

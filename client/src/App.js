@@ -3,7 +3,6 @@ import Register from "./pages/register/Register";
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
   Outlet,
   Navigate,
 } from "react-router-dom";
@@ -15,7 +14,6 @@ import Profile from "./pages/profile/Profile";
 import "./style.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
-import { AuthContext } from "./context/authContext";
 import Admin from "./pages/admin/Admin";
 import EditProfile from './pages/admin/EditProfile';
 import ConfirmAccount from './pages/admin/ConfirmAccount';
@@ -23,9 +21,11 @@ import ResetPassword from "./pages/reset-psasword/ResetPassword";
 import ResetPasswordForm from "./pages/reset-password-form/ResetPasswordForm";
 import Event from "./pages/Event/event";
 import EditEvent from "./pages/Event/EditEvent";
+import SearchPage from "./pages/search/SearchPage";
+import useAuth from './hooks/useAuth'
 
 function App() {
-  const { currentUser } = useContext(AuthContext);
+  const { auth } = useAuth();
 
   const { darkMode } = useContext(DarkModeContext);
 
@@ -45,13 +45,13 @@ function App() {
   };
 
   const ProtectedRoute = ({ children }) => {
-    if (!currentUser) {
+    if (!auth) {
       return <Navigate to="/login" />;
     }
-    if (!currentUser.role === 'user') {
+    if (!auth.role === 'user') {
       return <Navigate to='/' />
     }
-    if (!currentUser.role === 'admin') {
+    if (!auth.role === 'admin') {
       return <Navigate to='/dashboard' />
     }
 
@@ -70,6 +70,10 @@ function App() {
         {
           path: "/",
           element: <Home />,
+        },
+        {
+          path: "/search",
+          element: <SearchPage />,
         },
         {
           path: "/profile/:id",

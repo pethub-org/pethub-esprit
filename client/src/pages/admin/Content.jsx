@@ -1,11 +1,9 @@
 import React,{useState ,useEffect,useContext} from 'react'
 import './style.css'
-import axios from 'axios';
 import { AuthContext } from '../../context/authContext';
 import User from './User';
 import Header from './Header'
 
-const BASE_URl = 'http://localhost:8080'
 
 
 const Content = ({users,setUsers}) => {

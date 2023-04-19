@@ -6,7 +6,10 @@ const generateToken = require('../services/token.service');
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
+        // todo : populate should not populate user password
         const user = await User.findOne({ email })
+            .populate({ path: "friendList", model: 'User' })
+            .populate({ path: 'friendRequests', model: 'User' })
         if (!user) {
             return res.status(400).json({ error: `Invalid credentials` });
         }
@@ -18,8 +21,12 @@ const login = async (req, res) => {
 
         const accessToken = generateToken(user, 'access_token');
         const refreshToken = generateToken(user, 'refresh_token');
+        const result = {
+            email, firstname: user.firstname, lastname: user.lastname, token: accessToken, tokenVersion: user.tokenVersion, role: user.role, _id: user._id, photos: user.photos, friendList: user.friendList, friendRequests: user.friendRequests, tokenVersion: user.tokenVersion, ban: user.ban, accountConfirmed: user.accountConfirmed
+        }
+        console.log({ refreshToken })
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 3600000 })
-        return res.status(200).json({ email, firstname: user.firstname, lastname: user.lastname, token: accessToken, tokenVersion: user.tokenVersion, role: user.role, _id: user._id, photos: user.photos })
+        return res.status(200).json(result)
 
     }
     catch (error) {
@@ -34,20 +41,26 @@ const logout = (req, res) => {
 }
 
 const refreshToken = async (req, res) => {
-    let refreshToken = req.cookies?.jwt;
-    let payload = jwt.decode(refreshToken, process.env.REFRESH_TOKEN_SECRET)
-    console.log(payload)
-    let isRefreshTokenValid = payload.exp * 1000 > Date.now()
+    try {
+        let refreshToken = req.cookies?.jwt;
+        console.log({ refreshToken })
+        let payload = jwt.decode(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+        console.log({ payload })
 
-    if (!isRefreshTokenValid) {
-        res.clearCookie('jwt');
-        return res.status(403).json({ message: 'Invalid Refesh token' })
+        let isRefreshTokenValid = payload.exp * 1000 > Date.now()
+
+        if (!isRefreshTokenValid) {
+            res.clearCookie('jwt');
+            return res.status(403).json({ message: 'Invalid Refesh token' })
+        }
+        const user = await User.findById(payload.id);
+        const accessToken = generateToken(user, 'access_token');
+        refreshToken = generateToken(user, 'refresh_token');
+        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 3600000 })
+        return res.status(200).json({ accessToken })
+    } catch (error) {
+        return res.status(500).json({ error })
     }
-    const user = await User.findById(payload.id);
-    const accessToken = generateToken(user, 'access_token');
-    refreshToken = generateToken(user, 'refresh_token');
-    res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 3600000 })
-    return res.status(200).json({ accessToken })
 }
 
 const revoke = async (req, res) => {

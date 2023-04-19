@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path")
 const connectDB = require('./configs/db.config')
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
@@ -14,6 +15,8 @@ const userRouter = require("./routes/user.routes");
 const authRouter = require("./routes/auth.routes");
 const eventsRouter = require("./routes/event.routes");
 const notificationsRouter = require("./routes/notification.routes");
+const conversationRouter = require("./routes/conversation.routes");
+const messagesRouter = require("./routes/message.routes");
 
 const { Server } = require("socket.io");
 
@@ -24,6 +27,7 @@ app.use(cookieParser());
 
 
 // Middlewares
+app.use('/static', express.static(path.join(__dirname, 'uploads')))
 app.use(express.json())
 app.use(cors({
     origin: 'http://localhost:3000'
@@ -38,6 +42,8 @@ app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/events', eventsRouter);
 app.use('/notifications', notificationsRouter);
+app.use('/conversations', conversationRouter);
+app.use('/messages', messagesRouter);
 
 
 
@@ -49,19 +55,54 @@ const io = new Server(server, {
     cookie: true,
     credentials: true
 });
-// socket(io);
-io.on('connection', (socket) => {
-    console.log(socket.id);
-    socket.on('test', (data) => {
-        console.log({ data })
-    })
 
 
-})
-module.exports = io;
+let users = [];
+
+const addUser = (userId, socketId) => {
+    !users.some((user) => user.userId === userId) &&
+        users.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+    users = users.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userId) => {
+    return users.find((user) => user.userId === userId);
+};
+
+// io.on("connection", (socket) => {
+//     //when ceonnect
+//     console.log("a user connected.");
+
+//     //take userId and socketId from user
+//     socket.on("addUser", (userId) => {
+//         addUser(userId, socket.id);
+//         io.emit("getUsers", users);
+//     });
+
+//     //send and get message
+//     socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+//         const user = getUser(receiverId);
+//         io.to(user.socketId).emit("getMessage", {
+//             senderId,
+//             text,
+//         });
+//     });
+
+//     //when disconnect
+//     socket.on("disconnect", () => {
+//         console.log("a user disconnected!");
+//         removeUser(socket.id);
+//         io.emit("getUsers", users);
+//     });
+// });
 
 
 server.listen(PORT, () => {
-    connectDB();
-    console.log(`listening on port ${PORT}`);
+    connectDB(PORT);
 })
+
+
+module.exports = io;

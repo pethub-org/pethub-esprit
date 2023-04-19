@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import "./stories.scss"
-import { AuthContext } from "../../context/authContext"
+import useAuth from "../../hooks/useAuth";
 
 const Stories = () => {
 
-  const {currentUser} = useContext(AuthContext)
+  const {auth,setAuth} = useAuth()
 
   //TEMPORARY
   const stories = [
@@ -33,8 +32,8 @@ const Stories = () => {
   return (
     <div className="stories">
       <div className="story">
-          <img src={currentUser.profilePic} alt="" />
-          <span>{currentUser.name}</span>
+          <img src={auth.profilePic} alt={auth.firstname} />
+          <span>{auth.firstname}</span>
           <button>+</button>
         </div>
       {stories.map(story=>(
