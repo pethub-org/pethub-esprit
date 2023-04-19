@@ -1,76 +1,48 @@
-import "./navbar.scss";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
-import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { DarkModeContext } from "../../context/darkModeContext";
-import { AuthContext } from "../../context/authContext";
-import ProfilePicture from '../../assets/defaultUser.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDoorClosed,faDoorOpen } from '@fortawesome/free-solid-svg-icons'
-import axios from "axios";
-
-
-
-
-const Navbar = () => {
-  const { toggle, darkMode } = useContext(DarkModeContext);
-  const { currentUser } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const logout = async (e) => {
-    e.preventDefault();
-    const response = await axios.post('http://localhost:8080/auth/logout', {});
-    localStorage.removeItem('user');
-    console.log({response})
-    navigate('/login')
-  }
-
-
+import './navbar.scss'
+import {Link} from 'react-router-dom'
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import NightlightRoundRoundedIcon from '@mui/icons-material/NightlightRoundRounded';
+import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
+import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import WbSunnyRoundedIcon from '@mui/icons-material/WbSunnyRounded';
+import { useContext } from 'react-router';
+import {AuthContext} from '../..//context/AuthContext'
+const navbar = () => {
+  //const {user} = useContext(AuthContext);
+  
   return (
-    <div className="navbar">
+    <div className='navbar'>
       <div className="left">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <span>lamasocial</span>
+        <Link to="/" style={{textDecoration:"none"}}>
+        <h2>PetHub</h2>
         </Link>
-        <HomeOutlinedIcon />
-        {darkMode ? (
-          <WbSunnyOutlinedIcon onClick={toggle} />
-        ) : (
-          <DarkModeOutlinedIcon onClick={toggle} />
-        )}
-        <GridViewOutlinedIcon />
+        <HomeRoundedIcon/>
+        <NightlightRoundRoundedIcon/>
+        <GridViewRoundedIcon/>
         <div className="search">
-          <SearchOutlinedIcon />
-          <input type="text" placeholder="Search..." />
+           <SearchRoundedIcon/>
+           <input type="text" placeholder='Search' />
         </div>
+         
       </div>
       <div className="right">
-
-        <FontAwesomeIcon icon={faDoorOpen} onClick={logout} style={{cursor:'pointer'}}/>
-
-        <Link to="/profile/1">
-          <PersonOutlinedIcon />
-        </Link>
-      
-        <EmailOutlinedIcon />
-        <NotificationsOutlinedIcon />
-        <div className="user">
+          <PersonRoundedIcon/>
+          <ChatBubbleRoundedIcon/>
+          <NotificationsRoundedIcon/>
+         
+          <div className="user">
+          <Link  to="/profile/:username">
+                <img src="https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg" alt="" />
+            </Link>
+          </div>
           
-          <img
-            src={currentUser.photos.length > 0 ?  currentUser.photos[0].url : {ProfilePicture}}
-            alt=""
-          />
-          <span>{currentUser.firstname}</span>
-        </div>
+
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default navbar 
