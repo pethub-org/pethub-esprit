@@ -1,3 +1,10 @@
+
+import './leftBar.scss'
+import StorefrontRoundedIcon from '@mui/icons-material/StorefrontRounded';
+import Groups2RoundedIcon from '@mui/icons-material/Groups2Rounded';
+import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
+const leftBar = () => {
+
 import "./leftBar.scss";
 import Friends from "../../assets/1.png";
 import Groups from "../../assets/2.png";
@@ -27,10 +34,17 @@ const LeftBar = () => {
     }
 
 
+
   return (
-    <div className="leftBar">
+    <div className='leftBar'>
       <div className="container">
         <div className="menu">
+
+         <div className="user">
+         <img src="https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg" alt="" />
+
+                <span>Anis Ammar</span>
+
           <div className="user">
             <img
               // src={auth?.photos[0] ? auth?.photos[0] : defaultUser }
@@ -42,67 +56,60 @@ const LeftBar = () => {
           <div className="item" onClick={() => navigate('/friends')}>
             <img src={Friends} alt="" />
             <span>Friends</span>
+
           </div>
           <div className="item">
-            <img src={Groups} alt="" />
-            <span>Groups</span>
+             <StorefrontRoundedIcon htmlColor="tomato" className="shareIcon"/>
+            <span>MarketPlace</span>
           </div>
           <div className="item">
-            <img src={Market} alt="" />
-            <span>Marketplace</span>
+             <Groups2RoundedIcon htmlColor="#5271ff" className="shareIcon"/>
+            <span>Group</span>
           </div>
           <div className="item">
-            <img src={Watch} alt="" />
-            <span>Watch</span>
+             <StorefrontRoundedIcon htmlColor="green" className="shareIcon"/>
+            <span>MarketPlace</span>
           </div>
           <div className="item">
-            <img src={Memories} alt="" />
-            <span>Memories</span>
+             <StorefrontRoundedIcon htmlColor="gray" className="shareIcon"/>
+            <span>MarketPlace</span>
           </div>
-        </div>
-        <hr />
-        <div className="menu">
-          <span>Your shortcuts</span>
-          <div className="item" onClick={goToEventPage}>
-             <img src={Events} alt="" />
+         </div>
+         <hr/>
+         <div className="menu">
+             <span>Your shortcuts</span>
+             <div className="item">
+             <EmojiEventsRoundedIcon htmlColor="orange" className="shareIcon"/>
              <span>Events</span>
-          </div>
-          <div className="item">
-            <img src={Gaming} alt="" />
-            <span>Gaming</span>
-          </div>
-          <div className="item">
-            <img src={Gallery} alt="" />
-            <span>Gallery</span>
-          </div>
-          <div className="item">
-            <img src={Videos} alt="" />
-            <span>Videos</span>
-          </div>
-          <div className="item">
-            <img src={Messages} alt="" />
-            <span>Messages</span>
-          </div>
-        </div>
-        <hr />
-        <div className="menu">
-          <span>Others</span>
-          <div className="item">
-            <img src={Fund} alt="" />
-            <span>Fundraiser</span>
-          </div>
-          <div className="item">
-            <img src={Tutorials} alt="" />
-            <span>Tutorials</span>
-          </div>
-          <div className="item">
-            <img src={Courses} alt="" />
-            <span>Courses</span>
-          </div>
-        </div>
+             </div>
+             <div className="item">
+             <EmojiEventsRoundedIcon htmlColor="orange" className="shareIcon"/>
+             <span>Games</span>
+             </div>
+             <div className="item">
+             <EmojiEventsRoundedIcon htmlColor="orange" className="shareIcon"/>
+             <span>Events</span>
+             </div>
+         </div>
+         <hr/>
+         <div className="menu">
+             <span>Others</span>
+             <div className="item">
+             <EmojiEventsRoundedIcon htmlColor="orange" className="shareIcon"/>
+             <span>Events</span>
+             </div>
+             <div className="item">
+             <EmojiEventsRoundedIcon htmlColor="orange" className="shareIcon"/>
+             <span>Games</span>
+             </div>
+             <div className="item">
+             <EmojiEventsRoundedIcon htmlColor="orange" className="shareIcon"/>
+             <span>Events</span>
+             </div>
+         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LeftBar;
+export default leftBar

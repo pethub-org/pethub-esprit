@@ -1,5 +1,15 @@
-import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
+
+import Login from "./pages/login/Login";
+import Navbar from "./components/navbar/navbar"
+import LeftBar from "./components/leftBar/leftBar"
+import Home from "./pages/home/Home"
+import Profile from "./pages/profile/Profile"
+import RightBar from "./components/rightBar/rightBar"
+import "./style.scss"
+import{RouterProvider,Route,createBrowserRouter, Outlet, Navigate} from 'react-router-dom';
+function App() {
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -27,22 +37,47 @@ import useAuth from './hooks/useAuth'
 function App() {
   const { auth } = useAuth();
 
-  const { darkMode } = useContext(DarkModeContext);
 
-  const Layout = () => {
+
+  //dima disponible
+  const Layout = ()=>{
     return (
-      <div className={`theme-${darkMode ? "dark" : "light"}`}>
-        <Navbar />
-        <div style={{ display: "flex" }}>
-          <LeftBar />
-          <div style={{ flex: 6 }}>
-            <Outlet />
+      <div className="theme-dark">
+        <Navbar/>
+         <div style={{display:"flex"}}>
+          <LeftBar/>
+          <div style={{flex:6}}>
+          <Outlet/>
           </div>
-          <RightBar />
-        </div>
+          
+          <RightBar/>
+             
+         </div>
       </div>
-    );
+    )
   };
+
+  //non connecté redirection
+  const currentUser = true;
+  const ProtectedRoute = ({children})=>{
+    //user non connecté
+    
+    if(!currentUser){
+      return <Navigate to="/login"/>
+    }
+    return children
+  }
+  const router = createBrowserRouter([
+    {
+      path : "/login",
+      element:<Login/>
+    },
+    {
+      path:"/",
+      element:
+      <ProtectedRoute><Layout/></ProtectedRoute>,
+      children:[
+
 
   const ProtectedRoute = ({ children }) => {
     if (!auth) {
@@ -79,53 +114,26 @@ function App() {
           path: "/profile/:id",
           element: <Profile />,
         },
+
         {
-          path: "/events",
-          element: <Event />
+        path:"/",
+        element:<Home/>
         },
         {
-          path: "/events/:id",
-          element: <EditEvent />
+          path:"/profile/:username",
+          element:<Profile/>
         }
-      ],
-    },
-    {
-      path: "/auth/confirm/:token",
-      element: <ConfirmAccount />
-    },
-    {
-      path: "/login",
-      element: <Login />,
-    },
-    {
-      path: "/register",
-      element: <Register />,
-    },
-    {
-      path: "/reset-password",
-      element: <ResetPassword />,
-    },
-    {
-      path: "/reset-password",
-      element: <ResetPassword />,
-    },
-    {
-      path: "/users/reset-password/:token",
-      element: <ResetPasswordForm />,
-    },
-    {
-      path: '/admin',
-      element: <Admin />,
-    },
-    {
-      path: '/admin/update/user/:id',
-      element: <EditProfile />
-    }
-  ]);
 
+      ]
+    },
+    {
+      path:"/register",
+      element:<Register/>
+    }
+  ])
   return (
-    <div>
-      <RouterProvider router={router} />
+    <div >
+            <RouterProvider router={router}/>
     </div>
   );
 }

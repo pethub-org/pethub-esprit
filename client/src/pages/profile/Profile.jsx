@@ -1,3 +1,33 @@
+
+import "./profile.scss"
+import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
+import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
+import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
+import Posts from '../../components/Posts/Posts'
+import { useContext, useEffect, useState } from 'react';
+import { useParams } from "react-router";
+import axios from 'axios';
+import { AuthContext } from "../../context/AuthContext";
+const Profile = () => {
+  const [user,setUser] = useState({})
+  const username = useParams().username
+   const {user:currentUser} = useContext(AuthContext)
+
+  useEffect(()=>{
+    const fetchUser = async ()=>{
+      const res = await  axios.get(`/users?username=${username}`);
+      setUser(res.data)
+    };
+    fetchUser();
+  },[username])
+  return (
+    <div className="profile">
+      <div className="images">
+      <img className="cover" src={currentUser.coverPicture} alt="" />
+      <img className="profilePic"  src={currentUser.profilePicture} alt="" />
+
 import "./profile.scss";
 import FacebookTwoToneIcon from "@mui/icons-material/FacebookTwoTone";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
@@ -216,109 +246,46 @@ const Profile = () => {
           alt=""
           className="profilePic"
         />
+
       </div>
       <div className="profileContainer">
-        <div className="uInfo">
+        <div className="userInfo">
           <div className="left">
-            <a href="http://facebook.com">
-              <FacebookTwoToneIcon fontSize="large" />
+            <a href="https://www.youtube.com/@LamaDev">
+              <FacebookOutlinedIcon fontSize="large" />
             </a>
-            <a href="http://facebook.com">
-              <InstagramIcon fontSize="large" />
+            <a href="https://www.youtube.com/@LamaDev">
+              <FacebookOutlinedIcon fontSize="large" />
             </a>
-            <a href="http://facebook.com">
-              <TwitterIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <LinkedInIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <PinterestIcon fontSize="large" />
+            <a href="https://www.youtube.com/@LamaDev">
+              <FacebookOutlinedIcon fontSize="large"/>
             </a>
           </div>
           <div className="center">
+
+            <span>{currentUser.username}</span>
+
             {/* <span>{firstname} </span> */}
             <span>{auth?.firstname} {' '} {auth?.lastname} </span>
 
+
             <div className="info">
-              <div className="item">
-                <PlaceIcon />
-                <span>USA</span>
-              </div>
-              <div className="item">
-                <LanguageIcon />
-                <span>lama.dev</span>
-              </div>
+               <button className="btn1">
+                <PersonAddAlt1OutlinedIcon/>Follow
+                </button>
+               <button className="btn2">
+                <QuestionAnswerOutlinedIcon/>Message</button>
             </div>
-            <div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent:'center'
-              }}>
-                <button onClick={() => setToggleUpdate(prev => !prev)}  style={{marginRight:'16px'}}>Update</button>
-                <button onClick={() => setToggleUplodatePicture(prev => !prev)}><FontAwesomeIcon icon={faImage} size="1x" /></button>
-              </div>
-            </div>
-         
-           
           </div>
-        
           <div className="right">
-            <EmailOutlinedIcon />
-            <MoreVertIcon />
+              <MoreHorizRoundedIcon/>
           </div>
         </div>
-        
-        {
-          toggleUplodatePicture && <div class="mb-3 post p" style={{
-            marginBottom: '20px',
-            padding: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent:'center'
-          }}> 
-            <input className="form-control" type="file" name="image" id="formFile" style={{ backgroundColor: '#222', border: 'none', borderRadius: '15px', marginBottom: '16px' }} onChange={handleSelectFile}/>
-            <div>
-              <button className="btn btn-primary" onClick={uploadPicture}>Uploade</button>
-            </div>
-        </div> 
-        }
-
-
-        {toggleUpdate && <div className="Container" style={{
-          marginBottom:'20px'
-        }}>
-          <div className="post" >
-               <form style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-              flexDirection: 'column',
-            padding:'18px'
-          }}>
-              <input type="email" value={email} palceholder="email" onChange={(e) => setEmail(e.target.value)} />
-              <br/>
-              <input type="text" value={firstname} palceholder="Firstname" onChange={(e) => setFirstname(e.target.value)} />
-                            <br/>
-
-              <input type="text" value={lastname} palceholder="Lastname" onChange={(e) => setLastname(e.target.value)} />
-                            <br/>
-
-              <input type="password" value={password} placeholder='Enter New Password' onChange={(e) => setPassword(e.target.value)} />
-                            <br/>
-
-              <input type="password" value={confirmPassword} placeholder='Confirm New Password' onChange={(e) => setConfirmPassword(e.target.value)} />
-              <br />
-              <button className="btn btn-primary" onClick={handleUpdate}>Save Changes</button>
-
-            </form>
-           </div>
-          </div>}
-      <Posts/>
+    
       </div>
+      <Posts/>
     </div>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

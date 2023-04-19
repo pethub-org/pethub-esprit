@@ -1,0 +1,115 @@
+.share {
+    width: 100%;
+    
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
+  
+  .shareWrapper {
+    padding: 10px;
+  }
+  
+  .shareTop {
+    display: flex;
+    align-items: center;
+  }
+  
+  .shareProfileImg {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  .shareInput {
+    border: none;
+    width: 80%;
+  }
+  
+  .shareInput:focus {
+    outline: none;
+  }
+  
+  .shareHr {
+    margin: 20px;
+  }
+  
+  .shareBottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .shareOptions{
+      display: flex;
+      margin-left: 20px;
+      justify-content: space-around;
+  }
+  
+  .shareOption{
+      display: flex;
+      padding: 5px;
+      padding-left: 10px;
+      padding-right: 10px;
+      align-items: center;
+      border-radius: 10px;
+      font-size: 22px;
+      margin-right: 15px;
+      cursor: pointer;
+  }
+  .shareIcon{
+      font-size: 18px;
+      margin-right: 3px;
+  }
+  
+  .shareOptionText{
+      font-size: 14px;
+      font-weight: 500;
+      
+  }
+  
+  .shareButton{
+      border: none;
+      padding: 7px;
+      border-radius: 5px;
+      background-color: #5271ff;
+      font-weight: 500;
+      padding-left: 20px;
+      padding-right: 20px;
+      height: 2rem;
+      margin-right: 20px;
+      cursor: pointer;
+      color: white;
+  }
+  .shareButton:hover{
+    cursor: pointer;
+    color: #5271ff;
+    background-color: transparent;
+    border : 2px solid  #5271ff;
+  }
+  hr{
+    margin: 20px 0px;
+    border: none;
+    height: 0.5px;
+    background-color: lightgray ;
+  }
+  .shareImgContainer{
+    padding: 0 20px 10px 20px;
+    position: relative;
+  }
+  .shareImg{
+    width: 100%;
+    object-fit: cover;
+  }
+  .shareCancelImg{
+    position: absolute;
+    top: 0;
+    color: red;
+    right: 25px;
+    cursor: pointer;
+    opacity: 0.7;
+  }
