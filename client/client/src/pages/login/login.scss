@@ -1,0 +1,80 @@
+.login{
+    height: 100vh;
+    background-color: orange;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .card{
+        width: 50%;
+        border-radius: 10px;
+        display: flex;
+        background-color: white;
+        min-height: 600px;
+        .left{
+            flex : 1;
+            background-color: orangered;
+            background-size: cover;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            gap:30px;
+            color : white;
+            h1{
+                font-size:100px;
+                line-height: 100px;
+
+            }
+            p{
+            }
+            span{
+                font-size: 14px;
+            }
+            button{
+                background-color: white;
+                color: purple;
+                width: 50%;
+                padding: 10px;
+                border: none;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+        }
+        .right{
+            justify-content: center;
+            flex: 1;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            gap:50px;
+
+            h1{
+                color: #555;
+                
+
+            }
+            form{
+                flex-direction: column;
+                display: flex;
+                gap:30px;
+                input{
+                    border: none;
+                    border-bottom: 1px solid lightgray;
+                    padding: 20px 10px;
+                }
+                button{
+                    background-color: purple;
+                    color: white;
+                    width: 50%;
+                    padding: 10px;
+                    border: none;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+            }
+
+        }
+    }
+
+}
