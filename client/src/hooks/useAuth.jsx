@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react';
 import { AuthContext } from '../context/authContext';
 
-const useAuthContext = () => {
+const useAuth = () => {
     const context = useContext(AuthContext)
     if (!context) {
         throw Error('AuthContext must wrapped inside a provider')
@@ -9,4 +9,4 @@ const useAuthContext = () => {
     return context;
 }
 
-export default useAuthContext
+export default useAuth

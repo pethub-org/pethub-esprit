@@ -1,30 +1,27 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import axios from 'axios';
-import useAuthContext from '../../hooks/useAuthContext'; 
 import NotificationComponent from './NotifcationComponent';
+import useAuth from '../../hooks/useAuth';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const Dropdown = () => {
-    const { currentUser } = useAuthContext()
+    const { auth} = useAuth()
   const [notifications, setNotifications] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
   
   useEffect(() => {
-    axios.get('http://localhost:8080/notifications/user/' + currentUser.id, {
-      headers: {
-        Authorization:'Bearer ' + currentUser.token
-      }
-    }).then(response => {
-      setNotifications([...response.data.notification]);
+    axiosPrivate.get('/notifications/user/' + auth._id, {}).then(response => {
+      console.log(response)
+      setNotifications([...response.data]);
     });
   },[])
 
     const handleChange = () => {
-        axios.get('http://localhost:8080/notifications/user/'+currentUser.id, {
-            headers: {
-                Authorization:`Bearer ${currentUser.token}`
-            }
-           }).then(response => setNotifications(response.data.notifications))
+        axiosPrivate.get('/notifications/user/'+auth._id, {}).then(response => {
+          setNotifications(response.data.notifications)
+          console.log({response})
+        })
     }
 
     // run this effect every time a new notification event is emmited && on first render
@@ -35,9 +32,11 @@ const Dropdown = () => {
   // const menuItems = notifications.map(notification => {
 
   // })
-  const notifs = notifications?.map(notif => 
-     <NotificationComponent notification={notif}/>
+  const notifs = notifications.length > 0 ?
+    notifications.map(notif => <NotificationComponent notification={notif} setNotifications={setNotifications} key={notif._id} />
     )
+    : <p style={{padding:'20px'}}>You dont have notifcations yet !</p>
+    
   return (
   
     <FormControl fullWidth style={{

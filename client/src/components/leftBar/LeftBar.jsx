@@ -12,14 +12,14 @@ import Messages from "../../assets/10.png";
 import Tutorials from "../../assets/11.png";
 import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
-import { AuthContext } from "../../context/authContext";
-import { useContext } from "react";
 import {Link, useNavigate} from 'react-router-dom'
+import useAuth from "../../hooks/useAuth";
+import defaultUser from '../../assets/defaultUser.png'
 
 
 const LeftBar = () => {
 
-  const { currentUser } = useContext(AuthContext);
+  const { auth } = useAuth();
   const navigate = useNavigate();
 
   const goToEventPage = () => {
@@ -33,12 +33,13 @@ const LeftBar = () => {
         <div className="menu">
           <div className="user">
             <img
-              src={currentUser.profilePic}
-              alt=""
+              // src={auth?.photos[0] ? auth?.photos[0] : defaultUser }
+              src=""
+              alt={auth?.firstname}
             />
-            <span>{currentUser.name}</span>
+            <span>{auth?.firstname}</span>
           </div>
-          <div className="item">
+          <div className="item" onClick={() => navigate('/friends')}>
             <img src={Friends} alt="" />
             <span>Friends</span>
           </div>

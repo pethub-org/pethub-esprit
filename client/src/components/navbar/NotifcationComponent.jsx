@@ -1,22 +1,31 @@
 import React, { useEffect } from 'react'
 import style from './notificationComponent.module.css';
-import PorfilePicture from '../../assets/defaultUser.png'
-import axios from 'axios';
+import defaultPicture from '../../assets/defaultUser.png'
 import { useNavigate } from 'react-router-dom';
-import useAuthContext from '../../hooks/useAuthContext';
+import useAuth from '../../hooks/useAuth';
+import { axiosPrivate } from '../../api/axios';
 
-const URL = 'http://localhost:8080';
 
-const NotificationComponent = (notification) => {
-  const {currentUser} = useAuthContext();
+const NotificationComponent = ({notification,setNotifications}) => {
+  
+  const {auth} = useAuth();
   const navigate = useNavigate();
 
   const handleClick = async () => {
     // update notifcation status to seen
-    axios.put(`${URL}/notifications/` + notification._id, {}, {
-      headers: {
-      Authorization:'Bearer ' + currentUser.token
-    }}); 
+    axiosPrivate.put(`/notifications/` + notification._id, {}); 
+    
+    // TODO : update notifications array with new data (seen notification)
+    // setNotifications(prev => {
+    //   const currentNotificationIndex = prev.find(n => n._id === notification._id);
+    //   prev[currentNotificationIndex] = {
+    //     ...prev[currentNotificationIndex],
+    //     seen:true
+    //   }
+
+    //   return [...prev]
+    // })
+
 
     // navigate to the post or comment related to the notification
     if (notification.type === 'comment') {
@@ -38,18 +47,18 @@ const NotificationComponent = (notification) => {
   timeZoneName: "short",  
 };
   
-  const formatedDate = new Intl.DateTimeFormat(undefined, { options }).format(new Date(notification.notification.createdAt));
+  const formatedDate = new Intl.DateTimeFormat(undefined, { options }).format(new Date(notification.createdAt));
 
 
   return (
     <div className={style.container} onClick={handleClick}>
       <div>
-         <img src={PorfilePicture} alt="profile pic" className={style.img} />
+         <img src={defaultPicture} alt="profile pic" className={style.img} />
       </div>
       <div className={style.informations}>
-        <p><span className={style.username}>{notification.notification.sender.firstname}</span> : liked your post</p>
+        <p><span className={style.username}>{notification.sender.firstname}</span> : liked your post</p>
         <span>{formatedDate}</span>
-        <small style={{alignSelf:'end'}}>{notification.notification.seen ? 'seen' : ''}</small>
+        <small style={{alignSelf:'end'}}>{notification.seen ? 'seen' : 'Not seen yet'}</small>
       </div>
     </div>
   )

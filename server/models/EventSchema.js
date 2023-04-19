@@ -22,7 +22,8 @@ const EventSchema = new Schema({
     eventDate: {
         type: Date,
         required: true
-    }
+    },
+    // img
 }, {
     timestamps: true,
     strict: true

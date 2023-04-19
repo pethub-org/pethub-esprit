@@ -1,42 +1,37 @@
 import React ,{useContext,useEffect, useState}from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AuthContext } from '../../context/authContext'
 import Sidebar from './Sidebar'
 import Content from './Content'
-import axios from 'axios'
+import useAuth from '../../hooks/useAuth'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 // import './bootstrap/css/bootstrap.min.css';
-const BASE_URl = 'http://localhost:8080'
 
 const Admin = () => {
      const [users, setUsers] = useState([]);
-
-    const { currentUser } = useContext(AuthContext)
+    const {auth,setAuth } = useAuth()
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
 
     useEffect(() => {
-    if (currentUser.role !== 'admin') {
+    if (auth.role !== 'admin') {
         navigate('/login')
     }
-    }, [currentUser.role, navigate])
+    }, [auth.role, navigate])
     
   
 
   const fecthUsers = async () => {
-  const response = await axios.get(`${BASE_URl}/users`, {
+  const response = await axiosPrivate.get(`/users`, {
                 // role:'admin',
-                withCredentials:true
-            },
-            {
-            headers: {
-            'Authorization':`Bearer ${currentUser.token}`
-            }
-        })
+                // withCredentials:true
+  })
+    console.log({response})
     setUsers(response.data);
   }
 
   useEffect(() => { 
-     if (currentUser.role !== 'admin') {
+     if (auth.role !== 'admin') {
       navigate('/login')
     }
       fecthUsers();

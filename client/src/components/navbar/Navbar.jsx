@@ -7,37 +7,52 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { Link, createSearchParams, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { DarkModeContext } from "../../context/darkModeContext";
-import { AuthContext } from "../../context/authContext";
 import ProfilePicture from '../../assets/defaultUser.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDoorClosed,faDoorOpen } from '@fortawesome/free-solid-svg-icons'
-import axios from "axios";
 import Notification from "../notifications/Notification";
 import dropdown from "./dropdown";
 import Dropdown from "./dropdown";
+import MessageDropdown from "../messages/MessageDropdown";
+import useAuth from "../../hooks/useAuth";
+import axios from "../../api/axios";
 
 
 
 const Navbar = () => {
   const { toggle, darkMode } = useContext(DarkModeContext);
-  const { currentUser } = useContext(AuthContext);
+  const { auth ,setAuth} = useAuth();
   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
+
+
   const logout = async (e) => {
     e.preventDefault();
     await axios.post('http://localhost:8080/auth/logout', {});
+    setAuth({})
     localStorage.removeItem('user');
     navigate('/login')
   }
-
+  const handleSearch = async (e) => {
+    if (e.key === "Enter") {
+      // axios.get('')
+      navigate({
+        pathname: '/search',
+        search: createSearchParams({
+          name:search
+        }).toString()
+      })
+    }
+  }
 
   return (
     <div className="navbar">
       <div className="left">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span>lamasocial</span>
+          <span><Link to="/" style={{textDecoration:'none'}}>PetsHub</Link></span>
         </Link>
         <HomeOutlinedIcon />
         {darkMode ? (
@@ -48,7 +63,7 @@ const Navbar = () => {
         <GridViewOutlinedIcon />
         <div className="search">
           <SearchOutlinedIcon />
-          <input type="text" placeholder="Search..." />
+          <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleSearch} />
         </div>
       </div>
       <div className="right">
@@ -61,13 +76,16 @@ const Navbar = () => {
           <div style={{marginRight:'20px'}}>
              <Dropdown/>
           </div>
+          {/* <div style={{marginRight:'20px'}}> */}
+             <MessageDropdown/>
+          {/* </div> */}
           {/* <Notification/> */}
      
        </div>
 
         <FontAwesomeIcon icon={faDoorOpen} onClick={logout} style={{cursor:'pointer'}}/>
 
-        <Link to="/profile/1">
+        <Link  to={`/profile/${auth._id}`}>
           <PersonOutlinedIcon />
         </Link>
       
@@ -81,7 +99,9 @@ const Navbar = () => {
             src={ProfilePicture}
             alt=""
           />
-          <span>{currentUser.firstname}</span>
+          {/* <span>{currentUser.firstname}</span> */}
+          <Link  to={`/profile/${auth._id}`}>{auth.firstname} {' '} {auth.lastname}</Link>
+          {/* Link to my profile */}
         </div>
       </div>
     </div>

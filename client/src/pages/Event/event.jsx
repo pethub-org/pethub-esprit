@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useId, useState } from 'react'
 import style from "./event.module.css"
 import EventImage from '../../assets/event_img.jpg'
-import axios from 'axios';
-import { AuthContext } from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import { axiosPrivate } from '../../api/axios';
 
 const Event = () => {
   const [toggleForm, setToggleForm] = useState(false);
@@ -20,7 +20,7 @@ const Event = () => {
   // const [buttonText, setButtonText] = useState('');
   // const [clickHandler,setClickHanlder] = useState();
   
-  const { currentUser } = useContext(AuthContext);
+  const { auth} = useAuth();
 
   const handleToggleForm = () => setToggleForm(prev => !prev);
 
@@ -28,11 +28,7 @@ const Event = () => {
       navigate('/events/'+event._id)
   }
   const handleDeleteEvent = async(event) => {
-     axios.delete('http://localhost:8080/events/' + event._id, {
-      headers: {
-        Authorization:`Bearer ${currentUser.token}`
-      }
-    }).then(res => console.log({res}))
+     axiosPrivate.delete('/events/' + event._id).then(res => console.log({res}))
   }
   // TODO : fix me
   // const customClickHandler =async (event,isParticipated) => {
@@ -47,59 +43,54 @@ const Event = () => {
   //   }
   // } 
   const handleParticipate = async (event) => {
-    const response = await axios.put(`http://localhost:8080/events/participate/${event._id}`, {}, {
-      headers: {
-          Authorization:`Bearer ${currentUser.token}`
-        }
-    })
-    console.log(response)
+    const response = await axiosPrivate.put(`/events/participate/${event._id}`, {})
+    console.log({response})
   }
 
   const handleUnparticipate = async (event) => {
-    const response = await axios.put(`http://localhost:8080/events/unparticipate/${event._id}`, {}, {
-      headers: {
-          Authorization:`Bearer ${currentUser.token}`
-        }
-    })
+    const response = await axiosPrivate.put(`/events/unparticipate/${event._id}`, {})
+    console.log({response})
   }
 
   const handleCreateEvent = async (e) => {
     e.preventDefault();
-    const source = axios.CancelToken.source()
+    const source = axiosPrivate.CancelToken.source()
     const config = {cancelToken:source.token}
-    const res = await axios.post('http://localhost:8080/events', { title, description, eventDate }, {
-      config,
-      headers: {
-        Authorization: `Bearer ${currentUser.token}`
-      }
-    });
+    const res = await axiosPrivate.post('/events', { title, description, eventDate });
     setTitle('')
     setDescription('')
     setEventDate('')
   }
   useEffect(() => {
-    const source = axios.CancelToken.source()
-    const config = {cancelToken:source.token}
+    // const source = axiosPrivate.CancelToken.source()
+    // const config = { cancelToken: source.token }
+    let isMounted = true
+    const controller = new AbortController();
+    
+    
     const fetchEvents = async () => {
-      const response = await axios.get('http://localhost:8080/events',config)
+      const response = await axiosPrivate.get('/events', {signal: controller.signal})
       setEvents(response.data.events)
     }
     fetchEvents()
 
-     return () => {
-      source.cancel('Request canceled by user.');
-    };
+      return () => {
+            isMounted = false;
+            controller.abort();
+        }
   }, [toggleForm])
     
   const renderEvents = events.map((event, i) => {
     const formatedDate = new Intl.DateTimeFormat(undefined, { dateStyle: "long" }).format(new Date(event.eventDate));
-    const isParticipated = event.participants.find((id) => id === currentUser.id)
+    const isParticipated = event.participants.find((id) => id === auth._id)
 
     const button = !isParticipated ?
           <button className={style.button} key={event._id} onClick={() => handleParticipate(event)}>Pariticipate</button>
       : <button className={style.button} key={event._id} onClick={() => handleUnparticipate(event)}>Leave</button>
 
-    const isMyEvent = event.creatorId === currentUser.id 
+    const isMyEvent = event.creatorId === auth._id 
+
+
     const actionButtons = isMyEvent ?
       <>
        <button className={style.button} key={event._id} onClick={() => handleEditEvent(event)}> Edit</button>
@@ -107,7 +98,7 @@ const Event = () => {
       </>
       : null;
     return (
-    <div className={style.flex}>
+    <div className={style.flex} key={i}>
 
       <div className={style.item}>
         <img src={EventImage} alt="img" className={style.img} />
