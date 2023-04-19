@@ -2,20 +2,20 @@ import "./share.scss";
 import Image from "../../assets/img.png";
 import Map from "../../assets/map.png";
 import Friend from "../../assets/friend.png";
-import { useContext } from "react";
-import { AuthContext } from "../../context/authContext";
-
+import useAuth from "../../hooks/useAuth";
+import defaultUser from '../../assets/defaultUser.png';
 const Share = () => {
-  const {currentUser} = useContext(AuthContext)
+  const {auth} = useAuth()
   return (
     <div className="share">
       <div className="container">
         <div className="top">
           <img
-            src={currentUser.profilePic}
-            alt=""
+            // src={auth?.photos[0] ? auth?.photos[0]  :defaultUser}
+            src={""}
+            alt={auth.firstname}
           />
-          <input type="text" placeholder={`What's on your mind ${currentUser.name}?`} />
+          <input type="text" placeholder={`What's on your mind ${auth.firstname}?`} />
         </div>
         <hr />
         <div className="bottom">

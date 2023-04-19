@@ -1,10 +1,10 @@
 import React, { useState, useEffect,useContext } from 'react'
 import style from './event.module.css';
-import axios from 'axios';
-import { AuthContext } from '../../context/authContext';
 import {useNavigate, useParams} from 'react-router-dom'
+import useAuth from '../../hooks/useAuth';
+import { axiosPrivate } from '../../api/axios';
 const EditEvent = () => {
-    const {currentUser }=useContext(AuthContext);
+    const {auth,setAuth}=useAuth();
     const [title, setTitle] = useState('');
     const [description,setDescription] = useState('');
     const [eventDate, setEventDate] = useState('');
@@ -13,16 +13,12 @@ const EditEvent = () => {
 
     const handleUpdateEvent = async (e) => {
         e.preventDefault();
-        await axios.put('http://localhost:8080/events/' + id, { title, description, eventDate }, { headers: { Authorization: `Bearer ${currentUser.token}` } })
+        await axiosPrivate.put('/events/' + id, { title, description, eventDate  })
         navigate('/events')
     }
 
     useEffect(() => {
-              axios.get('http://localhost:8080/events/' + id, {
-                headers: {
-                    Authorization:`Bearer ${currentUser.token}`
-                }
-              }).then(response => {
+              axiosPrivate.get('/events/' + id).then(response => {
                   setEventDate(new Date(response.data.event.eventDate).toISOString().slice(0, 10))
                     setTitle(response.data.event.title);
                     setDescription(response.data.event.description);

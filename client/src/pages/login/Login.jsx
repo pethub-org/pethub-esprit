@@ -1,19 +1,42 @@
-import { useContext, useRef } from "react"
-import { Link } from "react-router-dom"
-import "./login.scss"
-import { loginCall } from "../../apiCalls"
-import { AuthContext } from "../../context/AuthContext"
+
+import {  useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./login.scss";
+import Logo from '../../assets/logo.png'
+import useAuth from "../../hooks/useAuth";
+import axios from '../../api/axios';
+
 
 const Login = () => {
-  const email =useRef();
-  const password=useRef();
-  const {user,isFetching, error,dispatch} = useContext(AuthContext);
-  const handlerClick=(e)=>{
+  const { auth, setAuth } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+
+  
+const loginService = async({email,password}) => {
+  const res = await axios.post('/auth/login', { email, password })
+  setAuth(res.data)
+  return res.data.role;
+}
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    loginCall({email:email.current.value,
-              password:password.current.value},dispatch)
-  }
-  console.log(user)
+    try {
+      const role = await loginService({ email, password });
+      if (role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/')
+      }
+    } catch (error) {
+      setError(error.message)
+    }
+  };
+
+
   return (
     <div className="login">
       <div className="card">

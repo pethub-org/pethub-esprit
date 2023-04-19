@@ -1,3 +1,4 @@
+
 import "./register.scss"
 import {Link} from 'react-router-dom'
 import { useState } from "react"
@@ -14,6 +15,35 @@ const Register = () => {
         email:'',
         password:'',
         date: '',
+
+import { Link } from "react-router-dom";
+import "./register.scss";
+import { useState } from "react";
+import axios from "../../api/axios";
+const Register = () => {
+  const [email,setEmail] = useState('')
+  const [firstname,setFirstname] = useState('')
+  const [lastname,setLastname] = useState('')
+  const [password,setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess(false);
+
+    try {
+      const response = await axios.post(`/users`, { email, firstname, lastname, password, confirmPassword })
+      console.log("sucess => ", { response })
+      if (response.status === 201) {
+        setSuccess(true)
+      }
+    } catch (error) {
+      console.log({error})
+      setError(error.response.data.message || error.response.data.error[0]);
+
     }
 )
     //test des champs vide ou non

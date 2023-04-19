@@ -1,9 +1,9 @@
 import { width } from '@mui/system';
 import React, { useContext } from 'react'
-import { AuthContext } from '../../context/authContext';
+import useAuth from '../../hooks/useAuth';
 
 const Header = () => {
-  const {currentUser} =useContext(AuthContext)
+  const {auth} =useAuth()
   return (
       <>
            <nav>
@@ -16,7 +16,7 @@ const Header = () => {
           width:'max-content'
         }}> You're now logged in as : <bold style={{
             fontWeight: 'bold'
-        }}>{currentUser.firstname} {currentUser.lastname} </bold></p>
+        }}>{auth.firstname} {auth.lastname} </bold></p>
 
       <div className="search-box">
         {/* <input type="text" placeholder="Search..."> */}

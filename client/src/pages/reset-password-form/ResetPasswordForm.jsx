@@ -1,11 +1,10 @@
-import axios from 'axios';
 import React, { useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import "./resetPasswordForm.scss";
+import axios  from '../../api/axios';
 
 
 
-const BASE_URL = 'http://localhost:8080';
 
 const ResetPasswordForm = () => {
     const { token } = useParams();
@@ -18,7 +17,7 @@ const ResetPasswordForm = () => {
     const changePassword = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post(`${BASE_URL}/users/reset-password`, { password,confirmPassword,token })
+            const response = await axios.post(`/users/reset-password`, { password,confirmPassword,token })
             setError(false)
             setSuccess(true)
             console.log({response})
