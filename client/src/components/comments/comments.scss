@@ -1,43 +1,57 @@
+.form-container {
+  margin-top: 10px;
 
+  h2 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
 
-.comments {
-  
-    img {
+  form {
+    display: flex;
+    flex-direction: column;
+   
+
+    textarea {
+      margin-bottom: 5px;
+      padding: 5px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: none;
+    }
+
+    button {
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        cursor: pointer;
+        color: #5271ff;
+        background-color: transparent;
+        border : 2px solid  #5271ff;
+      }
+    }
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+     img{
       width: 40px;
       height: 40px;
       border-radius: 50%;
       object-fit: cover;
-    }
-
-    .write{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      margin: 20px 0px;
-
-      input{
-        flex:5;
-        padding: 10px;
-        border: 1px solid lightgray ;
-        background-color: transparent;
-        color: grey;
-      }
-
-      button{
-        border: none;
-        background-color: #5271ff;
-        color: white;
-        padding: 10px;
-        cursor: pointer;
-        border-radius: 3px;
-      }
-    }
-
+     }
     .comment {
-      margin: 30px 0px;
+      margin: 10px 15px;
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       gap: 20px;
 
       .info {
@@ -54,6 +68,38 @@
         p{
           color:gray
         }
+        textarea {
+          width: 100%;
+          margin-bottom: 5px;
+          padding: 5px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          font-size: 1rem;
+          resize: none;
+        }
+        .button-container {
+          display: flex;
+          margin-top: 10px;
+          
+        button {
+          padding: 5px 5px;
+          margin-right: 5px;
+          border-radius: 5px;
+          font-size: 15px;
+          border: none;
+          font-size: 1rem;
+          color: #fff;
+          cursor: pointer;
+          background-color: #0077ff;
+      
+          &:hover {
+            cursor: pointer;
+            color: #5271ff;
+            background-color: transparent;
+            border : 2px solid  #5271ff;
+          }
+        }
+      }
       }
 
       .date{
@@ -61,6 +107,24 @@
         align-self: center;
         color: gray;
         font-size: 12px;
+      }
+    }
+  
+
+      button {
+        background-color: white;
+        color: black;
+        border: none;
+        border-radius: 5px;
+        margin-top: 20px;
+        padding: 5px 5px;
+        height: 30px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: white;
+        }
       }
     }
   }

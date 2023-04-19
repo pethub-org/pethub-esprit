@@ -1,7 +1,81 @@
 import "./register.scss"
 import {Link} from 'react-router-dom'
+import { useState } from "react"
+import userService from "./service"
 
 const Register = () => {
+  const [username, setUsername]=useState('');
+  const [email,setEmail] = useState('');
+  const [password,setPassword]=useState('');
+  const [date ,setDate]=useState('');
+  const [errors,setErrors] = useState(
+    {
+        username : '',
+        email:'',
+        password:'',
+        date: '',
+    }
+)
+    //test des champs vide ou non
+    const formValidation = ()=>{
+      let status = true;
+      let localerror = 
+      {...errors }
+      if (username==""){
+          localerror.username = 'username required';
+          status = false;
+      }
+      if (email==""){
+          localerror.email = 'email required';
+          status = false;
+      }
+      if (password==""||password.length < 8  ){
+          localerror.password = 'password required';
+          status = false;
+      }
+      if (date==""){
+          localerror.date = 'birthdate required';
+          status = false;
+      }
+      setErrors(localerror)
+      //console.log(localerror)
+      return status;  
+
+  }
+  const register = async(e)=>{
+    //no reload
+    e.preventDefault()
+    console.log("form submitted")
+    console.log("form data :" , username,email ,password,  date )
+    if (formValidation()){ //form valide
+        const data = {
+          username:username,
+            email: email ,
+            password:password,
+            date: date,
+            
+        }
+        try{
+            const res = await userService.register(data)
+            console.log("response ====>",res)
+            setUsername('')
+            setEmail('')
+            setPassword('')
+            setDate('')
+           
+
+        }catch(error){
+             console.log(error)
+             
+
+        }
+
+    }
+    else {
+        console.log("form invalid")
+    }
+
+}
   return (
     <div className="register">
       <div className="card">
@@ -16,11 +90,19 @@ const Register = () => {
         <div className="right">
           <h1>Register</h1>
           <form>
-            <input type="text" placeholder="Username" />
-            <input type="email" placeholder="Email" />
-            <input type="text" placeholder="Password" />
-            <input type="text" placeholder="Name" />
-            <button>Register</button>
+            <input type="text" placeholder="Username" 
+            value={username} 
+            onChange={(e)=>setUsername(e.target.value)}/>
+            <input type="email" placeholder="Email"
+            value={email} 
+            onChange={(e)=>setEmail(e.target.value)} />
+            <input type="text" placeholder="Password" 
+            value={password} 
+            onChange={(e)=>setPassword(e.target.value)}/>
+            <input type="date" placeholder="BirthDate" style={{color:"gray"}}
+            value={date} 
+            onChange={(e)=>setDate(e.target.value)}/>
+            <button type="submit">Register</button>
           </form>
         </div>
       </div>

@@ -5,12 +5,27 @@ import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
 import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
 import Posts from '../../components/Posts/Posts'
-const profile = () => {
+import { useContext, useEffect, useState } from 'react';
+import { useParams } from "react-router";
+import axios from 'axios';
+import { AuthContext } from "../../context/AuthContext";
+const Profile = () => {
+  const [user,setUser] = useState({})
+  const username = useParams().username
+   const {user:currentUser} = useContext(AuthContext)
+
+  useEffect(()=>{
+    const fetchUser = async ()=>{
+      const res = await  axios.get(`/users?username=${username}`);
+      setUser(res.data)
+    };
+    fetchUser();
+  },[username])
   return (
     <div className="profile">
       <div className="images">
-      <img className="cover" src="https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg" alt="" />
-      <img className="profilePic"  src="https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg" alt="" />
+      <img className="cover" src={currentUser.coverPicture} alt="" />
+      <img className="profilePic"  src={currentUser.profilePicture} alt="" />
       </div>
       <div className="profileContainer">
         <div className="userInfo">
@@ -26,7 +41,8 @@ const profile = () => {
             </a>
           </div>
           <div className="center">
-            <span>Anis Ammar</span>
+            <span>{currentUser.username}</span>
+            
             <div className="info">
                <button className="btn1">
                 <PersonAddAlt1OutlinedIcon/>Follow
@@ -46,4 +62,4 @@ const profile = () => {
   )
 }
 
-export default profile
+export default Profile
