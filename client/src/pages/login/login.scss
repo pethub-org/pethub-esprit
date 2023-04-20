@@ -1,92 +1,80 @@
-
-.error {
-  color:red;
-  font-weight: bold;
-  font-size:18px;
-}
-.login {
-  height: 100vh;
-  background-color: rgb(193, 190, 255);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .card {
-    width: 50%;
+.login{
+    height: 100vh;
+    background-color: orange;
     display: flex;
-    background-color: white;
-    border-radius: 10px;
-    min-height: 600px;
-    overflow: hidden;
+    align-items: center;
+    justify-content: center;
 
-    .left {
-      flex: 1;
-      background: linear-gradient(rgb(50,205,50), rgb(50,205,50)),
-        url("../../assets//328027562_912213726484208_1744113960191474737_n.png")
-          center;
-      background-size: cover;
-      padding: 50px;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      color: white;
-
-      h1 {
-        font-size: 100px;
-        line-height: 100px;
-      }
-      
-      p {
-      }
-
-      span {
-        font-size: 14px;
-      }
-      
-      button {
+    .card{
         width: 50%;
-        padding: 10px;
-        border: none;
-        background-color: white;
-        color: #32CD32;
-        font-weight: bold;
-        cursor: pointer;
-      }
-    }
-
-    .right {
-      flex: 1;
-      padding: 50px;
-      display: flex;
-      flex-direction: column;
-      gap: 50px;
-      justify-content: center;
-
-      h1 {
-      color: #555;
-      }
-      
-      form {
+        border-radius: 10px;
         display: flex;
-        flex-direction: column;
-        gap: 30px;
-        
-        input {
-        border: none;
-        border-bottom: 1px solid lightgray;
-        padding: 20px 10px;
+        background-color: white;
+        min-height: 600px;
+        .left{
+            flex : 1;
+            background-color: orangered;
+            background-size: cover;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            gap:30px;
+            color : white;
+            h1{
+                font-size:100px;
+                line-height: 100px;
+
+            }
+            p{
+            }
+            span{
+                font-size: 14px;
+            }
+            button{
+                background-color: white;
+                color: purple;
+                width: 50%;
+                padding: 10px;
+                border: none;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
         }
-        
-        button {
-          width: 50%;
-          padding: 10px;
-          border: none;
-          background-color: #32CD32;
-          color: white;
-          font-weight: bold;
-          cursor: pointer;
+        .right{
+            justify-content: center;
+            flex: 1;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            gap:50px;
+
+            h1{
+                color: #555;
+                
+
+            }
+            form{
+                flex-direction: column;
+                display: flex;
+                gap:30px;
+                input{
+                    border: none;
+                    border-bottom: 1px solid lightgray;
+                    padding: 20px 10px;
+                }
+                button{
+                    background-color: purple;
+                    color: white;
+                    width: 50%;
+                    padding: 10px;
+                    border: none;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+            }
+
         }
-      }
     }
-  }
+
 }

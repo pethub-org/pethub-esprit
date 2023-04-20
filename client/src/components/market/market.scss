@@ -1,0 +1,129 @@
+// .products {
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: center;
+// }
+// .product {
+//   boder: 1px #404040 solid;
+//   margin: 1rem;
+// }
+// .product img {
+//   width: 100%;
+//   max-width: 400px;
+// }
+
+// .product-info {
+//   padding: 1rem;
+// }
+// .img-large {
+//   width: 1rem;
+// }
+// .posts {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 50px;
+// }
+
+.market {
+  box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+  -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+  -moz-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+  border-radius: 20px;
+
+  color: black;
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 15rem;
+  .container {
+    padding: 20px;
+    .user {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .userInfo {
+      display: flex;
+      gap: 20px;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .details {
+        display: flex;
+        flex-direction: column;
+      }
+      .name {
+        font-weight: 500;
+      }
+      .date {
+        font-weight: 12px;
+      }
+    }
+    .content {
+      margin: 20px 0px;
+      img {
+        max-width: 200px;
+        max-height: 100px;
+        object-fit: cover;
+        margin-top: 20px;
+      }
+    }
+    .info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  }
+}
+.marktes {
+  display: flex;
+  flex-flow: row wrap;
+  align-content: space-between;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+#product_price {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+#cart_btn,
+#review_btn {
+  border-radius: 2rem;
+  background-color: #0069ea;
+  border: none;
+  padding: 0.5rem 2rem;
+}
+
+#product_seller {
+  color: grey;
+  font-size: 0.9rem;
+}
+
+#stock_status {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-left: 0.3rem;
+}
+
+.redColor {
+  color: red;
+}
+
+.greenColor {
+  color: green;
+}
+
+#product_image {
+  margin-top: 1rem;
+}
