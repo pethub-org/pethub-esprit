@@ -1,67 +1,48 @@
 import React, { useEffect } from 'react'
 import styles from './userInfo.module.css';
 import defaultImg from '../../assets/defaultUser.png'
-import useAuthContext from '../../hooks/useAuth';
-import axios from 'axios';
+import useAuth from '../../hooks/useAuth';
+import { axiosPrivate } from '../../api/axios';
 
 
 
 
-const UserInfo = ({ setShowChatBox, userInfo, setChatData,setMessages }) => {
-  const {currentUser} = useAuthContext();
-  
-  const fetchConversation = async (currentUserId,userId,token) => {
-   const conversation =  axios.get(`http://localhost:8080/conversations/${currentUserId}/${userId}`,
-     {
-       headers: {
-         Authorization: `Bearer ${token}`
-       }
-     }
-   ).then(response => response.data)
-    return conversation;
-  }
-
-  const fetchMessages = async (token,conversation) => {
-      const messages = axios.get(`http://localhost:8080/messages/conversation/${conversation?._id}`,  {
-       headers: {
-         Authorization: `Bearer ${token}`
-       }
-     }
-    ).then(response => response.data)
-    return messages;
-  }
+const UserInfo = ({ setShowChatBox, userInfo, setChatData,setMessages,conversations,setConversations }) => {
+  const {auth} = useAuth();
+ 
+  // useEffect(() => {
+  //   console.log({conversations})
+  //   // const res = axiosPrivate.get(`/conversations/${auth._id}/${userInfo._id}`).then(response => {
+  //     // console.log(response.data._id)
+  //   const conversationId =conversations.find(el => el.members.find(id => id === userInfo._id))
+  //     console.log({conversationId})
+  //     const url = `/messages/conversation/${conversationId}`
+  //     axiosPrivate.get(`${url}`).then(response => {
+  //       setMessages(response.data)
+  //         console.log({response})
+  //     })
+  //   // })
+  //   },[auth._id,userInfo._id])
 
  
-  useEffect(() => {
-      const fetchAll = async(currentUserId,userId,token) => {
-        const conversation = await fetchConversation(currentUserId, userId, token);
-        console.log({conversation})
-        const messages = await fetchMessages(conversation);
-        return messages;
-    }
-    
-    fetchAll().then(response => {
-       console.log({response})
-    // setMessages(messages)
-     })
-
-  },[])
 
   return (
     <div className={styles.user} onClick={() => {
+    const conversation =conversations.find(el => el.members.find(id => id === userInfo._id))
+      console.log({ conversation })
       
-      setChatData(userInfo)
+      setChatData({...userInfo,conversationId:conversation._id})
       setShowChatBox(prev => !prev)
     }}>
             <div className={styles.userInfo}>
                <div>
                 <img className={styles.img}
-                      src={userInfo.photos.length <1 ? defaultImg : userInfo.photos[0].url}
+                      src={userInfo?.photos?.length <1 ? defaultImg : userInfo?.photos[0].url}
                       alt=""
                     />
               </div>
               {/* <div className={styles.online} /> */}
-              <p className={styles.name}>{userInfo.firstname} {' '} { userInfo.lastname}</p>
+              <p className={styles.name}>{userInfo?.firstname} {' '} { userInfo?.lastname}</p>
             </div>
             
     </div>

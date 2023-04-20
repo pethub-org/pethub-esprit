@@ -6,19 +6,42 @@ import MyMessage from './MyMessage'
 import styles from './chatbox.module.css'
 import defaultImg from '../../assets/defaultUser.png' 
 import useAuth from '../../hooks/useAuth'
+import { axiosPrivate } from '../../api/axios'
 
-const ChatBox = ({ chatData, setShowChatBox,messages }) => {
+const ChatBox = ({ chatData, setShowChatBox,messages,setMessages }) => {
     
     const [message, setMessage] = useState('');
+    // const [messages, setMessages] = useState([])
+    const [conversationId, setCOnversationId] = useState();
     const { auth } = useAuth();
 
-    useEffect(() => { 
-        console.log({ chatData })
-    },[])
+ 
+    // useEffect(() => {
+    //     const fetchCurrentConversation = async () => {
+    //         const response = await axiosPrivate.get(`/conversations/${chatData._id}/${auth._id}`)
+    //         setCOnversationId(response.data._id)
+    //         return response.data;
+    //     }
+    //     const conversation = fetchCurrentConversation();
+    //     console.log({conversation})
+
+    //     axiosPrivate.get(`/messages/conversation/${conversation._id}`).then(response => {
+    //         setMessage(response.data)
+    //     })
+    // }, [])
+    
 
     const handleSendMessage = (e) => {
         e.preventDefault();
-        console.log(message)
+        console.log({ message })
+        console.log({ chatData})
+        axiosPrivate.post(`/messages`, {
+            sender: auth._id,
+            conversationId:chatData.conversationId,
+            text:message
+        }).then(response => {
+            setMessages(prev => [...prev,response.data])
+        })
     }
     return (
         <div className={styles.relative}>
@@ -33,24 +56,15 @@ const ChatBox = ({ chatData, setShowChatBox,messages }) => {
 
                 {/* message content */}
                 <div className={styles.messageContent}>
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <MyMessage message="test" />
-
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <UserMessage logo={chatData.logo} message={"yooo"} />
-                    <MyMessage message="test" />
+                    <div style={{height:'80%'}}>
+                         {messages?.length > 0 ? messages?.map(message => {
+                        if (message.sender === auth._id) {
+                            return <MyMessage message={message.text} key={message._id}/>
+                        } else {
+                            return <UserMessage message={message.text} key={message._id}/>
+                        }
+                    }) : <p style={{marginLeft:'16px',marginTop:'4px'}}>No messages yet</p>}
+                   </div>
 
                     
                      <div className={styles.footer}>

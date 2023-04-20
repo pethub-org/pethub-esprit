@@ -4,19 +4,23 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import NotificationComponent from './NotifcationComponent';
 import useAuth from '../../hooks/useAuth';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import NotificationList from './NotificationList';
+import styles from './notifcations.module.css';
+
 
 const Dropdown = () => {
-    const { auth} = useAuth()
   const [notifications, setNotifications] = useState([]);
+  const [showNotifcations,setShowNotifcations] = useState(false);
   const axiosPrivate = useAxiosPrivate();
+  const { auth } = useAuth()
   
-  useEffect(() => {
-    axiosPrivate.get('/notifications/user/' + auth._id, {}).then(response => {
-      console.log(response)
-      setNotifications([...response.data]);
-    });
-  },[])
+  const getUserNotifcations = async () => {
+    const response = await axiosPrivate.get('/notifications/user/' + auth._id);
+    setNotifications(response.data)
 
+  }
+
+  
     const handleChange = () => {
         axiosPrivate.get('/notifications/user/'+auth._id, {}).then(response => {
           setNotifications(response.data.notifications)
@@ -32,46 +36,46 @@ const Dropdown = () => {
   // const menuItems = notifications.map(notification => {
 
   // })
-  const notifs = notifications.length > 0 ?
-    notifications.map(notif => <NotificationComponent notification={notif} setNotifications={setNotifications} key={notif._id} />
-    )
-    : <p style={{padding:'20px'}}>You dont have notifcations yet !</p>
+
     
+    // TODO : on click on the button fetch user notifcations
   return (
-  
-    <FormControl fullWidth style={{
-      color: 'white',
+    <div>
+      <button onClick={async() => {
+        await getUserNotifcations();
+        setShowNotifcations(prev => !prev)
+     }}>
+      Notifications
+          {/* <FormControl fullWidth style={{
+          color: 'white',
+          
+        }}  >
+          <InputLabel id="demo-simple-select-label" style={{
+            color: 'white',
+          }}>
+            <NotificationsOutlinedIcon />
+          </InputLabel>
+          <Select
       
-    }}  >
-      <InputLabel id="demo-simple-select-label" style={{
-        color: 'white',
-      }}>
-        <NotificationsOutlinedIcon />
-      </InputLabel>
-      <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={'18'}
-        label="Age"
-        onChange={handleChange}
-       
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={'18'}
+            label="Age"
+            onChange={handleChange}
+          
+        
+          > */}
+            {/* <MenuItem value={10}>Ten</MenuItem>
+            <MenuItem value={20}>Twenty</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem> */}
     
-      >
-        {/* <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem> */}
-        {/* <NotificationComponent/>
-        <NotificationComponent/>
-        <NotificationComponent/>
-        <NotificationComponent/>
-        <NotificationComponent/>
-        <NotificationComponent/>
-        <NotificationComponent/>
-        <NotificationComponent/>
-        <NotificationComponent/> */}
-        {notifs}
-      </Select>
-    </FormControl>
+            {/* {notifs}
+          </Select>
+        </FormControl> */}
+      </button>
+      {showNotifcations && <NotificationList notifications={notifications} setNotifications={setNotifications}/>}
+    </div>
+   
   )
 }
 
