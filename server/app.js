@@ -11,12 +11,18 @@ const PORT = process.env.PORT || 8080
 
 const errorHandler = require("./middlewares/error.middleware");
 
+const userModel = require("./models/UserSchema")
+
 const userRouter = require("./routes/user.routes");
 const authRouter = require("./routes/auth.routes");
 const eventsRouter = require("./routes/event.routes");
 const notificationsRouter = require("./routes/notification.routes");
 const conversationRouter = require("./routes/conversation.routes");
 const messagesRouter = require("./routes/message.routes");
+
+const commentRoute = require("./routes/comment");
+const postRoute = require("./routes/post");
+
 
 const { Server } = require("socket.io");
 
@@ -44,6 +50,19 @@ app.use('/events', eventsRouter);
 app.use('/notifications', notificationsRouter);
 app.use('/conversations', conversationRouter);
 app.use('/messages', messagesRouter);
+
+app.use("/api/posts", postRoute);
+app.use("/api/comments", commentRoute);
+app.use("/api/users/:id", async (req, res) => {
+    try {
+        const user = await userModel.findById(req.params.id)
+        res.status(200).json(user)
+    }
+    catch (err) {
+        return res.status(500).json(err)
+    }
+});
+
 
 
 

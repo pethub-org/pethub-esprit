@@ -55,6 +55,14 @@ const UserSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'FriendRequest',
     }],
+    followers: {
+        type: Array,
+        default: []
+    },
+    followersPeople: {
+        type: Array,
+        default: []
+    },
 
 });
 
