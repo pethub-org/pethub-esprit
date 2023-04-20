@@ -23,6 +23,11 @@ const messagesRouter = require("./routes/message.routes");
 const commentRoute = require("./routes/comment");
 const postRoute = require("./routes/post");
 
+const reviewroute = require("./routes/reviewRoute");
+const prodroute = require("./routes/productRoute");
+const catroute = require("./routes/categoryRoute");
+
+
 
 const { Server } = require("socket.io");
 
@@ -34,6 +39,9 @@ app.use(cookieParser());
 
 // Middlewares
 app.use('/static', express.static(path.join(__dirname, 'uploads')))
+
+app.use("/images", express.static(path.join(__dirname, "public/images")));
+
 app.use(express.json())
 app.use(cors({
     origin: 'http://localhost:3000'
@@ -51,6 +59,7 @@ app.use('/notifications', notificationsRouter);
 app.use('/conversations', conversationRouter);
 app.use('/messages', messagesRouter);
 
+// anis
 app.use("/api/posts", postRoute);
 app.use("/api/comments", commentRoute);
 app.use("/api/users/:id", async (req, res) => {
@@ -64,7 +73,10 @@ app.use("/api/users/:id", async (req, res) => {
 });
 
 
-
+// daly
+app.use("/api/reviews", reviewroute);
+app.use("/api/products", prodroute);
+app.use("/api/categorie", catroute);
 
 const server = createServer(app);
 const io = new Server(server, {

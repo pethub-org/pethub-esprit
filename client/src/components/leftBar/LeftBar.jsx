@@ -45,11 +45,11 @@ const LeftBar = () => {
           </div>
           <div className="item">
             <img src={Groups} alt="" />
-            <span>Groups</span>
+            <span><Link to="/addprod">ADD PRODUCT</Link></span>
           </div>
           <div className="item">
             <img src={Market} alt="" />
-            <span>Marketplace</span>
+            <span><Link to="/market">Marketplace</Link></span>
           </div>
           <div className="item">
             <img src={Watch} alt="" />

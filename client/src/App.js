@@ -23,6 +23,9 @@ import Event from "./pages/Event/event";
 import EditEvent from "./pages/Event/EditEvent";
 import SearchPage from "./pages/search/SearchPage";
 import useAuth from './hooks/useAuth'
+import ProductList from "./components/market/Prod";
+import ProductDetail from "./components/market/ProductDetail";
+import FormScreen from "./components/market/Formscreen";
 
 function App() {
   const { auth } = useAuth();
@@ -86,7 +89,19 @@ function App() {
         {
           path: "/events/:id",
           element: <EditEvent />
-        }
+        },
+        {
+          path: "/market",
+          element: <ProductList />,
+        },
+        {
+          path: "/market/:id",
+          element: <ProductDetail />,
+        },
+        {
+          path: "/addprod",
+          element: <FormScreen />,
+        },
       ],
     },
     {
