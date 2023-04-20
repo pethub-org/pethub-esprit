@@ -124,7 +124,7 @@ const Profile = () => {
         /> */}
 
          <img
-          src={auth.photos.length > 0 ? auth.photos[0].url : ProfilePicture}
+          src={auth?.photos?.length > 0 ? auth?.photos[0]?.url : ProfilePicture}
           alt=""
           className="profilePic"
         />
