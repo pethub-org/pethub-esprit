@@ -17,34 +17,46 @@ const RightBar = () => {
   useEffect(() => {
     axiosPrivate.get(`/conversations/${auth._id}`).then(res => {
       setConversations(res.data)
+      console.log({res})
     })
-  },[auth._id])
+  },[])
 
   // show private chatbox
   const [showChatBox, setShowChatBox] = useState(false);
   
   // current chat data
-  const [chatData, setChatData] = useState();
+  const [chatData, setChatData] = useState({});
 
   // current chatbox messages
   const [messages, setMessages] = useState([]);
-
-
+  const [friendList, setFriendList] = useState([])
   
-  const friends = auth?.friendList?.map(friend => <UserInfo key={friend._id}
+  useEffect(() => {
+    axiosPrivate.get(`/messages/conversation/${chatData.conversationId}`).then(response => {
+      setMessages(response.data)
+      console.log("messages ",{response})
+    })
+    
+  }, [chatData])
+
+  useEffect(() => {
+    const friends = auth?.friendList?.map(friend => <UserInfo key={friend._id}
+                                                conversations={conversations} setConversations={setConversations}                  
                                                 setShowChatBox={setShowChatBox}
                                                 userInfo={friend} setChatData={setChatData} 
                                                 setMessages={setMessages}
                                                 />)
+    setFriendList(friends)
+ },[auth.friendList,conversations])
   return (
     <div className="rightBar">
       <div className="container" >
   
         <div className="item" style={{overflowY:'visible' , height:'800px'}}>
           <span>Friends</span>
-  
-            {friends}
-          {showChatBox && <ChatBox chatData={chatData} setShowChatBox={setShowChatBox} messages={messages}/>}
+            {friendList?.length > 0 ? friendList : <p style={{color:'white'}}>You dont have friends yet</p>}
+            {/* {auth?.friendList?.lenght > 0 ? friends : <p style={{color:'white'}}>You dont have friends yet</p>} */}
+          {showChatBox && <ChatBox chatData={chatData} setShowChatBox={setShowChatBox} messages={messages} setMessages={setMessages}/>}
     
    
         </div>

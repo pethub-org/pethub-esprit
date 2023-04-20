@@ -2,6 +2,7 @@ const User = require("../models/UserSchema");
 const FriendRequest = require("../models/FriendRequestSchema");
 const { createConversationService } = require("../services/conversation.service");
 const { createNotificationService } = require("../services/notification.service");
+const Conversation = require("../models/ConversationSchema");
 
 const sendFriendRequestService = async ({ senderId, recieverId, status }) => {
     // TODO: Promise.all for better performance
@@ -47,7 +48,11 @@ const accept = async (friendRequestId) => {
     }, { new: true }).exec();
     // TODO: create notification reciever accepted sender
     // TODO: create conversation 
-    // createNotificationService({ type: 'invitation', sender })
+    console.log({ recieverUser })
+    const c = await createConversationService(recieverUser._id, senderUser._id);
+    console.log({ c })
+    const notif = await createNotificationService({ type: 'invitation', sender: senderUser._id, receiver: recieverUser._id, content: `${recieverUser.firstname} accepted the friend request` })
+    console.log({ notif })
     return fr;
 }
 

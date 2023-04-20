@@ -14,7 +14,7 @@ const Posts = () => {
       img: "https://t2.ea.ltmcdn.com/fr/posts/0/1/8/comment_etre_un_bon_maitre_pour_son_chien_1810_orig.jpg",
     },
     {
-      id: 2,
+      id: 4,
       name: "John Doe",
       userId: 2,
       profilePic:
@@ -32,7 +32,7 @@ const Posts = () => {
       img: "https://t2.ea.ltmcdn.com/fr/posts/0/1/8/comment_etre_un_bon_maitre_pour_son_chien_1810_orig.jpg",
     },
     {
-      id: 2,
+      id: 5,
       name: "Jane Doe",
       userId: 2,
       profilePic:

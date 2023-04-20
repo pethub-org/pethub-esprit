@@ -19,7 +19,7 @@ import Dropdown from "./dropdown";
 import MessageDropdown from "../messages/MessageDropdown";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
-
+import FriendRequests from './FriendRequests';
 
 
 const Navbar = () => {
@@ -73,13 +73,18 @@ const Navbar = () => {
           justifyContent: 'center',
           
         }}>
-          <div style={{marginRight:'20px'}}>
-             <Dropdown/>
-          </div>
-          {/* <div style={{marginRight:'20px'}}> */}
-             <MessageDropdown/>
-          {/* </div> */}
-          {/* <Notification/> */}
+          <div>
+                <Dropdown/>
+         </div>
+      
+          <div>
+              <MessageDropdown />
+        </div>
+          
+          <div>
+             <FriendRequests/>
+         </div>
+     
      
        </div>
 

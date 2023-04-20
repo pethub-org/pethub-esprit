@@ -13,6 +13,7 @@ const getUserConversationService = async (userId) => {
     return conversation;
 }
 const getTwoUsersConversationService = async (firstUserId, secondUserId) => {
+    console.log({ firstUserId }, { secondUserId })
     const conversation = await Conversation.findOne({
         members: { $all: [firstUserId, secondUserId] },
     });

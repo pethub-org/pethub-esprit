@@ -1,5 +1,5 @@
 import React from 'react'
-
+import defaultUserImage from '../../assets/defaultUser.png'
 const UserMessage = ({logo,message}) => {
   return (
         <>
@@ -10,7 +10,7 @@ const UserMessage = ({logo,message}) => {
           justifyContent: 'flex-start',
                   margin:'16px'
                 }}>
-                    <img src={logo} alt="" className='w-9 rounded-md mr-2' style={{width:'18px', borderRadius:'25%' , marginRight:'4px'}} />
+                    <img src={logo ? logo :defaultUserImage} alt="" className='w-9 rounded-md mr-2' style={{width:'18px', borderRadius:'25%' , marginRight:'4px'}} />
           <p className='h-max w-max p-2 rounded-md bg-slate-500 text-white' style={{
                       height:'max-content',
             width: 'max-content',
