@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8080
 
 const errorHandler = require("./middlewares/error.middleware");
 
-const userModel = require("./models/UserSchema")
+// const userModel = require("./models/UserSchema")
 
 const userRouter = require("./routes/user.routes");
 const authRouter = require("./routes/auth.routes");
@@ -62,15 +62,16 @@ app.use('/messages', messagesRouter);
 // anis
 app.use("/api/posts", postRoute);
 app.use("/api/comments", commentRoute);
-app.use("/api/users/:id", async (req, res) => {
-    try {
-        const user = await userModel.findById(req.params.id)
-        res.status(200).json(user)
-    }
-    catch (err) {
-        return res.status(500).json(err)
-    }
-});
+
+// app.use("/api/users/:id", async (req, res) => {
+//     try {
+//         const user = await userModel.findById(req.params.id)
+//         res.status(200).json(user)
+//     }
+//     catch (err) {
+//         return res.status(500).json(err)
+//     }
+// });
 
 
 // daly
