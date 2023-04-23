@@ -4,7 +4,7 @@ import "./login.scss";
 import Logo from '../../assets/logo.png'
 import useAuth from "../../hooks/useAuth";
 import axios from '../../api/axios';
-
+import useSocket from "../../hooks/useSocket";
 
 const Login = () => {
   const { auth, setAuth } = useAuth();
@@ -12,19 +12,24 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { socket } = useSocket();
 
 
   
 const loginService = async({email,password}) => {
   const res = await axios.post('/auth/login', { email, password })
+  socket.connect();
+  socket.emit('addUser',res.data._id)
+
   setAuth(res.data)
-  return res.data.role;
+  return res.data;
 }
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const role = await loginService({ email, password });
+      const res = await loginService({ email, password });
+      const role = res.role;
       if (role === 'admin') {
         navigate('/admin')
       } else {

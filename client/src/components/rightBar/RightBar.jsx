@@ -34,7 +34,7 @@ const RightBar = () => {
   useEffect(() => {
     axiosPrivate.get(`/messages/conversation/${chatData.conversationId}`).then(response => {
       setMessages(response.data)
-      console.log("messages ",{response})
+      // console.log("messages ",{response})
     })
     
   }, [chatData])
@@ -56,7 +56,7 @@ const RightBar = () => {
           <span>Friends</span>
             {friendList?.length > 0 ? friendList : <p style={{color:'white'}}>You dont have friends yet</p>}
             {/* {auth?.friendList?.lenght > 0 ? friends : <p style={{color:'white'}}>You dont have friends yet</p>} */}
-          {showChatBox && <ChatBox chatData={chatData} setShowChatBox={setShowChatBox} messages={messages} setMessages={setMessages}/>}
+          {showChatBox && <ChatBox chatData={chatData} conversations={conversations} setShowChatBox={setShowChatBox} messages={messages} setMessages={setMessages} />}
     
    
         </div>

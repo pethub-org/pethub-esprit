@@ -20,6 +20,7 @@ import MessageDropdown from "../messages/MessageDropdown";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 import FriendRequests from './FriendRequests';
+import useSocket from "../../hooks/useSocket";
 
 
 const Navbar = () => {
@@ -27,11 +28,13 @@ const Navbar = () => {
   const { auth ,setAuth} = useAuth();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
+  const { socket } = useSocket();
 
 
   const logout = async (e) => {
     e.preventDefault();
     await axios.post('http://localhost:8080/auth/logout', {});
+    socket.disconnect();
     setAuth({})
     localStorage.removeItem('user');
     navigate('/login')
@@ -78,7 +81,7 @@ const Navbar = () => {
          </div>
       
           <div>
-              <MessageDropdown />
+              {/* <MessageDropdown /> */}
         </div>
           
           <div>

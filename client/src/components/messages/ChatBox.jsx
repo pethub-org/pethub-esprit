@@ -7,14 +7,15 @@ import styles from './chatbox.module.css'
 import defaultImg from '../../assets/defaultUser.png' 
 import useAuth from '../../hooks/useAuth'
 import { axiosPrivate } from '../../api/axios'
+import useSocket from '../../hooks/useSocket'
 
-const ChatBox = ({ chatData, setShowChatBox,messages,setMessages }) => {
+const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }) => {
     
     const [message, setMessage] = useState('');
     // const [messages, setMessages] = useState([])
-    const [conversationId, setCOnversationId] = useState();
+    const [conversation,setConversation] = useState();
     const { auth } = useAuth();
-
+    const { socket } = useSocket();
  
     // useEffect(() => {
     //     const fetchCurrentConversation = async () => {
@@ -29,7 +30,11 @@ const ChatBox = ({ chatData, setShowChatBox,messages,setMessages }) => {
     //         setMessage(response.data)
     //     })
     // }, [])
-    
+
+
+    // useEffect(() => {
+    //     axiosPrivate.get(`/messages/conversation/${chatData.conversationId}`)
+    // },[])
 
     const handleSendMessage = (e) => {
         e.preventDefault();
@@ -40,7 +45,9 @@ const ChatBox = ({ chatData, setShowChatBox,messages,setMessages }) => {
             conversationId:chatData.conversationId,
             text:message
         }).then(response => {
-            setMessages(prev => [...prev,response.data])
+            setMessages(prev => [...prev, response.data])
+            // 
+            socket.emit('sendMessage',{senderId:auth._id,text:message})
         })
     }
     return (
@@ -49,7 +56,7 @@ const ChatBox = ({ chatData, setShowChatBox,messages,setMessages }) => {
 
                 {/* header */}
                 <div className={styles.header}>
-                    <img src={chatData.photos.length <1 ? defaultImg : chatData.photos[0].url} alt="profile picture" className={styles.img} />
+                    <img src={chatData?.photos?.length <1 ? defaultImg : chatData?.photos[0]?.url} alt="profile picture" className={styles.img} />
                     <p>{chatData.firstname} {' '} {chatData.lastname}</p>
                     <div style={{cursor:'pointer'}} onClick={() => setShowChatBox(prev => !prev)}>X</div>
                 </div>
