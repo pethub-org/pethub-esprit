@@ -22,7 +22,9 @@ const Post = ({ post, setPosts }) => {
   console.log({post})
   const [like,setLike] = useState(post?.likes?.length)
   const [com,setComm] = useState(post?.comments?.length)
+  const [share,setShare] = useState(post.shares.length)
   const [user,setUser] = useState({})
+
   const [islike,setIsLike] = useState(false)
   // const {user:currentUser} = useContext(AuthContext)
   const {auth:currentUser} = useAuth()
@@ -184,7 +186,7 @@ const Post = ({ post, setPosts }) => {
            
         <div className="item" onClick={shareHandler}>
           <ReplyAllOutlinedIcon/>
-          Share
+          {share} Share
         </div> 
       </div>
        {commentOpen && <Comments postId={post._id} />}

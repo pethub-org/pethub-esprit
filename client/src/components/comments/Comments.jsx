@@ -5,6 +5,8 @@ import { format } from 'timeago.js'
 // import { AuthContext } from '../../context/AuthContext';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import QuickreplyOutlinedIcon from '@mui/icons-material/QuickreplyOutlined';
+
 import SendIcon from '@mui/icons-material/Send';
 import useAuth from '../../hooks/useAuth';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -13,7 +15,7 @@ function Comments({ postId }) {
   const [newComment, setNewComment] = useState('');
   const [editingComment, setEditingComment] = useState(null);
   const [updatedComment, setUpdatedComment] = useState('');
-
+  const [showReplies, setShowReplies] = useState({});
   // const { user: currentUser } = useContext(AuthContext)
   const { auth: currentUser } = useAuth()
   const axios = useAxiosPrivate();
@@ -78,6 +80,13 @@ function Comments({ postId }) {
       console.error(error);
     }
   }
+    //show replies
+    function toggleReplies(commentId) {
+      setShowReplies((prevShowReplies) => ({
+        ...prevShowReplies,
+        [commentId]: !prevShowReplies[commentId],
+      }));
+    }
 
   return (
     <div className='form-container'>
@@ -127,6 +136,7 @@ function Comments({ postId }) {
                 </>
               )}
             </div>
+            <button onClick={() => toggleReplies(comment._id)} style={{ fontSize: "10px" }}><QuickreplyOutlinedIcon /></button>
             <span className='date'>{format(comment.createdAt)}</span>
             <button onClick={() => handleEdit(comment)} style={{ fontSize: "15px" }}><ModeEditOutlineOutlinedIcon /></button>
             <button onClick={() => handleDelete(comment._id)} style={{ fontSize: "10px" }}><DeleteOutlineOutlinedIcon /></button>
