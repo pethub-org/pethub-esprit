@@ -41,7 +41,7 @@ function ProductDetail() {
       try {
         const result = await axios.get("/api/products/" + _id);
         setProd(result.data);
-      } catch { }
+      } catch {}
     };
     getProduct();
   }, [_id]);
@@ -49,11 +49,9 @@ function ProductDetail() {
   useEffect(() => {
     const getReview = async () => {
       try {
-        const result = await axios.get(
-          "/api/reviews/" + _id
-        );
+        const result = await axios.get("/api/reviews/" + _id);
         setreview(result.data);
-      } catch { }
+      } catch {}
     };
     getReview();
   }, [_id]);
@@ -124,9 +122,9 @@ function ProductDetail() {
         </Col>
       </Row> */
     <div class="row f-flex justify-content-around">
-      <div class="col-12 col-lg-5 img-fluid" id="product_image">
+      {/* <div class="col-12 col-lg-5 img-fluid" id="product_image">
         <img src={prod?.image} height="500" width="500" />
-      </div>
+      </div> */}
       <div class="col-12 col-lg-5 mt-5">
         <h4 class="mt-2">Name:</h4>
         <h3>{prod?.name}</h3>
@@ -141,9 +139,9 @@ function ProductDetail() {
         <h4 class="mt-2"> Review:</h4>
 
         {review?.map((review) => (
-          <p>
-            <h1>{review?.description}</h1>
-          </p>
+          <div className="card">
+            <div className="text-display">{review?.description}</div>
+          </div>
         ))}
 
         <div class="row mt-2 mb-5">

@@ -7,11 +7,24 @@ import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import ReplyAllOutlinedIcon from "@mui/icons-material/ReplyAllOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SaveIcon from "@mui/icons-material/Save";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+
 function Product(props) {
   const location = useLocation();
 
   const _id = location.pathname.split("/")[2];
+  const axios = useAxiosPrivate();
   const { product } = props;
+  //delete
+  async function handleDelete(productid) {
+    try {
+      const response = await axios.delete(`/api/products/${productid}`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     // <Card key={_id}>
     //   <Link to={"/product/" + product._id}>
@@ -39,22 +52,28 @@ function Product(props) {
     //     <Button variant="primary">add to wishlist</Button>
     //   </Card.Body>
     // </Card>
-    <Link to={"/market/" + product._id}>
-      <div className="market">
-        <div className="container">
-          <div className="content">
-            <img src={product.image} alt="" />
-          </div>
+
+    <div className="market">
+      <div className="container">
+        <div className="content">
+          <img src={""} alt="" />
+        </div>
+        <Link to={"/market/" + product._id}>
           <p>{product.name}</p>
-          <div className="info">
-            <div className="item">
-              <ReplyAllOutlinedIcon />
-              Share
-            </div>
+        </Link>
+        <div className="info" style={{ gap: 120 }}>
+          <div className="item">
+            <button onClick={() => handleDelete(product._id)}>
+              {" "}
+              <DeleteIcon />
+            </button>
+          </div>
+          <div className="item">
+            <SaveIcon />
           </div>
         </div>
       </div>
-    </Link>
+    </div>
 
     ///////////////////////////////////////////////////////
     // <div className="card">

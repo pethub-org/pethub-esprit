@@ -44,7 +44,7 @@ const ProductList = () => {
     <div>
       <div>
         <select
-          styele={{}}
+          className="categoriehome"
           value={selectedCategory}
           onChange={handleCategoryChange}
         >
@@ -57,14 +57,13 @@ const ProductList = () => {
         </select>
       </div>
       <div>
-        <Form>
-          <InputGroup className="my-3">
-            <Form.Control
-              placeholder="Search Products"
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </InputGroup>
-        </Form>
+        <form>
+          <input
+            className="search"
+            placeholder="Search Products"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </form>
       </div>
       <div className="marktes">
         {products
