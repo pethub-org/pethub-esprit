@@ -109,11 +109,13 @@ const Post = ({ post, setPosts }) => {
     }
   };
 
+
   //share post 
   const shareHandler = async () => {
     try {
       await axios.post(`/api/posts/${post._id}/share`, { userId: currentUser._id });
       alert('Post shared!');
+      //window.location.reload();
     } catch (err) {
       console.log(err);
       alert('Failed to share post!');
@@ -171,8 +173,8 @@ const Post = ({ post, setPosts }) => {
     
       <div className="info">
         <div className="item" >
-           {onclick={likeHandler} ? <FavoriteOutlinedIcon onClick={ likeHandler} /> :<FavoriteBorderOutlinedIcon onClick={ likeHandler}/>}
-           {like} Likes
+        {islike ? <FavoriteOutlinedIcon onClick={likeHandler} /> : <FavoriteBorderOutlinedIcon onClick={likeHandler} />}
+    {like} Likes
            
         </div>
         <div className="item" onClick={()=>setCommentOpen(!commentOpen)}>

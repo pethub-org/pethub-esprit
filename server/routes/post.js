@@ -121,20 +121,21 @@ router.get("/profile/:username", async (req, res) => {
     res.status(500).json(err);
   }
 });
-// share post 
+// Share post
 router.post("/:id/share", async (req, res) => {
   try {
+    
     const post = await postModel.findById(req.params.id);
-    if (!Array.isArray(post.shares)) {
-      post.shares = [req.body.userId];
-    } else {
-      post.shares.push(req.body.userId);
-    }
-    const updatedPost = await post.save();
-    console.log(updatedPost);
+    const updatedPost = await postModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: { shares: req.body.userId },
+      },
+      { new: true }
+    );
+
     res.status(200).json(updatedPost);
   } catch (err) {
-    console.log(err.message);
     res.status(500).json(err);
   }
 });
