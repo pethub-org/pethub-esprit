@@ -78,7 +78,7 @@ const Navbar = () => {
          </div>
       
           <div>
-              <MessageDropdown />
+              {/* <MessageDropdown /> */}
         </div>
           
           <div>
