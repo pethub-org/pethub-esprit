@@ -1,7 +1,8 @@
 const router = require('express').Router();
+const authenticationMiddleware = require('../middlewares/auth.middleware');
 const postModel = require('../models/Post');
 const userModel = require('../models/UserSchema');
-
+const { createNotificationService } = require("../services/notification.service")
 // create post 
 router.post("/create", async (req, res) => {
   const newPost = new postModel(req.body)
@@ -14,6 +15,16 @@ router.post("/create", async (req, res) => {
   }
 
 })
+
+// all post 
+router.get("/timeline/all", async (req, res) => {
+  try {
+    const posts = await postModel.find({});
+    return res.status(200).json(posts)
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 
 // update post 
@@ -67,6 +78,7 @@ router.put("/:id/like", async (req, res) => {
     const post = await postModel.findById(req.params.id);
     if (!post.likes.includes(req.body.userId)) {
       await post.updateOne({ $push: { likes: req.body.userId } })
+      await createNotificationService({ type: 'like', sender: userId, receiver: post.userId, content: 'Your post has been liked' })
       res.status(200).json("the post has been liked")
     }
     else {
@@ -124,7 +136,7 @@ router.get("/profile/:username", async (req, res) => {
 // Share post
 router.post("/:id/share", async (req, res) => {
   try {
-    
+
     const post = await postModel.findById(req.params.id);
     const updatedPost = await postModel.findByIdAndUpdate(
       req.params.id,
