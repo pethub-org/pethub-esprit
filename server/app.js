@@ -39,6 +39,8 @@ app.use(cookieParser());
 
 // Middlewares
 app.use('/static', express.static(path.join(__dirname, 'uploads')))
+app.use("/uploads", express.static("uploads"));
+
 
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 

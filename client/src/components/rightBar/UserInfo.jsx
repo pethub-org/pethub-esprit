@@ -27,7 +27,7 @@ const UserInfo = ({ setShowChatBox, userInfo, setChatData,setMessages,conversati
  
 
   return (
-    <div className={styles.user} onClick={() => {
+    <div style={{marginTop:'8px'}} className={styles.user} onClick={() => {
     const conversation =conversations.find(el => el.members.find(id => id === userInfo._id))
       console.log({ conversation })
       

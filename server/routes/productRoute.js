@@ -50,7 +50,7 @@ route.post("/", upload.single("image"), async (req, res) => {
   console.log("request", req.file);
   const product = new Product({
     name: req.body.name,
-    image: req.file.path,
+    // image: req?.file?.path, 
     category: req.body.category,
     description: req.body.description,
     price: req.body.price,
