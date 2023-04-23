@@ -1,8 +1,7 @@
-import express from "express";
-import Product from "../models/produtModel.js";
-import Review from "../models/reviewModel.js";
-const route = express.Router();
-import multer from "multer";
+const Review = require("../models/reviewModel");
+const Product = require("../models/produtModel");
+const route = require("express").Router();
+const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads/");
@@ -14,9 +13,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  // limits: {
-  //   fileSize: 100 * 180,
-  // },
+  
 });
 route.get("/", async (req, res) => {
   try {
@@ -51,7 +48,7 @@ route.post("/", upload.single("image"), async (req, res) => {
   console.log("request", req.file);
   const product = new Product({
     name: req.body.name,
-    image: req.file.path,
+    // image: req.file.path,
     category: req.body.category,
     description: req.body.description,
     price: req.body.price,
@@ -144,4 +141,4 @@ route.get("/search", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-export default route;
+module.exports = route;

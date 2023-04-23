@@ -1,6 +1,5 @@
-import express from "express";
-import Category from "../models/categoryModel.js";
-const catroute = express.Router();
+const Category = require('../models/categoryModel');
+const catroute = require('express').Router();
 
 catroute.get("/", async (req, res) => {
   try {
@@ -49,4 +48,4 @@ catroute.delete("/:id", async (req, res) => {
     res.send("Error" + err);
   }
 });
-export default catroute;
+module.exports = catroute;

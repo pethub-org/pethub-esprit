@@ -1,31 +1,62 @@
-import "./register.scss"
-import {Link} from 'react-router-dom'
-
+import { Link } from "react-router-dom";
+import "./register.scss";
+import { useState } from "react";
+import axios from "../../api/axios";
 const Register = () => {
+  const [email,setEmail] = useState('')
+  const [firstname,setFirstname] = useState('')
+  const [lastname,setLastname] = useState('')
+  const [password,setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess(false);
+
+    try {
+      const response = await axios.post(`/users`, { email, firstname, lastname, password, confirmPassword })
+      console.log("sucess => ", { response })
+      if (response.status === 201) {
+        setSuccess(true)
+      }
+    } catch (error) {
+      console.log({error})
+      setError(error.response.data.message || error.response.data.error[0]);
+    }
+    
+  }
+
   return (
     <div className="register">
       <div className="card">
         <div className="left">
-         <h1>Hello World</h1>
-         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus repudiandae praesentium illum cum, fugit corrupti? Debitis dicta, cumque quasi porro asperiores sint aliquid labore dolorem quo quis ea dolore nam!</p>
-          <span> Do you have an account ?</span>
+          <h1>PetHub</h1>
+          <h2>With PetHub, share and stay in touch with those around you.</h2>
+          <span>Do you have an account?</span>
           <Link to="/login">
-          <button> Login</button>
+          <button>Login</button>
           </Link>
         </div>
         <div className="right">
           <h1>Register</h1>
           <form>
-            <input type="text" placeholder="Username" />
-            <input type="email" placeholder="Email" />
-            <input type="text" placeholder="Password" />
-            <input type="text" placeholder="Name" />
-            <button>Register</button>
+            <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+            <input type="text" placeholder="Firstname" onChange={(e) => setFirstname(e.target.value)} />
+            <input type="text" placeholder="Lastname" onChange={(e) => setLastname(e.target.value)} />
+            <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+            <input type="password" placeholder="Confirm Password"  onChange={(e) => setConfirmPassword(e.target.value)}/>
+            {error && <p className="error"> {error}</p>}
+            {success && <p>Please confirm the registration by checking your email !</p>}
+            <button onClick={handleRegister}>Register</button>
+            <Link to="/reset-password">Forgot Password?</Link>
           </form>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

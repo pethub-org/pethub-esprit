@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema(
   {
@@ -7,10 +7,10 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
 
-    image: {
-      type: String,
-      required: true,
-    },
+    // image: {
+    //   type: String,
+    //   required: true,
+    // },
     category: {
       type: String,
       required: true,
@@ -28,9 +28,5 @@ const productSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-productSchema.index({
-  name: "text",
-  description: "text",
-});
-const Product = mongoose.model("Product", productSchema);
-export default Product;
+
+module.exports = mongoose.model("Product", productSchema);

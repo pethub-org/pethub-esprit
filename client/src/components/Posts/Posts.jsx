@@ -1,33 +1,31 @@
-import './Posts.scss'
-import Post from '../Post/Post'
-const Posts = () => {
-    const posts =[
-        {
-            id:1,
-            name: "Anis Ammar",
-            userId:1,
-            profilePic:"https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg",
-            desc:"Bonjour ",
-            img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYSHp3iN_lCGZvt9-D_O793_NEJzVlQ1Bi9WPempwBtxX-QTF06k6JJIV_1MlQmSBNIsw&usqp=CAU"
-        },
-        {
-            id:2,
-            name: "Anis Ammar",
-            userId:2,
-            profilePic:"https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg",
-            desc:"Bonjour ",
-            img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYSHp3iN_lCGZvt9-D_O793_NEJzVlQ1Bi9WPempwBtxX-QTF06k6JJIV_1MlQmSBNIsw&usqp=CAU"
+import './posts.scss'
+import post from '../post/Post'
 
-        }
+import { useContext, useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { AuthContext } from '../../context/AuthContext';
+import Comments from '../comments/Comments';
+import useAuth from '../../hooks/useAuth';
+import Post from '../post/Post';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-    ]
+const Posts = ({username,setPosts,posts}) => {
+
+  const { auth: user } = useAuth()
+  const axios = useAxiosPrivate();
+    
+
+    
   return (
-    <div className='posts'>
-        {posts.map(post=>(
-            <Post post={post} key={post.id}/>
-        ))}
-    </div>
-  )
-}
+    <div>
+    {posts?.length > 0 ? (
+      posts.map((post) => <Post key={post._id} post={post} setPosts={setPosts} />)
+    ) : (
+      <p style={{fontSize:"25px" , textAlign:"center"}}>No posts to display.</p>
+    )}
+  </div>
+);
+    }
 
+ 
 export default Posts

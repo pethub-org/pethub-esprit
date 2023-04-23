@@ -1,6 +1,5 @@
-import express from "express";
-import Review from "../models/reviewModel.js";
-const route = express.Router();
+const Review = require("../models/reviewModel");
+const route = require("express").Router();
 
 route.post("/:id", async (req, res) => {
   const id = req.params.id;
@@ -36,4 +35,4 @@ route.get("/", async (req, res) => {
     res.send("Error" + err);
   }
 });
-export default route;
+module.exports= route;
