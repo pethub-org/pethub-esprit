@@ -6,6 +6,7 @@ import { format } from 'timeago.js'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import QuickreplyOutlinedIcon from '@mui/icons-material/QuickreplyOutlined';
+import Reply from './Reply';
 
 import SendIcon from '@mui/icons-material/Send';
 import useAuth from '../../hooks/useAuth';
@@ -140,7 +141,7 @@ function Comments({ postId }) {
             <span className='date'>{format(comment.createdAt)}</span>
             <button onClick={() => handleEdit(comment)} style={{ fontSize: "15px" }}><ModeEditOutlineOutlinedIcon /></button>
             <button onClick={() => handleDelete(comment._id)} style={{ fontSize: "10px" }}><DeleteOutlineOutlinedIcon /></button>
-
+            {showReplies[comment._id] && <Reply commentId={comment._id} />}
           </div>
 
 
