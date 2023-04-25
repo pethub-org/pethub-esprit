@@ -1,11 +1,12 @@
 import React from 'react';
 import { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import useAuth from '../../hooks/useAuth';
 import { format } from 'timeago.js';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import SendIcon from '@mui/icons-material/Send';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 function Reply({ commentId }) {
   const [replies, setReplies] = useState([]);
@@ -14,11 +15,12 @@ function Reply({ commentId }) {
   const [updatedReply, setUpdatedReply] = useState('');
 
   const { auth: currentUser } = useAuth()
+  const axios = useAxiosPrivate();
 
   useEffect(() => {
     async function fetchReplies() {
       try {
-        const response = await axios.get(`/comments/${commentId}/replies/all`);
+        const response = await axios.get(`/api/comments/${commentId}/replies/all`);
         setReplies(response.data);
       } catch (error) {
         console.error(error);
@@ -98,9 +100,9 @@ function Reply({ commentId }) {
       <ul>
         {replies.map((reply) => (
           <div className="comment" key={reply._id}>
-            <img src={currentUser.profilePicture} alt="User" className="user-image" />
+            <img src={currentUser?.profilePicture} alt="User" className="user-image" />
             <div className="info">
-              <span>{currentUser.username}</span>
+              <span>{currentUser?.firstname} {' '} {currentUser?.lastname}</span>
               {editingReply === reply._id ? (
                 <>
                   <textarea

@@ -56,7 +56,7 @@ const Profile = () => {
     //     },
     // );
     // setProfilePic(response.data.photos[0]);
-      const response = await axiosPrivate.post(`/users/update/photos/${auth._id}`, { image }, { headers: { "Content-Type": 'multipart/form-data' } })
+      const response = await axiosPrivate.post(`/users/update/photos/${auth._id}`, { image,isMain:true }, { headers: { "Content-Type": 'multipart/form-data' } })
     setProfilePic(response.data.photos[0]);
       
     } catch (error) {
@@ -280,7 +280,7 @@ const Profile = () => {
           }}> 
             <input className="form-control" type="file" name="image" id="formFile" style={{ backgroundColor: '#222', border: 'none', borderRadius: '15px', marginBottom: '16px' }} onChange={handleSelectFile}/>
             <div>
-              <button className="btn btn-primary" onClick={uploadPicture}>Uploade</button>
+              <button className="btn btn-primary" onClick={uploadPicture}>Upload</button>
             </div>
         </div> 
         }

@@ -38,7 +38,8 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
 
     const handleSendMessage = (e) => {
         e.preventDefault();
-        console.log({ message })
+        if (e.key === 'Enter') {
+              console.log({ message })
         console.log({ chatData})
         axiosPrivate.post(`/messages`, {
             sender: auth._id,
@@ -49,6 +50,8 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
             // 
             socket.emit('sendMessage',{senderId:auth._id,text:message})
         })
+        }
+      
     }
     return (
         <div className={styles.relative}>
@@ -77,15 +80,16 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
                      <div className={styles.footer}>
                     <div className={styles.footerContent} >
 
-                        <input type="text" placeholder='Type here'
+                            <input type="text" placeholder='Type here'
+                                style={{marginTop:'16px'}}
                             className={styles.footerInput}
                             value={message}
-                            onChange={(e) => setMessage(e.target.value)} />
-
-                        <button className={styles.footerButton} onClick={handleSendMessage}>
-                            send
-                            {/* <FontAwesomeIcon icon={faPaperPlane} className="rotate-45" /> */}
-                        </button>
+                                onChange={(e) => setMessage(e.target.value)} onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                        handleSendMessage(e)
+                                    }
+                                }} />
+                        
 
                     </div>
                 </div>

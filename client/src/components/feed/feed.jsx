@@ -12,6 +12,9 @@ import useAuth from '../../hooks/useAuth';
 import Video from '../Video/Video';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Posts from '../posts/Posts';
+import ProfilePicture from '../../assets/defaultUser.png';
+
+
 const Feed = ({posts,setPosts}) => {
 
   const desc = useRef()
@@ -53,11 +56,16 @@ const Feed = ({posts,setPosts}) => {
     <div className="share">
     <div className="shareWrapper">
       <div className="shareTop">
-        <img className="shareProfileImg" src={user?.profilePicture} alt={user?.firstname} />
+        <img className="shareProfileImg" src={ProfilePicture} alt={user?.firstname} />
         <input
           placeholder={"What's in your mind " + user?.firstname + ' ' +user?.lastname}
           className="shareInput"
-          ref={desc}
+              ref={desc}
+              style={{
+                padding: '15px',
+                borderRadius: '15px',
+                marginTop:'6px'
+              }}
         />
       </div>
       <hr />

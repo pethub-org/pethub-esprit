@@ -97,7 +97,7 @@ function FormScreen() {
       <form>
         <div className="field1">
           <label> add your product </label>
-          <input 
+          <input
             placeholder="Name"
             type="text"
             onChange={(e) => {

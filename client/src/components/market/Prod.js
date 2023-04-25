@@ -63,6 +63,10 @@ const ProductList = () => {
             placeholder="Search Products"
             onChange={(e) => setSearch(e.target.value)}
           />
+          <div className="item">
+            {/* <img src={Groups} alt="" /> */}
+            <span><Link to="/addprod">ADD PRODUCT</Link></span>
+          </div>
         </form>
       </div>
       <div className="marktes">
@@ -76,6 +80,8 @@ const ProductList = () => {
             <Product product={product} className="posts"></Product>
           ))}
       </div>
+
+
     </div>
   );
 };

@@ -14,9 +14,10 @@ const MyMessage = ({message}) => {
                   style={{
                       height:'max-content',
             width: 'max-content',
-            borderRadius: '25%',
-            backgroundColor: '#c3c3c3',
-                      color:'white'
+            // borderRadius: '25%',
+            backgroundColor: '#5271ff',
+                    color: 'white',
+                      padding:'10px'
                     }}>{message}</p>
                 </div>
             </div>

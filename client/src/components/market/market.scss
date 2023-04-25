@@ -253,7 +253,9 @@ textarea {
 
 button {
   padding: 5px 10px;
-  background-color: #007bff;
+  // background-color: #007bff;
+    background-color: transparent;
+
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -262,7 +264,7 @@ button {
 
   &:hover {
     cursor: pointer;
-    color: #5271ff;
+    // color: #5271ff;
     background-color: transparent;
     border: 2px;
   }

@@ -10,12 +10,13 @@ const UserMessage = ({logo,message}) => {
           justifyContent: 'flex-start',
                   margin:'16px'
                 }}>
-                    <img src={logo ? logo :defaultUserImage} alt="" className='w-9 rounded-md mr-2' style={{width:'18px', borderRadius:'25%' , marginRight:'4px'}} />
+                    <img src={logo ? logo :defaultUserImage} alt="" className='w-9 rounded-md mr-2' style={{width:'34px', borderRadius:'50%' , marginRight:'4px'}} />
           <p className='h-max w-max p-2 rounded-md bg-slate-500 text-white' style={{
                       height:'max-content',
             width: 'max-content',
-            borderRadius: '25%',
-            backgroundColor: '#c3c3c3',
+            // borderRadius: '25%',
+            backgroundColor: '#5271ff',
+            padding:'10px',
                       color:'white'
                     }}>{message}</p>
                 </div>

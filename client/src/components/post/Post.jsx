@@ -15,6 +15,7 @@ import { useContext, useEffect, useState } from 'react';
 import {format} from 'timeago.js'
 import useAuth from '../../hooks/useAuth';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import defaultUser from '../../assets/defaultUser.png';
 // import { AuthContext } from '../../context/AuthContext';
 
 
@@ -130,11 +131,11 @@ const Post = ({ post, setPosts }) => {
       <div className="user">
         <div className="userInfo">
         <Link to={`/profile/${post.userId}`}  style={{textDecoration:"none",color:"inherit"}}>
-           <img src={currentUser?.profilePicture } alt={currentUser.firstname} />
+           <img src={currentUser?.profilePicture ? "" : defaultUser } alt={currentUser.firstname} />
           </Link>
            <div className="details">
             <Link to={`/profile/${post.userId}`}  style={{textDecoration:"none",color:"inherit"}}>
-                <span className='name'>{currentUser.firstname }</span>
+                <span className='name' style={{color:'white'}}>{currentUser.firstname }</span>
                
             </Link>
             <span className='date'>{format(post.createdAt)}</span>

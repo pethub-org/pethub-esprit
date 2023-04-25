@@ -21,6 +21,8 @@ import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 import FriendRequests from './FriendRequests';
 import useSocket from "../../hooks/useSocket";
+import PeopleIcon from '@mui/icons-material/People';
+import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 
 
 const Navbar = () => {
@@ -76,26 +78,31 @@ const Navbar = () => {
           justifyContent: 'center',
           
         }}>
+          {/* <div> */}
+             
+          {/* </div> */}
           <div>
-                <Dropdown/>
-         </div>
+               <Dropdown/>
+          </div>
       
-          <div>
+          {/* <div> */}
               {/* <MessageDropdown /> */}
-        </div>
+        {/* </div> */}
           
-          <div>
+          {/* <div> */}
              <FriendRequests/>
-         </div>
+         {/* </div> */}
      
      
        </div>
 
+
+        {/* <Link  to={`/profile/${auth._id}`}>
+          <PersonOutlinedIcon />
+        </Link> */}
+        
         <FontAwesomeIcon icon={faDoorOpen} onClick={logout} style={{cursor:'pointer'}}/>
 
-        <Link  to={`/profile/${auth._id}`}>
-          <PersonOutlinedIcon />
-        </Link>
       
      
           {/* <div><NotificationsOutlinedIcon /></div> */}

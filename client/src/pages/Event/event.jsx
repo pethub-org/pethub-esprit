@@ -145,7 +145,7 @@ const createEventForm = <>
                 alignItems: 'center',
                 justifyContent:'center'
               }}>
-                <button className={style.button} onClick={handleCreateEvent}>Create</button>
+                <button className={style.shareButton}  onClick={handleCreateEvent}>Create</button>
               </div>
             </div>
           </form>

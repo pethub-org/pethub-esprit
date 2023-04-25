@@ -14,8 +14,8 @@ import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
 import {Link, useNavigate} from 'react-router-dom'
 import useAuth from "../../hooks/useAuth";
-import defaultUser from '../../assets/defaultUser.png'
 
+import ProfilePicture from '../../assets/defaultUser.png';
 
 const LeftBar = () => {
 
@@ -34,7 +34,7 @@ const LeftBar = () => {
           <div className="user">
             <img
               // src={auth?.photos[0] ? auth?.photos[0] : defaultUser }
-              src=""
+              src={ ProfilePicture}
               alt={auth?.firstname}
             />
             <span>{auth?.firstname}</span>
@@ -43,10 +43,10 @@ const LeftBar = () => {
             <img src={Friends} alt="" />
             <span>Friends</span>
           </div>
-          <div className="item">
+          {/* <div className="item">
             <img src={Groups} alt="" />
             <span><Link to="/addprod">ADD PRODUCT</Link></span>
-          </div>
+          </div> */}
           <div className="item">
             <img src={Market} alt="" />
             <span><Link to="/market">Marketplace</Link></span>

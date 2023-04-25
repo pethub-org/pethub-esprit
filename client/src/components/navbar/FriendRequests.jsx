@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth';
 import { axiosPrivate } from '../../api/axios';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-
+import PeopleIcon from '@mui/icons-material/People';
 const FriendRequests = () => {
   const { auth } = useAuth();
   const [showFriendRequests, setShowFriendRequests] = useState(false);
@@ -15,14 +15,14 @@ const FriendRequests = () => {
   // },[])
   return (
     <>
-      <button onClick={() => {
+      <div style={{marginLeft:'20px'}} onClick={() => {
         setShowFriendRequests(prev => !prev)
           axiosPrivate.get('/users/friend-requests',{headers:{Authorization:`Bearer ${auth.token}`}}).then(response => {
           setFriendRequests(response.data)
     })
-      }} >Friend Requests</button>
+      }} ><PeopleIcon/></div>
       <div>
-        { showFriendRequests && !friendRequests.length && <div style={{position:'fixed',top:'20',width:'250px',backgroundColor:'#c3c3c3',padding:'20px'}}>No Friends Requests</div>}
+        { showFriendRequests && !friendRequests.length && <div style={{position:'fixed',top:'20',width:'250px',backgroundColor:'#c3c3c3',padding:'20px',marginRight:'20px'}}>No Friends Requests</div>}
         {showFriendRequests && friendRequests.length> 0 &&friendRequests?.map(friendRequest => <FriendRequest friendRequest={friendRequest} key={friendRequest._id}/> )}
       </div>
     </>

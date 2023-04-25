@@ -7,6 +7,8 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import NotificationList from './NotificationList';
 import styles from './notifcations.module.css';
 
+import PeopleIcon from '@mui/icons-material/People';
+import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 
 const Dropdown = () => {
   const [notifications, setNotifications] = useState([]);
@@ -40,12 +42,12 @@ const Dropdown = () => {
     
     // TODO : on click on the button fetch user notifcations
   return (
-    <div>
-      <button onClick={async() => {
+    <div> 
+      <div onClick={async() => {
         await getUserNotifcations();
         setShowNotifcations(prev => !prev)
      }}>
-      Notifications
+      <CircleNotificationsIcon />
           {/* <FormControl fullWidth style={{
           color: 'white',
           
@@ -72,7 +74,7 @@ const Dropdown = () => {
             {/* {notifs}
           </Select>
         </FormControl> */}
-      </button>
+      </div>
       {showNotifcations && <NotificationList notifications={notifications} setNotifications={setNotifications}/>}
     </div>
    

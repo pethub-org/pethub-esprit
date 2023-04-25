@@ -6,6 +6,7 @@ import ChatBox from "../messages/ChatBox";
 import useAuthContext from "../../hooks/useAuth";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import ProfilePicture from '../../assets/defaultUser.png';
 
 
 const RightBar = () => {
