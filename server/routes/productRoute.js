@@ -3,7 +3,7 @@ const Product = require("../models/produtModel");
 const route = require("express").Router();
 const multer = require("multer");
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: (req, file, cb) => {
     cb(null, "./uploads/");
   },
   filename: function (req, file, cb) {
@@ -13,7 +13,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  
 });
 route.get("/", async (req, res) => {
   try {
@@ -48,7 +47,7 @@ route.post("/", upload.single("image"), async (req, res) => {
   console.log("request", req.file);
   const product = new Product({
     name: req.body.name,
-    // image: req.file.path,
+    image: req.file.path,
     category: req.body.category,
     description: req.body.description,
     price: req.body.price,
@@ -95,50 +94,4 @@ route.delete("/:id", async (req, res) => {
   }
 });
 
-route.post("/reviewpost/:product_id", async (req, res) => {
-  const id = req.params.id;
-  const review = new Review({
-    product_id: id,
-    description: req.body.description,
-  });
-  try {
-    const r1 = await review.save();
-    res.json(r1);
-  } catch (err) {
-    res.send("Error");
-  }
-});
-route.get("/review/:product_id", async (req, res) => {
-  try {
-    const review = await Review.find({
-      product_id: req.params.product_id,
-    });
-
-    res.json(review);
-    console.log(review);
-  } catch (err) {
-    res.send("Error" + err);
-    console.log(err);
-  }
-});
-route.get("/review/", async (req, res) => {
-  try {
-    const review = await Review.find();
-    res.json(review);
-    console.log(review);
-  } catch (err) {
-    res.send("Error" + err);
-    console.log(err);
-  }
-});
-route.get("/search", async (req, res) => {
-  const name = req.query.name;
-  try {
-    const results = await Product.find({ $text: { $search: name } });
-    res.json(results);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
 module.exports = route;

@@ -4,7 +4,6 @@ const connectDB = require("./configs/db.config");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const helmet = require("helmet");
 const { createServer } = require("http");
 require("dotenv").config();
 const PORT = process.env.PORT || 8080;

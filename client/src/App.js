@@ -15,17 +15,17 @@ import "./style.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import Admin from "./pages/admin/Admin";
-import EditProfile from './pages/admin/EditProfile';
-import ConfirmAccount from './pages/admin/ConfirmAccount';
+import EditProfile from "./pages/admin/EditProfile";
+import ConfirmAccount from "./pages/admin/ConfirmAccount";
 import ResetPassword from "./pages/reset-psasword/ResetPassword";
 import ResetPasswordForm from "./pages/reset-password-form/ResetPasswordForm";
 import Event from "./pages/Event/event";
 import EditEvent from "./pages/Event/EditEvent";
 import SearchPage from "./pages/search/SearchPage";
-import useAuth from './hooks/useAuth'
-import ProductList from "./components/market/Prod";
+import useAuth from "./hooks/useAuth";
 import ProductDetail from "./components/market/ProductDetail";
 import FormScreen from "./components/market/Formscreen";
+import HomeProduct from "./components/market/HomeProduct";
 
 function App() {
   const { auth } = useAuth();
@@ -51,11 +51,11 @@ function App() {
     if (!auth) {
       return <Navigate to="/login" />;
     }
-    if (!auth.role === 'user') {
-      return <Navigate to='/' />
+    if (!auth.role === "user") {
+      return <Navigate to="/" />;
     }
-    if (!auth.role === 'admin') {
-      return <Navigate to='/dashboard' />
+    if (!auth.role === "admin") {
+      return <Navigate to="/dashboard" />;
     }
 
     return children;
@@ -84,15 +84,15 @@ function App() {
         },
         {
           path: "/events",
-          element: <Event />
+          element: <Event />,
         },
         {
           path: "/events/:id",
-          element: <EditEvent />
+          element: <EditEvent />,
         },
         {
           path: "/market",
-          element: <ProductList />,
+          element: <HomeProduct />,
         },
         {
           path: "/market/:id",
@@ -106,7 +106,7 @@ function App() {
     },
     {
       path: "/auth/confirm/:token",
-      element: <ConfirmAccount />
+      element: <ConfirmAccount />,
     },
     {
       path: "/login",
@@ -129,13 +129,13 @@ function App() {
       element: <ResetPasswordForm />,
     },
     {
-      path: '/admin',
+      path: "/admin",
       element: <Admin />,
     },
     {
-      path: '/admin/update/user/:id',
-      element: <EditProfile />
-    }
+      path: "/admin/update/user/:id",
+      element: <EditProfile />,
+    },
   ]);
 
   return (

@@ -9,6 +9,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Helmet } from "react-helmet-async";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { Badge, ResourceList, Stack, TextStyle } from "@shopify/polaris";
 
 // const reducer = (state, action) => {
 //   switch (action.type) {
@@ -121,79 +122,22 @@ function ProductDetail() {
           </Card>
         </Col>
       </Row> */
-    <div class="row f-flex justify-content-around">
-      {/* <div class="col-12 col-lg-5 img-fluid" id="product_image">
-        <img src={prod?.image} height="500" width="500" />
-      </div> */}
-      <div class="col-12 col-lg-5 mt-5">
-        <h4 class="mt-2">Name:</h4>
-        <h3>{prod?.name}</h3>
-        <hr />
-        <h4 class="mt-2">Price:</h4>
-        <p id="product_price">$ {prod?.price}</p>
-        <hr />
-
-        <h4 class="mt-2">Description:</h4>
-        <p>{prod?.description}</p>
-        <hr />
-        <h4 class="mt-2"> Review:</h4>
-
-        {review?.map((review) => (
-          <div className="card">
-            <div className="text-display">{review?.description}</div>
-          </div>
-        ))}
-
-        <div class="row mt-2 mb-5">
-          <div class="rating w-50">
-            <div
-              class="modal fade"
-              id="ratingModal"
-              tabIndex="-1"
-              role="dialog"
-              aria-labelledby="ratingModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="ratingModalLabel">
-                      Submit Review
-                    </h5>
-
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <input
-                      type="text"
-                      onChange={(e) => {
-                        setdescriprev(e.target.value);
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div>
+      <div className="proddetail">
+        <div className="prodimge">
+          <img src={prod?.image} height="500" width="500" />
+        </div>
+        <div className="proddata">
+          <h1 className="Productname">{prod.name}</h1>
+          <p className="ProdDescription">{prod.description}</p>
+          <p className="ProdPrice">£{prod.price}</p>
+          <div>
+            <button className="Feature">Add to favorite</button>
+            <button className="Feature">Add to favorite</button>
           </div>
         </div>
-        <button
-          id="review_btn"
-          type="button"
-          class="btn btn-primary mt-4"
-          data-toggle="modal"
-          data-target="#ratingModal"
-          onClick={addNewProduct}
-        >
-          Submit Your Review
-        </button>
       </div>
+      <div></div>
     </div>
   );
 }

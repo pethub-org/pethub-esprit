@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Product from "../market/Product";
+import Product from "./Product";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Col from "react-bootstrap/Col";
 import "./market.scss";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-const ProductList = () => {
+const HomeProduct = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [products, setProducts] = useState([]);
@@ -42,7 +42,7 @@ const ProductList = () => {
 
   return (
     <div>
-      <div>
+      <div className="catsearchcenter">
         <select
           className="categoriehome"
           value={selectedCategory}
@@ -55,8 +55,7 @@ const ProductList = () => {
             </option>
           ))}
         </select>
-      </div>
-      <div>
+
         <form>
           <input
             className="search"
@@ -80,4 +79,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default HomeProduct;

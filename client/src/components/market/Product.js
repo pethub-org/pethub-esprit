@@ -11,14 +11,22 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
+import "./market.scss";
+import { useState } from "react";
 function Product(props) {
   const location = useLocation();
+  const [imageSrc, setImageSrc] = useState("https://i.imgur.com/VcypK5c.png");
+  const [isImageError, setIsImageError] = useState(false);
 
+  function handleImageError() {
+    setIsImageError(true);
+  }
   const _id = location.pathname.split("/")[2];
   const axios = useAxiosPrivate();
   const { product } = props;
   //delete
   async function handleDelete(productid) {
+    window.location.reload(false);
     try {
       const response = await axios.delete(`/api/products/${productid}`);
     } catch (error) {
@@ -53,24 +61,48 @@ function Product(props) {
     //   </Card.Body>
     // </Card>
 
-    <div className="market">
-      <div className="container">
-        <div className="content">
-          <img src={""} alt="" />
+    // <div className="market">
+    //   <div className="container">
+    //     <div className="content">
+    //       <img src={product.image} alt="" />
+    //     </div>
+    //     <Link to={"/market/" + product._id}>
+    //       <p>{product.name}</p>
+    //     </Link>
+    //     <div className="info" style={{ gap: 120 }}>
+    //       <div className="item">
+    //         <button onClick={() => handleDelete(product._id)}>
+    //           {" "}
+    //           <DeleteIcon />
+    //         </button>
+    //       </div>
+    //       <div className="item">
+    //         <SaveIcon />
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
+
+    <div className="container">
+      <div className="card">
+        <div className="image">
+          <Link to={"/market/" + product._id}>
+            {isImageError ? (
+              <img src="https://i.imgur.com/VcypK5c.png" alt="Default Image" />
+            ) : (
+              <img src={product.image} onError={handleImageError} alt="Image" />
+            )}
+          </Link>
         </div>
-        <Link to={"/market/" + product._id}>
-          <p>{product.name}</p>
-        </Link>
-        <div className="info" style={{ gap: 120 }}>
-          <div className="item">
-            <button onClick={() => handleDelete(product._id)}>
-              {" "}
-              <DeleteIcon />
-            </button>
-          </div>
-          <div className="item">
-            <SaveIcon />
-          </div>
+        <div className="vitamin">
+          <h3>{product.name}</h3>
+        </div>
+
+        <h4>price: ${product.price} </h4>
+        <div className="buttons">
+          <button onClick={() => handleDelete(product._id)}>delete</button>
+          <button>update</button>
+          <button>add to wishlist</button>
         </div>
       </div>
     </div>

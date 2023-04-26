@@ -4,7 +4,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import "./market.scss";
 function FormScreen() {
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [description, setDescription] = useState("");
   const [categorie, setCategorie] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -97,7 +97,7 @@ function FormScreen() {
       <form>
         <div className="field1">
           <label> add your product </label>
-          <input 
+          <input
             placeholder="Name"
             type="text"
             onChange={(e) => {
@@ -105,13 +105,24 @@ function FormScreen() {
             }}
           />
           <input
+            className="input-field"
             placeholder="price"
             type="number"
             onChange={(e) => {
               setPrice(e.target.value);
             }}
           />
-
+          <input
+            style={{
+              alignItems: "center",
+            }}
+            placeholder="image"
+            type="file"
+            onChange={(e) => {
+              console.log(e.target.files[0]);
+              setImage(e.target.files[0]);
+            }}
+          />
           <textarea
             placeholder="Description"
             type="number"
