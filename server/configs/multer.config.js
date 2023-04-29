@@ -19,7 +19,7 @@ const { storage } = require("./cloundiary.config");
 // })
 
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
         cb(null, true)
     } else {
         cb({ message: 'Unsuppored file format' }, false)
@@ -28,7 +28,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
     storage,
-    limits: { fileSize: 1024 * 1024 },
+    limits: { fileSize: 1024 * 1024 * 4 },
     fileFilter
 })
 
