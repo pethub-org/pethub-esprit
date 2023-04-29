@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 const Profile = () => {
   const {id} = useParams();
   const [toggleUpdate, setToggleUpdate] = useState(false);
-  const [toggleUplodatePicture, setToggleUplodatePicture] = useState(true);
+  const [toggleUplodatePicture, setToggleUplodatePicture] = useState(false);
   
   const [email,setEmail] = useState('')
   const [firstname,setFirstname] = useState('')
@@ -43,27 +43,12 @@ const Profile = () => {
   const uploadPicture = async (e) => {
     e.preventDefault();
     try {
-    //    const response = await axios.post(`${BASE_URL}/users/update/photos/${currentUser.id}`, {
-    //       image
-    //     },
-    //      {
-    //        headers: {
-    //          "Content-Type": "multipart/form-data",
-    //          'Authorization': 'Bearer ' + currentUser.token,
-
-    //        },
-          
-    //     },
-    // );
-    // setProfilePic(response.data.photos[0]);
       const response = await axiosPrivate.post(`/users/update/photos/${auth._id}`, { image,isMain:true }, { headers: { "Content-Type": 'multipart/form-data' } })
     setProfilePic(response.data.photos[0]);
       
     } catch (error) {
       console.log({error})
     }
-
-    // const response = await axios.post(`${BASE_URL}/users/update/photos/${currentUser.id}`)
 }
 
   useEffect(() => {
@@ -73,7 +58,6 @@ const Profile = () => {
              setLastname(auth.lastname)
       return;
     }
-    // axios.get(`http://localhost:8080/users/${id}`,{headers:{Authorization: `Bearer ${currentUser.token}`}}).then(res => setUserProfileData(res.data.user))
     axiosPrivate.get(`/users/${id}`).then(res => setUserProfileData(res.data.user))
     
 
@@ -81,23 +65,6 @@ const Profile = () => {
   },[])
   const handleUpdate = async (e) => {
     e.preventDefault();
-    // try {
-      // console.log(`${BASE_URL}/${currentUser.id}`)
-      // const res = await axios.put(`${BASE_URL}/users/${currentUser.id}`, {
-      // email,
-      // firstname,
-      // lastname,
-      // password
-      // }, {
-      //   headers: {
-      //     'Authorization': 'Bearer ' + currentUser.token,
-      //     'Content-Type':'application/json'
-      //   },
-        // withCredentials: true
-    //   });
-    // } catch (error) {
-    //   console.log(error)
-      // setEmail(error.message)
     try {
       const res = await axiosPrivate.put(`/users/${auth._id}`,{email,firstname,lastname,password})
     } catch (error) {
@@ -116,8 +83,8 @@ const Profile = () => {
           src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           alt=""
           className="cover"
-        /> */}
-        {/* <img
+        />
+        <img
           src="https://images.pexels.com/photos/14028501/pexels-photo-14028501.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
           alt=""
           className="profilePic"
@@ -149,6 +116,11 @@ const Profile = () => {
             </a>
           </div>
           <div className="center">
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
             <span>{userProfileData?.firstname} {' '} {userProfileData?.lastname} </span>
             <div className="info">
               <div className="item">
@@ -220,7 +192,7 @@ const Profile = () => {
       <div className="profileContainer">
         <div className="uInfo">
           <div className="left">
-            <a href="http://facebook.com">
+            {/* <a href="http://facebook.com">
               <FacebookTwoToneIcon fontSize="large" />
             </a>
             <a href="http://facebook.com">
@@ -234,21 +206,26 @@ const Profile = () => {
             </a>
             <a href="http://facebook.com">
               <PinterestIcon fontSize="large" />
-            </a>
+            </a> */}
+
           </div>
           <div className="center">
             {/* <span>{firstname} </span> */}
+            <br />
+            <br />
+            <br />
+            
             <span>{auth?.firstname} {' '} {auth?.lastname} </span>
 
             <div className="info">
-              <div className="item">
+              {/* <div className="item">
                 <PlaceIcon />
                 <span>USA</span>
-              </div>
-              <div className="item">
+              </div> */}
+              {/* <div className="item">
                 <LanguageIcon />
                 <span>lama.dev</span>
-              </div>
+              </div> */}
             </div>
             <div>
               <div style={{
@@ -297,12 +274,12 @@ const Profile = () => {
               flexDirection: 'column',
             padding:'18px'
           }}>
-              <input type="email" value={email} palceholder="email" onChange={(e) => setEmail(e.target.value)} />
+              <input type="email" placeholder="email" value={email} palceholder="email" onChange={(e) => setEmail(e.target.value)} />
               <br/>
-              <input type="text" value={firstname} palceholder="Firstname" onChange={(e) => setFirstname(e.target.value)} />
+              <input type="text" placeholder="firstname" value={firstname} palceholder="Firstname" onChange={(e) => setFirstname(e.target.value)} />
                             <br/>
 
-              <input type="text" value={lastname} palceholder="Lastname" onChange={(e) => setLastname(e.target.value)} />
+              <input type="text" placeholder="last" value={lastname} palceholder="Lastname" onChange={(e) => setLastname(e.target.value)} />
                             <br/>
 
               <input type="password" value={password} placeholder='Enter New Password' onChange={(e) => setPassword(e.target.value)} />
