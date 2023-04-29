@@ -425,6 +425,25 @@ const deleteFriendRequestcontroller = async (req, res, next) => {
         next(error)
     }
 }
+const setPhotoToMainController = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const { photoId } = req.params;
+        const user = await User.findById(userId);
+
+        for (let i = 0; i < user.photos.length; i++) {
+            if (user.photos[i]._id === photoId) {
+                user.photos[i].isMain = true;
+            } else {
+                user.photos[i].isMain = false;
+            }
+        }
+        await user.save();
+        return res.status(200).json(user)
+    } catch (error) {
+        next(error)
+    }
+}
 module.exports = {
     createUser,
     getUsers,
@@ -450,6 +469,7 @@ module.exports = {
     acceptFriendRequestController,
     getUserFriendRequestsController,
     declineFriendRequestController,
-    deleteFriendRequestcontroller
+    deleteFriendRequestcontroller,
+    setPhotoToMainController
 
 }

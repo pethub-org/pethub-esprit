@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, deleteUser, getUser, getUsers, updateUser, resetPassword, banAccount, updateRole, uploadPhoto, confirmAccountAdmin, adminUpdateUser, resetPasswordEmail, getUserByName, deletePhoto,
+const { createUser, deleteUser, getUser, getUsers, updateUser, resetPassword, banAccount, updateRole, uploadPhoto, confirmAccountAdmin, adminUpdateUser, resetPasswordEmail, getUserByName, deletePhoto, setPhotoToMainController,
 
     acceptFriendRequestController, declineFriendRequestController, deleteFriendRequestcontroller, getUserFriendRequestsController, sendFriendRequestController
 
@@ -71,7 +71,8 @@ router.put('/admin/confirm/:id', authenticationMiddleware, hasRoleMiddleware('ad
 
 // photos
 router.post('/update/photos/:userId', authenticationMiddleware, upload.single('image'), uploadPhoto)
-router.delete('/update/photos/:photoId', authenticationMiddleware, deletePhoto)
+router.put('/update/photos/:photoId', authenticationMiddleware, deletePhoto)
+router.put('/update/photos/main/:photoId', authenticationMiddleware, setPhotoToMainController)
 
 router.delete('/:id', authenticationMiddleware, hasRoleMiddleware('admin'), deleteUser)
 
