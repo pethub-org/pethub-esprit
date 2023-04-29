@@ -432,7 +432,7 @@ const setPhotoToMainController = async (req, res, next) => {
         const user = await User.findById(userId);
 
         for (let i = 0; i < user.photos.length; i++) {
-            if (user.photos[i]._id === photoId) {
+            if (user.photos[i]._id.toString() === photoId) {
                 user.photos[i].isMain = true;
             } else {
                 user.photos[i].isMain = false;
