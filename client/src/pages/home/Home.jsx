@@ -1,5 +1,5 @@
 import Stories from "../../components/stories/Stories"
-import Posts from "../../components/posts/Posts"
+import Posts from "../../components/Posts/Posts"
 import Share from "../../components/share/Share"
 import "./home.scss"
 import Feed from "../../components/feed/feed"

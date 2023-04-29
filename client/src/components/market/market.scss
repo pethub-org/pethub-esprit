@@ -280,7 +280,7 @@ button {
 //detail
 
 .card {
-  height: 400px;
+  height: 390px;
   width: 330px;
   background-color: #fff;
   border-radius: 10px;
@@ -411,11 +411,12 @@ button {
   font-size: 10px;
 }
 
-.buttons button:nth-child(1):hover {
-  background-color: #b7bbc3;
-  color: #606060;
+.buttons button:hover {
+  background-color: #ffffff;
+  color: #2932db;
 }
 .card h4 {
+  text-align: center;
   margin-top: 10px;
 }
 .gender {

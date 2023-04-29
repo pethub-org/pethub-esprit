@@ -6,9 +6,9 @@ import {
   Outlet,
   Navigate,
 } from "react-router-dom";
-import Navbar from "./components/navbar/Navbar";
-import LeftBar from "./components/leftBar/LeftBar";
-import RightBar from "./components/rightBar/RightBar";
+import Navbar from "./components/navbar/navbar";
+import LeftBar from "./components/leftBar/leftBar";
+import RightBar from "./components/rightBar/rightBar";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
 import "./style.scss";
@@ -26,6 +26,7 @@ import useAuth from "./hooks/useAuth";
 import ProductDetail from "./components/market/ProductDetail";
 import FormScreen from "./components/market/Formscreen";
 import HomeProduct from "./components/market/HomeProduct";
+import UpdateProd from "./components/market/UpdateProd";
 
 function App() {
   const { auth } = useAuth();
@@ -101,6 +102,10 @@ function App() {
         {
           path: "/addprod",
           element: <FormScreen />,
+        },
+        {
+          path: "/updateprod/:id",
+          element: <UpdateProd/>,
         },
       ],
     },

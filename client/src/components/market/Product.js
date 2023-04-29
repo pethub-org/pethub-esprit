@@ -101,7 +101,9 @@ function Product(props) {
         <h4>price: ${product.price} </h4>
         <div className="buttons">
           <button onClick={() => handleDelete(product._id)}>delete</button>
+          <Link  to={"/updateprod/" + product._id}>
           <button>update</button>
+          </Link>
           <button>add to wishlist</button>
         </div>
       </div>

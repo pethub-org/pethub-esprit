@@ -1,12 +1,11 @@
-import './posts.scss'
-import post from '../post/Post'
+import './Posts.scss'
 
 import { useContext, useEffect, useState } from 'react';
 // import axios from 'axios';
 // import { AuthContext } from '../../context/AuthContext';
 import Comments from '../comments/Comments';
 import useAuth from '../../hooks/useAuth';
-import Post from '../post/Post';
+import Post from '../Post/Post';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const Posts = ({username,setPosts,posts}) => {

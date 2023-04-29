@@ -1,4 +1,4 @@
-import './post.scss'
+import './Post.scss'
 
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';

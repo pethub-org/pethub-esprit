@@ -11,7 +11,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import Video from '../Video/Video';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import Posts from '../posts/Posts';
+import Posts from '../Posts/Posts';
 const Feed = ({posts,setPosts}) => {
 
   const desc = useRef()

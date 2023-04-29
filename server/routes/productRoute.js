@@ -47,7 +47,7 @@ route.post("/", upload.single("image"), async (req, res) => {
   console.log("request", req.file);
   const product = new Product({
     name: req.body.name,
-    image: req.file.path,
+    ///image: req.file.path,
     category: req.body.category,
     description: req.body.description,
     price: req.body.price,
@@ -76,14 +76,32 @@ route.post("/", upload.single("image"), async (req, res) => {
 //     res.send("Error");
 //   }
 // });
-route.put("/:id", async (req, res) => {
+
+route.put('/update/:id', async (req, resp, next) => {
+
   try {
-    const prod = await Product.findByIdAndUpdate(req.params.id, req.body);
-    res.json(prod);
-  } catch (err) {
-    res.send("Error");
+    const requestBody = {   
+      name: req.body.name,
+      category: req.body.category,
+
+      description: req.body.description,
+      price: req.body.price, };
+
+    let emp_rec = await Product.findById(req.params.id);
+
+    if (!emp_rec)
+    return res.status(404).json({ msg: 'Employee record not found' });
+
+    const updatedEmp = await Product.findByIdAndUpdate(
+      req.params.id, requestBody, { new: true });
+
+    resp.json(updatedEmp);
+
+  } catch (error) {
+    next(error);
   }
 });
+
 route.delete("/:id", async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
