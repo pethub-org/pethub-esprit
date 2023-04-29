@@ -69,7 +69,7 @@ router.put('/ban/:id', authenticationMiddleware, hasRoleMiddleware('admin'), ban
 router.put('/update/role/:id', authenticationMiddleware, hasRoleMiddleware('admin'), validationMiddleware(updateRoleSchema), updateRole)
 router.put('/admin/confirm/:id', authenticationMiddleware, hasRoleMiddleware('admin'), confirmAccountAdmin)
 
-// phot
+// photos
 router.post('/update/photos/:userId', authenticationMiddleware, upload.single('image'), uploadPhoto)
 router.delete('/update/photos/:photoId', authenticationMiddleware, deletePhoto)
 

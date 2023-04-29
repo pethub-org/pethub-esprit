@@ -162,7 +162,6 @@ const uploadPhoto = async (req, res) => {
     const { userId } = req.params;
     let { isMain } = req.body;
     const file = req.file;
-
     try {
         if (!userId) {
             return res.status(400).json({ error: "ID must be provided" })
@@ -170,25 +169,36 @@ const uploadPhoto = async (req, res) => {
         if (!isMain) {
             return res.status(400).json({ error: "isMain must be provided" })
         }
-        const user = await User.findById(userId, { password: 0, __v: 0 });
-        const public_id = req.image;
-        console.log({ public_id })
-        console.log({ file })
-        if (user.photos.length == 0) {
-            user.photos.push({
-                url: file.path,
-                isMain: true
-            })
-        } else {
-            if (isMain) {
-                const i = user.photos.findIndex(img => img.isMain === true);
-                user.photos[i].isMain = false;
-            }
 
-            user.photos.push({
+        const user = await User.findById(userId, { password: 0, __v: 0 });
+
+        if (!user) {
+            return res.status(404).json({ error: 'user id not found' })
+        }
+
+        if (user?.photos?.length == 0) {
+            user?.photos?.push({
                 url: file.path,
                 isMain
             })
+
+        } else {
+            if (isMain === 'true') {
+                const i = user?.photos?.findIndex(img => img.isMain === true);
+                if (i >= 0)
+                    user.photos[i].isMain = false;
+                user.photos.push({
+                    url: file.path,
+                    isMain
+                })
+            }
+            else {
+                user?.photos?.push({
+                    url: file.path,
+                    isMain
+                })
+            }
+
         }
 
         await user.save();
