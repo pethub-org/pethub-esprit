@@ -20,8 +20,8 @@ const loginService = async({email,password}) => {
   const res = await axios.post('/auth/login', { email, password })
   socket.connect();
   socket.emit('addUser',res.data._id)
-
-  setAuth(res.data)
+  const currentPhoto = res.data.photos.find(photo => photo.isMain)
+  setAuth({ ...res.data, currentPhoto })
   return res.data;
 }
 

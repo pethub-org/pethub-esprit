@@ -54,12 +54,12 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
       
     }
     return (
-        <div className={styles.relative}>
+        // <div className={styles.relative}>
             <div className={styles.container} >
 
                 {/* header */}
                 <div className={styles.header}>
-                    <img src={chatData?.photos?.length <1 ? defaultImg : chatData?.photos[0]?.url} alt="profile picture" className={styles.img} />
+                    <img src={chatData?.photos?.length >0 ? chatData?.photos[0]?.url :defaultImg  } alt="profile picture" className={styles.img} />
                     <p>{chatData.firstname} {' '} {chatData.lastname}</p>
                     <div style={{cursor:'pointer'}} onClick={() => setShowChatBox(prev => !prev)}>X</div>
                 </div>
@@ -77,7 +77,10 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
                    </div>
 
                     
-                     <div className={styles.footer}>
+                 
+                </div>
+
+                <div className={styles.footer} style={{ zIndex: '1000'}}>
                     <div className={styles.footerContent} >
 
                             <input type="text" placeholder='Type here'
@@ -87,16 +90,16 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
                                 onChange={(e) => setMessage(e.target.value)} onKeyDown={(e) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {
                                         handleSendMessage(e)
+                                        setMessage('')
                                     }
                                 }} />
                         
 
                     </div>
                 </div>
-                </div>
               
             </div>
-        </div>
+        // </div>
 
     )
 }

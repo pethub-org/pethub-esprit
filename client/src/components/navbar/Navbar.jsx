@@ -14,8 +14,7 @@ import ProfilePicture from '../../assets/defaultUser.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDoorClosed,faDoorOpen } from '@fortawesome/free-solid-svg-icons'
 import Notification from "../notifications/Notification";
-import dropdown from "./dropdown";
-import Dropdown from "./dropdown";
+import NotifcationDropdown from "./NotifcationDropdown";
 import MessageDropdown from "../messages/MessageDropdown";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
@@ -54,7 +53,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="navbar">
+    <div className="navbar" style={{ width:'100%' }}>
       <div className="left">
         <Link to="/" style={{ textDecoration: "none" }}>
           <span><Link to="/" style={{textDecoration:'none'}}>PetsHub</Link></span>
@@ -68,7 +67,7 @@ const Navbar = () => {
         <GridViewOutlinedIcon />
         <div className="search">
           <SearchOutlinedIcon />
-          <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleSearch} />
+          <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleSearch} style={{color:'black' , border:'none'}} />
         </div>
       </div>
       <div className="right">
@@ -76,22 +75,23 @@ const Navbar = () => {
           display: 'flex',
           alignContent: 'center',
           justifyContent: 'center',
-          
         }}>
-          {/* <div> */}
              
-          {/* </div> */}
           <div>
-               <Dropdown/>
+               <NotifcationDropdown/>
           </div>
       
-          {/* <div> */}
               {/* <MessageDropdown /> */}
-        {/* </div> */}
           
-          {/* <div> */}
+          <div>
              <FriendRequests/>
-         {/* </div> */}
+          </div>
+
+
+          <div style={{marginRight:'18px'}}>
+            <FontAwesomeIcon icon={faDoorOpen} onClick={logout} style={{cursor:'pointer'}}/>
+
+          </div>
      
      
        </div>
@@ -101,21 +101,20 @@ const Navbar = () => {
           <PersonOutlinedIcon />
         </Link> */}
         
-        <FontAwesomeIcon icon={faDoorOpen} onClick={logout} style={{cursor:'pointer'}}/>
 
       
      
           {/* <div><NotificationsOutlinedIcon /></div> */}
       
-        <div className="user">
+        <div className="user" style={{marginRight:'30px'}}>
           
           <img
             // src={currentUser.photos.length > 0 ?  currentUser.photos[0]?.url : {ProfilePicture}}
-            src={ProfilePicture}
+            src={auth?.currentPhoto ? auth?.currentPhoto?.url : ProfilePicture}
             alt=""
           />
           {/* <span>{currentUser.firstname}</span> */}
-          <Link  to={`/profile/${auth._id}`}>{auth.firstname} {' '} {auth.lastname}</Link>
+          <Link  to={`/profile/${auth._id}`} style={{textTransform:'capitalize'}}>{auth.firstname} {' '} {auth.lastname}</Link>
           {/* Link to my profile */}
         </div>
       </div>

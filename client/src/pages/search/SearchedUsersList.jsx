@@ -4,16 +4,16 @@ import UserDetail from './UserDetail';
 const SearchedUsersList = ({ searchResult ,setSearchResult}) => {
   const {auth} = useAuth();
   const result = searchResult.map(user => {
-    const foundFriend = auth.friendList.find((friend) => friend._id === user._id)
-    const foundFriendRequest = auth.friendRequests.find((friend) => friend._id === user._id)
+    // const foundFriend = auth.friendList.find((friend) => friend._id === user._id)
+    // const foundFriendRequest = auth.friendRequests.find((friend) => friend._id === user._id)
 
-    if (foundFriend) {
-    return <UserDetail key={user._id} user={user} setSearchResult={setSearchResult}/>
-    }
+    // if (foundFriend) {
+    // return <UserDetail key={user._id} user={user} setSearchResult={setSearchResult}/>
+    // }
 
-    if (foundFriendRequest) { 
-    return <UserDetail key={user._id} user={user} setSearchResult={setSearchResult}/>
-    }
+    // if (foundFriendRequest) { 
+    // return <UserDetail key={user._id} user={user} setSearchResult={setSearchResult}/>
+    // }
 
     return <UserDetail key={user._id} user={user} setSearchResult={setSearchResult}/>
 

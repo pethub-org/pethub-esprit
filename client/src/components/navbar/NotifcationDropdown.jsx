@@ -10,7 +10,7 @@ import styles from './notifcations.module.css';
 import PeopleIcon from '@mui/icons-material/People';
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 
-const Dropdown = () => {
+const NotifcationDropdown = () => {
   const [notifications, setNotifications] = useState([]);
   const [showNotifcations,setShowNotifcations] = useState(false);
   const axiosPrivate = useAxiosPrivate();
@@ -81,7 +81,7 @@ const Dropdown = () => {
   )
 }
 
-export default Dropdown
+export default NotifcationDropdown
 
 
 

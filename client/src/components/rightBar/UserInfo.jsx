@@ -37,7 +37,8 @@ const UserInfo = ({ setShowChatBox, userInfo, setChatData,setMessages,conversati
             <div className={styles.userInfo}>
                <div>
                 <img className={styles.img}
-                      src={userInfo?.photos?.length <1 ? defaultImg : userInfo?.photos[0]?.url}
+                      // src={userInfo?.photos?.length > 0 ? userInfo?.currentPhoto?.url : defaultImg}
+                      src={defaultImg}
                       alt=""
                     />
               </div>
