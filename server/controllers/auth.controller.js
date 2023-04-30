@@ -6,10 +6,13 @@ const generateToken = require('../services/token.service');
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        // todo : populate should not populate user password
-        const user = await User.findOne({ email })
-            .populate({ path: 'friendList', model: 'User' })
-            .populate({ path: 'friendRequests', model: 'FriendRequest' });
+
+        let user = await User.findOne({ email })
+            .populate({ path: 'friendList', model: 'User', select: '-password' })
+            .populate({ path: 'friendRequests', model: 'FriendRequest', select: '-password' })
+            .populate({ path: 'friendList', populate: { path: 'photos' }, select: '-password' })
+            .lean();
+
         if (!user) {
             return res.status(400).json({ error: `Invalid credentials` });
         }
@@ -21,11 +24,18 @@ const login = async (req, res) => {
 
         const accessToken = generateToken(user, 'access_token');
         const refreshToken = generateToken(user, 'refresh_token');
-        const result = {
-            email, firstname: user.firstname, lastname: user.lastname, token: accessToken, tokenVersion: user.tokenVersion, role: user.role, _id: user._id, photos: user.photos, friendList: user.friendList, friendRequests: user.friendRequests, tokenVersion: user.tokenVersion, ban: user.ban, accountConfirmed: user.accountConfirmed
-        }
+        user.friendList = user.friendList.map(friend => {
+            const currentPhoto = friend.photos.find(photo => photo.isMain);
+            console.log({ friend })
+            return {
+                ...friend,
+                currentPhoto
+            }
+        })
+        user.accessToken = accessToken;
+
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 3600000 })
-        return res.status(200).json(result)
+        return res.status(200).json(user)
 
     }
     catch (error) {
@@ -42,7 +52,7 @@ const logout = (req, res) => {
 const refreshToken = async (req, res) => {
     try {
         let refreshToken = req.cookies?.jwt;
-        console.log({ refreshToken })
+        console.log(req.cookies)
         let payload = jwt.decode(refreshToken, process.env.REFRESH_TOKEN_SECRET)
         console.log({ payload })
 

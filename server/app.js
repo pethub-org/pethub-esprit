@@ -146,3 +146,4 @@ server.listen(PORT, () => {
 
 
 module.exports = io;
+module.exports = { users }

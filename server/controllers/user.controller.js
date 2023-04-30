@@ -75,9 +75,13 @@ const getUser = async (req, res) => {
         }
 
         // const user = await User.findById(id, { password: 0, __v: 0 });
-        const user = await User.findById(id, { password: 0, __v: 0 })
+        let user = await User.findById(id, { password: 0, __v: 0 })
             .populate({ path: "friendList", model: 'User' })
             .populate({ path: 'friendRequests', model: 'User' })
+            .lean();
+
+        user.currentPhoto = user.photos.find(photo => photo.isMain);
+
         if (!user) {
             return res.status(200).json({ message: 'User not found' });
         }
@@ -170,7 +174,9 @@ const uploadPhoto = async (req, res) => {
             return res.status(400).json({ error: "isMain must be provided" })
         }
 
-        const user = await User.findById(userId, { password: 0, __v: 0 });
+        const user = await User.findById(userId, { password: 0, __v: 0 })
+            .populate({ path: 'friendList', model: 'User' })
+            .populate({ path: 'friendRequests', model: 'FriendRequest' });;
 
         if (!user) {
             return res.status(404).json({ error: 'user id not found' })
