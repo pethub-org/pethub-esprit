@@ -47,15 +47,16 @@ const Profile = () => {
     e.preventDefault();
     try {
       const response = await axiosPrivate.post(`/users/update/photos/${auth._id}`, { image,isMain }, { headers: { "Content-Type": 'multipart/form-data' } })
-    // setProfilePic(response.data.photos[0]);
-      console.log({response})
+      // console.log({response})
       const currentPhoto = response.data.photos.find(photo => photo.isMain);
-      console.log({currentPhoto})
+      // console.log({ currentPhoto })
+      
       setAuth(prev => {
         return {
+          ...prev,
           ...response.data,
           currentPhoto,
-          token:prev.token
+          // accessToken:prev.accessToken
         }
       });
       
@@ -250,7 +251,7 @@ const Profile = () => {
                 <button onClick={() => setToggleUpdate(prev => !prev)} style={{ marginRight: '16px' }}>Update</button>
                 <button onClick={() => {
                   setShowPhotos(prev => !prev)
-                  console.log({auth})
+                  // console.log({auth})
                 }}  style={{marginRight:'16px'}}>show my photos </button>
                 
                 <button onClick={() => setToggleUplodatePicture(prev => !prev)}><FontAwesomeIcon icon={faImage} size="1x" /></button>
@@ -266,7 +267,7 @@ const Profile = () => {
             <MoreVertIcon />
           </div>
         </div>
-        
+    
         {
           toggleUplodatePicture &&
           <div class="mb-3 post p" style={{
@@ -275,8 +276,8 @@ const Profile = () => {
             display: 'flex',
             alignItems: 'center',
               justifyContent: 'center',
-            flexDirection:'column'
-          }}> 
+              flexDirection:'column'
+            }}> 
             <input className="form-control" type="file" name="image" id="formFile" style={{ backgroundColor: '#222', border: 'none', borderRadius: '15px', marginBottom: '16px' ,color:'white'}} onChange={handleSelectFile}/>
             <div>
               <br/>
@@ -292,7 +293,15 @@ const Profile = () => {
             </div>
         </div> 
         }
-        {showPhotos && auth.photos.map(photo => <Picture key={photo._id} photo={photo}/>)}
+        
+        
+        
+        {/* <p style={{ color: 'white' }}>test</p> */}
+        {showPhotos && auth?.photos?.length <= 0 && <h4 style={{ color: 'white', textAlign: 'center' }}>You don't have photos yet.</h4>}
+        <br/>
+        
+
+        {showPhotos  && auth.photos.map(photo => <Picture key={photo._id} photo={photo}/>)}
 
 
         {toggleUpdate && <div className="Container" style={{

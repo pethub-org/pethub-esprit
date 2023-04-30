@@ -8,7 +8,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
-  const { auth, setAuth } = useAuth();
+  const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   
   const [searchResult, setSearchResult] = useState([]);

@@ -1,9 +1,7 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/authContext";
+import {  useEffect, useState } from "react";
 import "./rightBar.scss";
 import UserInfo from "./UserInfo";
 import ChatBox from "../messages/ChatBox";
-import useAuthContext from "../../hooks/useAuth";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import ProfilePicture from '../../assets/defaultUser.png';
@@ -11,6 +9,7 @@ import ProfilePicture from '../../assets/defaultUser.png';
 
 const RightBar = () => {
   const { auth } = useAuth();
+  console.log({auth})
   // all users conversations
   const [conversations, setConversations] = useState([]);
   const axiosPrivate = useAxiosPrivate();
@@ -18,7 +17,7 @@ const RightBar = () => {
   useEffect(() => {
     axiosPrivate.get(`/conversations/${auth._id}`).then(res => {
       setConversations(res.data)
-      console.log({res})
+      // console.log({res})
     })
   },[])
 
@@ -41,6 +40,7 @@ const RightBar = () => {
   }, [chatData])
 
   useEffect(() => {
+    console.log({friendList})
     const friends = auth?.friendList?.map(friend => <UserInfo key={friend._id}
                                                 conversations={conversations} setConversations={setConversations}                  
                                                 setShowChatBox={setShowChatBox}
