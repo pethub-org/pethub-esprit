@@ -16,11 +16,14 @@ import { useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { axiosPrivate } from "../../api/axios";
 import { useEffect, useState } from "react";
+import { Button } from "@mui/material";
+import Picture from "./Picture";
 
 const Profile = () => {
   const {id} = useParams();
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const [toggleUplodatePicture, setToggleUplodatePicture] = useState(false);
+  const [showPhotos, setShowPhotos] = useState(false);
   
   const [email,setEmail] = useState('')
   const [firstname,setFirstname] = useState('')
@@ -29,9 +32,9 @@ const Profile = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('');
   const [image, setImage] = useState(null)
-  const [profilePic, setProfilePic] = useState('');
   const [userProfileData, setUserProfileData] = useState({});
-  const { auth,setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
+  const [isMain, setIsMain] = useState(false);
 
 
   
@@ -43,8 +46,18 @@ const Profile = () => {
   const uploadPicture = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosPrivate.post(`/users/update/photos/${auth._id}`, { image,isMain:true }, { headers: { "Content-Type": 'multipart/form-data' } })
-    setProfilePic(response.data.photos[0]);
+      const response = await axiosPrivate.post(`/users/update/photos/${auth._id}`, { image,isMain }, { headers: { "Content-Type": 'multipart/form-data' } })
+    // setProfilePic(response.data.photos[0]);
+      console.log({response})
+      const currentPhoto = response.data.photos.find(photo => photo.isMain);
+      console.log({currentPhoto})
+      setAuth(prev => {
+        return {
+          ...response.data,
+          currentPhoto,
+          token:prev.token
+        }
+      });
       
     } catch (error) {
       console.log({error})
@@ -91,7 +104,7 @@ const Profile = () => {
         /> */}
 
          <img
-          src={auth?.photos?.length > 0 ? auth?.photos[0]?.url : ProfilePicture}
+          src={auth?.currentPhoto ? auth?.currentPhoto?.url : ProfilePicture}
           alt=""
           className="profilePic"
         />
@@ -184,7 +197,7 @@ const Profile = () => {
         /> */}
 
          <img
-          src={auth.photos.length > 0 ? auth.photos[0].url : ProfilePicture}
+          src={auth?.currentPhoto ? auth?.currentPhoto?.url : ProfilePicture}
           alt=""
           className="profilePic"
         />
@@ -231,10 +244,17 @@ const Profile = () => {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent:'center'
+                justifyContent: 'center',
+                width:'max-content'
               }}>
-                <button onClick={() => setToggleUpdate(prev => !prev)}  style={{marginRight:'16px'}}>Update</button>
+                <button onClick={() => setToggleUpdate(prev => !prev)} style={{ marginRight: '16px' }}>Update</button>
+                <button onClick={() => {
+                  setShowPhotos(prev => !prev)
+                  console.log({auth})
+                }}  style={{marginRight:'16px'}}>show my photos </button>
+                
                 <button onClick={() => setToggleUplodatePicture(prev => !prev)}><FontAwesomeIcon icon={faImage} size="1x" /></button>
+
               </div>
             </div>
          
@@ -248,19 +268,31 @@ const Profile = () => {
         </div>
         
         {
-          toggleUplodatePicture && <div class="mb-3 post p" style={{
+          toggleUplodatePicture &&
+          <div class="mb-3 post p" style={{
             marginBottom: '20px',
             padding: '16px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent:'center'
+              justifyContent: 'center',
+            flexDirection:'column'
           }}> 
-            <input className="form-control" type="file" name="image" id="formFile" style={{ backgroundColor: '#222', border: 'none', borderRadius: '15px', marginBottom: '16px' }} onChange={handleSelectFile}/>
+            <input className="form-control" type="file" name="image" id="formFile" style={{ backgroundColor: '#222', border: 'none', borderRadius: '15px', marginBottom: '16px' ,color:'white'}} onChange={handleSelectFile}/>
             <div>
-              <button className="btn btn-primary" onClick={uploadPicture}>Upload</button>
+              <br/>
+              <div>
+                <label style={{color:'white' }} >set as the main profile picture? </label>
+               <input type="checkbox" value={isMain} onClick={(e) => setIsMain(prev => !prev)} />
+
+                </div>
+                <div style={{marginLeft:'50px',marginTop:'24px'}}>
+              <Button className="btn btn-primary"  style={{backgroundColor:'#5271ff' , color:'white',textTransform:'none'}} onClick={uploadPicture}>Upload</Button>
+
+                </div>
             </div>
         </div> 
         }
+        {showPhotos && auth.photos.map(photo => <Picture key={photo._id} photo={photo}/>)}
 
 
         {toggleUpdate && <div className="Container" style={{

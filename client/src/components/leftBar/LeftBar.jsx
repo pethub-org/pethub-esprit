@@ -34,7 +34,7 @@ const LeftBar = () => {
           <div className="user">
             <img
               // src={auth?.photos[0] ? auth?.photos[0] : defaultUser }
-              src={ ProfilePicture}
+              src={ auth?.currentPhoto ? auth?.currentPhoto?.url : ProfilePicture}
               alt={auth?.firstname}
             />
             <span>{auth?.firstname}</span>

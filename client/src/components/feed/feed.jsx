@@ -39,14 +39,14 @@ const Feed = ({posts,setPosts}) => {
       data.append("name", fileName);
       data.append("file", file);
       newPost.image = fileName;
-      console.log(newPost);
+      // console.log(newPost);
       try {
         await axios.post("/api/upload", data);
       } catch (err) {}
     }
     try {
       const res = await axios.post("/api/posts/create", newPost);
-      console.log({res})
+      // console.log({res})
       setPosts(prevPosts => [res.data,...prevPosts] )
       // window.location.reload();
     } catch (err) {}
@@ -56,7 +56,7 @@ const Feed = ({posts,setPosts}) => {
     <div className="share">
     <div className="shareWrapper">
       <div className="shareTop">
-        <img className="shareProfileImg" src={ProfilePicture} alt={user?.firstname} />
+        <img className="shareProfileImg" src={user?.currentPhoto ? user?.currentPhoto?.url : ProfilePicture} alt={user?.firstname} />
         <input
           placeholder={"What's in your mind " + user?.firstname + ' ' +user?.lastname}
           className="shareInput"

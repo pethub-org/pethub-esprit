@@ -16,11 +16,12 @@ const UserDetail = ({ user,isFriend,isFriendRequest ,setSearchResult }) => {
       return  userId === auth._id
     });
     const inFriendRequests = user.friendRequests.find(userId => userId === auth._id);
-    console.log(user)
-    console.log({inFriendList})
-    console.log({inFriendRequests})
+    // console.log(user)
+    // console.log({inFriendList})
+    // console.log({inFriendRequests})
     if (inFriendList) {
       setButtonType('delete-button')
+    
       // refreshLoggedInUser();
       return;
     }

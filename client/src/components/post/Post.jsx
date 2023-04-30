@@ -20,7 +20,7 @@ import defaultUser from '../../assets/defaultUser.png';
 
 
 const Post = ({ post, setPosts }) => {
-  console.log({post})
+  // console.log({post})
   const [like,setLike] = useState(post?.likes?.length)
   const [com,setComm] = useState(post?.comments?.length)
   const [share,setShare] = useState(post.shares.length)
@@ -108,7 +108,7 @@ const Post = ({ post, setPosts }) => {
       navigator.clipboard.writeText(window.location.href);
       alert("Link copied to clipboard!");
     } catch (err) {
-      console.log("Failed to copy: ", err);
+      // console.log("Failed to copy: ", err);
     }
   };
 
@@ -120,7 +120,7 @@ const Post = ({ post, setPosts }) => {
       alert('Post shared!');
       //window.location.reload();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       alert('Failed to share post!');
     }
   };
@@ -131,14 +131,14 @@ const Post = ({ post, setPosts }) => {
       <div className="user">
         <div className="userInfo">
         <Link to={`/profile/${post.userId}`}  style={{textDecoration:"none",color:"inherit"}}>
-           <img src={currentUser?.profilePicture ? "" : defaultUser } alt={currentUser.firstname} />
+           <img src={currentUser?.currentPhoto ? currentUser?.currentPhoto?.url : defaultUser } alt={currentUser?.firstname} />
           </Link>
            <div className="details">
             <Link to={`/profile/${post.userId}`}  style={{textDecoration:"none",color:"inherit"}}>
-                <span className='name' style={{color:'white'}}>{currentUser.firstname }</span>
+                <span className='name' style={{color:'white'}}>{currentUser?.firstname }</span>
                
             </Link>
-            <span className='date'>{format(post.createdAt)}</span>
+            <span className='date'>{format(post?.createdAt)}</span>
            </div>
           
         </div>
