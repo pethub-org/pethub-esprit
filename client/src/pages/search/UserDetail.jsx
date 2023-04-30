@@ -4,38 +4,28 @@ import { Link } from "react-router-dom";
 import genericProfilePicture from '../../assets/defaultUser.png'
 import Button from './Button'
 import useAuth from "../../hooks/useAuth";
-const UserDetail = ({ user,isFriend,isFriendRequest ,setSearchResult }) => {
-  const {auth,setAuth } = useAuth();
-  const photo = user.photos.find(photo => photo.isMain);
+const UserDetail = ({ user  }) => {
+  const {auth } = useAuth();
   const [buttonType, setButtonType] = useState();
-
   useEffect(() => { 
 
     const inFriendList = user.friendList.find(userId => {
-      console.log(userId === auth._id)
       return  userId === auth._id
     });
     const inFriendRequests = user.friendRequests.find(userId => userId === auth._id);
-    // console.log(user)
-    // console.log({inFriendList})
-    // console.log({inFriendRequests})
+
     if (inFriendList) {
       setButtonType('delete-button')
-    
-      // refreshLoggedInUser();
       return;
     }
 
     else if (inFriendRequests) {
       setButtonType('accept-decline-button')
-      // refreshLoggedInUser();
-
       return;
+
     } else {
 
       setButtonType('add-button')
-      // refreshLoggedInUser();
-
       return;
     }
   }, [])
@@ -45,8 +35,7 @@ const UserDetail = ({ user,isFriend,isFriendRequest ,setSearchResult }) => {
     <div className={styles.container}>
       <div>
         <Link to={`/profile/${user._id}`}>
-          <img src={photo?.url ? photo.url : genericProfilePicture} alt="profile" className={styles.img} />
-
+          <img src={user?.currentPhoto ? user?.currentPhoto?.url : genericProfilePicture} alt="profile" className={styles.img} />
         </Link>
       </div>
       <div className={styles.details}>

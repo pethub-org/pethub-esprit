@@ -118,7 +118,7 @@ const deleteFriendNew = async (userId, friendId) => {
 //     await createNotificationService({ type: "invitation", sender: senderId, receiver: recieverId, content: `${recieverUser.firstname} accepted your friend request` })
 // }
 const getUserByNameService = async (name, userId) => {
-    const users = await User.find({
+    let users = await User.find({
         $or: [
             { firstname: { $regex: name, $options: 'i' } }, // i option makes the search case-insensitive
             { lastname: { $regex: name, $options: 'i' } },
@@ -128,7 +128,14 @@ const getUserByNameService = async (name, userId) => {
                 _id: { $ne: userId }
             }
         ]
-    }, { password: 0, __v: 0 });
+    }, { password: 0, __v: 0 }).lean();
+    users = users.map(user => {
+        const currentPhoto = user.photos.find(photo => photo.isMain);
+        return {
+            ...user,
+            currentPhoto
+        }
+    })
 
     return users;
 }

@@ -1,0 +1,63 @@
+  .addButton {
+      border: none;
+      padding: 7px;
+      border-radius: 5px;
+      background-color: #52ff7a;
+      font-weight: 500;
+      padding-left: 14px;
+      padding-right: 14px;
+      height: 2rem;
+      margin-right: 12px;
+      cursor: pointer;
+      color: white;
+  }
+
+  .addButton:hover {
+      cursor: pointer;
+      color: #52ff7a;
+      background-color: transparent;
+      border: 2px solid #52ff7a;
+  }
+
+
+  .acceptButton {
+      border: none;
+      padding: 7px;
+      border-radius: 5px;
+      background-color: #5271ff;
+      font-weight: 500;
+      padding-left: 14px;
+      padding-right: 14px;
+      height: 2rem;
+      margin-right: 12px;
+      cursor: pointer;
+      color: white;
+  }
+
+  .acceptButton:hover {
+      cursor: pointer;
+      color: #5271ff;
+      background-color: transparent;
+      border: 2px solid #5271ff;
+  }
+
+  .declineButton {
+      border: none;
+      padding: 7px;
+      border-radius: 5px;
+      background-color: #ff5252;
+      font-weight: 500;
+      padding-left: 14px;
+      padding-right: 14px;
+      height: 2rem;
+      margin-right: 12px;
+      cursor: pointer;
+      color: white;
+  }
+
+  .declineButton:hover {
+      cursor: pointer;
+      color: #ff5252;
+      background-color: transparent;
+      border: 2px solid #ff5252;
+  }

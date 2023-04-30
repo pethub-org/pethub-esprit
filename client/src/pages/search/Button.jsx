@@ -1,9 +1,7 @@
 import React from 'react'
 import useAuth from '../../hooks/useAuth';
 import { axiosPrivate } from '../../api/axios';
-// import useAuthContext from '../../hooks/useAuth'
-
-// const URL = 'http://localhost:8080'
+import styles from './button.module.css';
 
 const Button = ({ type, setButtonType,user }) => {
     const { auth, setAuth } = useAuth();
@@ -63,15 +61,15 @@ const Button = ({ type, setButtonType,user }) => {
 
 
       if (type === 'add-button') {
-        return <button onClick={handleAdd}>add</button>
+        return <button className={styles.addButton}  onClick={handleAdd}>Add</button>
     }
     if (type === 'delete-button') {
-        return <button onClick={handleDelete}>delete</button>
+        return <button className={styles.declineButton}  onClick={handleDelete}>Delete</button>
     }
     if (type === 'accept-decline-button') {
         return <>
-            <button onClick={handleAccept}>accept</button>
-            <button onClick={handleDecline}>decline</button>
+            <button className={styles.acceptButton} onClick={handleAccept}>Accept</button>
+            <button className={styles.declineButton} onClick={handleDecline}>Decline</button>
         </>
     }
     return <>

@@ -40,15 +40,16 @@ const Post = ({ post, setPosts }) => {
     setIsLike(post?.likes?.includes(currentUser._id))
   },[currentUser._id,post.likes])
   
-  useEffect(()=>{
+  useEffect(() => {
     const fetchUser = async ()=>{
-      const res = await  axios.get(`/api/users/${post.userId}`);
+      const res = await axios.get(`/users/${post?.userId}`);
       setUser(res.data)
       setDesc(res.data.desc)
       setImage(res.data.image)
     };
     fetchUser();
-  },[post.userId])
+   
+  },[])
   
   //temporaire like 
   const liked =false;

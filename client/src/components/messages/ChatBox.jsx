@@ -39,8 +39,8 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
     const handleSendMessage = (e) => {
         e.preventDefault();
         if (e.key === 'Enter') {
-              console.log({ message })
-        console.log({ chatData})
+            //   console.log({ message })
+        // console.log({ chatData})
         axiosPrivate.post(`/messages`, {
             sender: auth._id,
             conversationId:chatData.conversationId,
@@ -59,7 +59,7 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
 
                 {/* header */}
                 <div className={styles.header}>
-                    <img src={chatData?.photos?.length >0 ? chatData?.photos[0]?.url :defaultImg  } alt="profile picture" className={styles.img} />
+                    <img src={chatData?.currentPhoto ? chatData?.currentPhoto?.url :defaultImg  } alt="profile picture" className={styles.img} />
                     <p>{chatData.firstname} {' '} {chatData.lastname}</p>
                     <div style={{cursor:'pointer'}} onClick={() => setShowChatBox(prev => !prev)}>X</div>
                 </div>
@@ -71,7 +71,7 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
                         if (message.sender === auth._id) {
                             return <MyMessage message={message.text} key={message._id}/>
                         } else {
-                            return <UserMessage message={message.text} key={message._id}/>
+                            return <UserMessage userPhoto={chatData?.currentPhoto?.url} message={message.text} key={message._id}/>
                         }
                     }) : <p style={{marginLeft:'16px',marginTop:'4px'}}>No messages yet</p>}
                    </div>
@@ -88,7 +88,7 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
                             className={styles.footerInput}
                             value={message}
                                 onChange={(e) => setMessage(e.target.value)} onKeyDown={(e) => {
-                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                    if (e.key === 'Enter' && !e.shiftKey && e.target.value !== '') {
                                         handleSendMessage(e)
                                         setMessage('')
                                     }

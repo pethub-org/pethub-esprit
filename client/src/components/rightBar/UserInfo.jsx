@@ -30,15 +30,15 @@ const UserInfo = ({ setShowChatBox, userInfo, setChatData,setMessages,conversati
     <div style={{marginTop:'8px'}} className={styles.user} onClick={() => {
     const conversation =conversations.find(el => el?.members?.find(id => id === userInfo?._id))
       console.log({ conversation })
-      
-      setChatData({...userInfo,conversationId:conversation?._id})
+      const currentPhoto = userInfo.photos.find(photo => photo.isMain);
+      setChatData({...userInfo,conversationId:conversation?._id,currentPhoto})
       setShowChatBox(prev => !prev)
     }}>
             <div className={styles.userInfo}>
                <div>
                 <img className={styles.img}
                       // src={userInfo?.photos?.length > 0 ? userInfo?.currentPhoto?.url : defaultImg}
-                      src={defaultImg}
+                      src={userInfo?.currentPhoto ? userInfo?.currentPhoto?.url : defaultImg }
                       alt=""
                     />
               </div>
