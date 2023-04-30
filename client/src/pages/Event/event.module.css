@@ -63,14 +63,14 @@
     width: 150px;
     height: 40px;
     border-radius: 15px;
-    background-color: #c3c3c3;
+    background-color: #000;
     border: none;
 }
 
 .button:hover {
     border: none;
-    background-color: #000;
-    color: white;
+    background-color: #999999;
+    color: black;
 }
 
 .form {

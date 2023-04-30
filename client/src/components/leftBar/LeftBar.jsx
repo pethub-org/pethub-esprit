@@ -37,11 +37,15 @@ const LeftBar = () => {
               src={ auth?.currentPhoto ? auth?.currentPhoto?.url : ProfilePicture}
               alt={auth?.firstname}
             />
-            <span>{auth?.firstname}</span>
+            <span>
+              <Link to={"/profile/"+auth._id} style={{color:'white',textTransform:'capitalize'}}>{auth?.firstname}</Link>
+            </span>
           </div>
-          <div className="item" onClick={() => navigate('/friends')}>
-            <img src={Friends} alt="" />
-            <span>Friends</span>
+          <div className="item" >
+              <img src={Friends} alt="" />
+            <Link to="/friends" style={{color:'white'}}>
+              <span>Friends</span>
+            </Link>
           </div>
           {/* <div className="item">
             <img src={Groups} alt="" />
@@ -49,7 +53,7 @@ const LeftBar = () => {
           </div> */}
           <div className="item">
             <img src={Market} alt="" />
-            <span><Link to="/market">Marketplace</Link></span>
+            <span><Link to="/market" style={{color:'white'}}>Marketplace</Link></span>
           </div>
           <div className="item">
             <img src={Watch} alt="" />
@@ -63,9 +67,9 @@ const LeftBar = () => {
         <hr />
         <div className="menu">
           <span>Your shortcuts</span>
-          <div className="item" onClick={goToEventPage}>
+          <div className="item">
              <img src={Events} alt="" />
-             <span>Events</span>
+             <span><Link to="/events" style={{color:'white'}}>Events</Link></span>
           </div>
           <div className="item">
             <img src={Gaming} alt="" />

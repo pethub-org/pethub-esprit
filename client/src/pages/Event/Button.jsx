@@ -30,7 +30,7 @@ const Button = ({event,isMyEvent,isParticipated,setEvents}) => {
 
     const handleUnparticipate = async (event) => {
         const response = await axiosPrivate.put(`/events/unparticipate/${event._id}`, {})
-        console.log({ response })
+        // console.log({ response })
             setEvents(prevEvents => {
             const eventIndex = prevEvents?.findIndex(e => e?._id === event?._id);
             const newEvents = [];

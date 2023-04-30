@@ -40,7 +40,7 @@ const Profile = () => {
   
   const handleSelectFile = (e) => {
     setImage(e.target.files[0])
-    
+
   }
 
   const uploadPicture = async (e) => {
@@ -71,8 +71,10 @@ const Profile = () => {
             setFirstname(auth.firstname)
              setLastname(auth.lastname)
       return;
+      }
+      else {
+        axiosPrivate.get(`/users/${id}`).then(res => setUserProfileData(res.data.user))
     }
-    axiosPrivate.get(`/users/${id}`).then(res => setUserProfileData(res.data.user))
     
 
  
@@ -105,7 +107,7 @@ const Profile = () => {
         /> */}
 
          <img
-          src={auth?.currentPhoto ? auth?.currentPhoto?.url : ProfilePicture}
+          src={userProfileData?.currentPhoto ? userProfileData?.currentPhoto?.url : ProfilePicture}
           alt=""
           className="profilePic"
         />
@@ -113,7 +115,7 @@ const Profile = () => {
       <div className="profileContainer">
         <div className="uInfo">
           <div className="left">
-            <a href="http://facebook.com">
+            {/* <a href="http://facebook.com">
               <FacebookTwoToneIcon fontSize="large" />
             </a>
             <a href="http://facebook.com">
@@ -127,7 +129,7 @@ const Profile = () => {
             </a>
             <a href="http://facebook.com">
               <PinterestIcon fontSize="large" />
-            </a>
+            </a> */}
           </div>
           <div className="center">
             <br/>
@@ -135,8 +137,8 @@ const Profile = () => {
             <br/>
             <br/>
             <br/>
-            <span>{userProfileData?.firstname} {' '} {userProfileData?.lastname} </span>
-            <div className="info">
+            <h4 style={{textTransform:'capitalize'}}>{userProfileData?.firstname} {' '} {userProfileData?.lastname} </h4>
+            {/* <div className="info">
               <div className="item">
                 <PlaceIcon />
                 <span>USA</span>
@@ -145,14 +147,15 @@ const Profile = () => {
                 <LanguageIcon />
                 <span>lama.dev</span>
               </div>
-            </div>
+            </div> */}
             <div>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent:'center'
               }}>
-                <button onClick={() => setToggleUpdate(prev => !prev)}  style={{marginRight:'16px'}}>ADD</button>
+                {/* <button onClick={() => setToggleUpdate(prev => !prev)}  style={{marginRight:'16px'}}>ADD</button> */}
+                
               </div>
             </div>
          

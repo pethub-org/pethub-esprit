@@ -2,8 +2,10 @@ const { createEventService, deleteEventService, getEventService, getEventsServic
 const createEvent = async (req, res, next) => {
     try {
         const { title, eventDate, description } = req.body;
+        const file = req.file;
+        console.log({ file })
         const creatorId = req.user._id;
-        const event = await createEventService({ title, eventDate, description, creatorId });
+        const event = await createEventService({ title, eventDate, description, creatorId, image: file.path });
         return res.status(201).json({ event })
     } catch (error) {
         next(error);
@@ -15,7 +17,13 @@ const updateEvent = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { title, eventDate, description } = req.body;
-        await updateEventService(id, { title, eventDate, description });
+        const file = req.file;
+        if (!file) {
+            await updateEventService(id, { title, eventDate, description });
+            return res.status(200).json({ message: 'updated event successfully' })
+        }
+
+        await updateEventService(id, { title, eventDate, description, image: file.path });
         return res.status(200).json({ message: 'updated event successfully' })
     } catch (error) {
         next(error);
