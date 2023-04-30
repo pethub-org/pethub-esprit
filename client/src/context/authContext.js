@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -7,7 +8,8 @@ export const AuthContextProvider = ({ children }) => {
   // const [auth, setAuth] = useState(
   //   JSON.parse(localStorage.getItem("user")) || null
   // );
-  const [auth, setAuth] = useState({});
+  const [auth, setAuth] = useState(JSON.parse(localStorage.getItem("user")) || null);
+  // const navigate = useNavigate();
 
   // const BASE_URL = 'http://localhost:8080'
 
@@ -81,9 +83,19 @@ export const AuthContextProvider = ({ children }) => {
   // })
   // }
 
-  // useEffect(() => {
-  //   localStorage.setItem("user", JSON.stringify(auth));
-  // }, [auth]);
+  useEffect(() => {
+    // if (!auth) {
+    //   console.log("noauth")
+    //   const user = JSON.parse(localStorage.getItem('user'));
+    //   if (user) {
+    //     setAuth(user);
+    //   } else {
+    //     window.location.href = 'http://localhost:3000/login'
+    //   }
+    // }
+    localStorage.setItem("user", JSON.stringify(auth))
+
+  }, [auth]);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
