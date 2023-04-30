@@ -13,7 +13,12 @@ const Event = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [eventDate, setEventDate] = useState('');
+  const [image, setImage] = useState(null);
   const id = useId()
+
+  const handleSelectFile = (e) => {
+    setImage(e.target.files[0])
+  }
 
   const navigate = useNavigate();
 
@@ -55,7 +60,7 @@ const Event = () => {
 
   const handleCreateEvent = async (e) => {
     e.preventDefault();
-    const res = await axiosPrivate.post('/events', { title, description, eventDate });
+    const res = await axiosPrivate.post('/events', { title, description, eventDate ,image},{ headers: { "Content-Type": 'multipart/form-data' } });
     setEvents(prevEvents => [...prevEvents,res.data.event])
     setTitle('')
     setDescription('')
@@ -101,7 +106,7 @@ const Event = () => {
     <div className={style.flex} key={i}>
 
       <div className={style.item}>
-        <img src={EventImage} alt="img" className={style.img} />
+        <img src={event?.image ? event?.image : EventImage} alt="img" className={style.img} />
         <span className={style.date}>{formatedDate}</span>
         <p className={style.title}>{event.title}</p>
           <p className={style.description}>{event.description}</p>
@@ -134,7 +139,7 @@ const createEventForm = <>
               </div>
               <div className={style.formControl}>
                 <label className={style.label}> Event Image :</label>
-                 <input type="file" name="file" placeholder='File' />
+                 <input type="file" name="image" placeholder='File' onChange={handleSelectFile}/>
               </div>
               <div className={style.formControl}> 
                 <label className={style.label}>Event Date :</label>
@@ -161,7 +166,7 @@ const createEventForm = <>
           <h1>Events</h1>
          
         </div>
-         <button onClick={handleToggleForm}>{!toggleForm ? 'Create Event?' : 'Show Available Events'}  </button>
+         <button onClick={handleToggleForm} className={style.shareButton}>{!toggleForm ? 'Create Event?' : 'Show Available Events'}  </button>
         {!toggleForm && renderEvents}
         {toggleForm && createEventForm}
         

@@ -26,6 +26,7 @@ import useAuth from './hooks/useAuth'
 import ProductList from "./components/market/Prod";
 import ProductDetail from "./components/market/ProductDetail";
 import FormScreen from "./components/market/Formscreen";
+import Friends from "./pages/friends/Friends";
 
 function App() {
   const { auth } = useAuth();
@@ -101,6 +102,10 @@ function App() {
         {
           path: "/addprod",
           element: <FormScreen />,
+        },
+        {
+          path: "/friends",
+          element: <Friends />,
         },
       ],
     },

@@ -9,11 +9,16 @@ const EditEvent = () => {
     const [description,setDescription] = useState('');
     const [eventDate, setEventDate] = useState('');
     const { id } = useParams();
-    const navigate = useNavigate();
-
+  const navigate = useNavigate();
+  const [image, setImage] = useState(null);
+  const handleSelectFile = (e) => {
+      setImage(e.target.files[0])
+    }
     const handleUpdateEvent = async (e) => {
         e.preventDefault();
-        await axiosPrivate.put('/events/' + id, { title, description, eventDate  })
+      // await axiosPrivate.put('/events/' + id, { title, description, eventDate })
+      const res = await axiosPrivate.put('/events/'+id, { title, description, eventDate ,image},{ headers: { "Content-Type": 'multipart/form-data' } });
+      
         navigate('/events')
     }
 
@@ -47,7 +52,7 @@ const EditEvent = () => {
               </div>
               <div className={style.formControl}>
                 <label className={style.label}> Event Image :</label>
-                 <input type="file" name="file" placeholder='File' />
+                 <input type="file" name="image" placeholder='File' onChange={handleSelectFile}/>
               </div>
               <div className={style.formControl}> 
                 <label className={style.label}>Event Date :</label>

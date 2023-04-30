@@ -8,6 +8,7 @@ import defaultImg from '../../assets/defaultUser.png'
 import useAuth from '../../hooks/useAuth'
 import { axiosPrivate } from '../../api/axios'
 import useSocket from '../../hooks/useSocket'
+import { Link } from 'react-router-dom'
 
 const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }) => {
     
@@ -59,8 +60,11 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
 
                 {/* header */}
                 <div className={styles.header}>
-                    <img src={chatData?.currentPhoto ? chatData?.currentPhoto?.url :defaultImg  } alt="profile picture" className={styles.img} />
+                <img src={chatData?.currentPhoto ? chatData?.currentPhoto?.url : defaultImg} style={{ width: '25px', height: '25px', borderRadius: '50%' }} alt="profile" className={styles.img} />
+                <Link to={"/profile/"+chatData._id} style={{color:'white'}}>
                     <p>{chatData.firstname} {' '} {chatData.lastname}</p>
+                
+                </Link>
                     <div style={{cursor:'pointer'}} onClick={() => setShowChatBox(prev => !prev)}>X</div>
                 </div>
 

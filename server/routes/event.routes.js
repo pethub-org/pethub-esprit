@@ -4,6 +4,7 @@ const { createEvent, getEvents, getEvent, updateEvent, deleteEvent, participateE
 const authenticationMiddleware = require('../middlewares/auth.middleware');
 const validationMiddleware = require('../middlewares/validation.middleware');
 const yup = require('yup');
+const upload = require('../configs/multer.config');
 
 
 // TODO : add validation middleware & authentication middleware
@@ -15,10 +16,10 @@ const yup = require('yup');
 // TODO : Accept invitation to Event (prive event admin accepts invitation, public event user accepts invitation)
 // TODO : Img upload for Event
 
-router.post('/', authenticationMiddleware, createEvent)
+router.post('/', authenticationMiddleware, upload.single('image'), createEvent)
 router.get('/', getEvents)
 router.get('/:id', getEvent)
-router.put('/:id', updateEvent)
+router.put('/:id', upload.single('image'), updateEvent)
 router.delete('/:id', deleteEvent)
 
 router.put('/participate/:id', authenticationMiddleware, participateEvent)

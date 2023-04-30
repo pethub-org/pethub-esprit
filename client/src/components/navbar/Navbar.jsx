@@ -56,7 +56,7 @@ const Navbar = () => {
     <div className="navbar" style={{ width:'100%' }}>
       <div className="left">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span><Link to="/" style={{textDecoration:'none'}}>PetsHub</Link></span>
+          <span><Link to="/" style={{textDecoration:'none',color:'white'}}>PetsHub</Link></span>
         </Link>
         <HomeOutlinedIcon />
         {darkMode ? (
@@ -114,7 +114,7 @@ const Navbar = () => {
             alt=""
           />
           {/* <span>{currentUser.firstname}</span> */}
-          <Link  to={`/profile/${auth._id}`} style={{textTransform:'capitalize'}}>{auth.firstname} {' '} {auth.lastname}</Link>
+          <Link  to={`/profile/${auth._id}`} style={{textTransform:'capitalize',color:'white'}}>{auth.firstname} {' '} {auth.lastname}</Link>
           {/* Link to my profile */}
         </div>
       </div>

@@ -29,7 +29,7 @@ const UserInfo = ({ setShowChatBox, userInfo, setChatData,setMessages,conversati
   return (
     <div style={{marginTop:'8px'}} className={styles.user} onClick={() => {
     const conversation =conversations.find(el => el?.members?.find(id => id === userInfo?._id))
-      console.log({ conversation })
+      // console.log({ conversation })
       const currentPhoto = userInfo.photos.find(photo => photo.isMain);
       setChatData({...userInfo,conversationId:conversation?._id,currentPhoto})
       setShowChatBox(prev => !prev)
