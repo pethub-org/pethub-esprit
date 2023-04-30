@@ -21,6 +21,9 @@ const loginService = async({email,password}) => {
   socket.connect();
   socket.emit('addUser',res.data._id)
   const currentPhoto = res.data.photos.find(photo => photo.isMain)
+  
+  localStorage.setItem('user', JSON.stringify({ ...res.data, currentPhoto }));
+
   setAuth({ ...res.data, currentPhoto })
   return res.data;
 }
