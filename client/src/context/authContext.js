@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -89,10 +89,10 @@ export const AuthContextProvider = ({ children }) => {
     //   const user = JSON.parse(localStorage.getItem('user'));
     //   if (user) {
     //     setAuth(user);
-    //   } else {
-    //     window.location.href = 'http://localhost:3000/login'
-    //   }
-    // }
+      //   } else {
+      //     window.location.href = 'http://localhost:3000/login'
+      //   }
+      // }
     localStorage.setItem("user", JSON.stringify(auth))
 
   }, [auth]);

@@ -8,6 +8,8 @@ import ReplyAllOutlinedIcon from '@mui/icons-material/ReplyAllOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerrorredOutlined';
 import {Link} from 'react-router-dom'
 import Comments from '../comments/Comments'
 import { useContext, useEffect, useState } from 'react';
@@ -20,21 +22,22 @@ import defaultUser from '../../assets/defaultUser.png';
 
 
 const Post = ({ post, setPosts }) => {
-  // console.log({post})
-  const [like,setLike] = useState(post?.likes?.length)
-  const [com,setComm] = useState(post?.comments?.length)
-  const [share,setShare] = useState(post.shares.length)
-  const [user,setUser] = useState({})
-
-  const [islike,setIsLike] = useState(false)
-  // const {user:currentUser} = useContext(AuthContext)
   const {auth:currentUser} = useAuth()
+  const [like, setLike] = useState(post.likes.length)
+  const [share, setShare] = useState(post.shares.length)
+  const [hashtags, setHashtag] = useState('')
+  const [feeling, setFeeling] = useState('')
+  const [tags, setTags] = useState('')
+  const [com, setComm] = useState(post.comments.length)
+  const [user, setUser] = useState({})
+  const [islike, setIsLike] = useState(false)
   const [image, setImage] = useState('')
   const [desc, setDesc] = useState('');
   //transorme lpost lel update
   const [updateMode, setUpdateMode] = useState(false);
   const axios = useAxiosPrivate();
 
+  const PF = "http://localhost:3000/images/";
   useEffect(()=>{
     //include user ou non
     setIsLike(post?.likes?.includes(currentUser._id))
@@ -106,11 +109,14 @@ const Post = ({ post, setPosts }) => {
   //copy link  post
   const copyHandler = () => {
     try {
-      navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
-    } catch (err) {
-      // console.log("Failed to copy: ", err);
+
+      navigator.clipboard.writeText(`http://localhost:3000/api/posts/${post._id}`)
+      //alert("Link copied to clipboard!");
     }
+    catch (err) {
+      console.log("Failed to copy: ", err);
+    }
+
   };
 
 
@@ -125,6 +131,22 @@ const Post = ({ post, setPosts }) => {
       alert('Failed to share post!');
     }
   };
+    //report  
+    const [showReportForm, setShowReportForm] = useState(false);
+    const [reportReason, setReportReason] = useState('');
+  
+    const handleReportSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await axios.post(`/api/posts/${post._id}/report`, { reason: reportReason });
+        alert('Post reported as inappropriate');
+        setShowReportForm(false);
+        setReportReason('');
+      } catch (error) {
+        console.error(error);
+        alert('Error reporting post');
+      }
+    };
 
   return (
     <div className='post'>
@@ -139,8 +161,15 @@ const Post = ({ post, setPosts }) => {
                 <span className='name' style={{color:'white'}}>{currentUser?.firstname }</span>
                
             </Link>
-            <span className='date'>{format(post?.createdAt)}</span>
-           </div>
+              <div className="location-date">
+                <span className='date'>{format(post.createdAt)}</span>
+                <p className="location"><LocationOnOutlinedIcon />Tunisia</p>
+              </div>
+
+              <div>
+                <h5 style={{ marginTop: "1px", marginRight: "1px", color: "gold" }} onChange={(e) => setFeeling(e.target.value)} ><span>&#128512;</span>{post.feeling}</h5>
+              </div>
+            </div>
           
         </div>
         <div class="dropdown">
@@ -154,11 +183,22 @@ const Post = ({ post, setPosts }) => {
              <a onClick={()=>setUpdateMode(true)}> <EditOutlinedIcon/> Edit post</a>}
      
       <a onClick={copyHandler} ><InsertLinkOutlinedIcon/> Copy Link Post</a>
+      <a onClick={() => setShowReportForm(true)}><ReportGmailerrorredOutlinedIcon /> Report Post</a>
+              {showReportForm && (
+                <form className='reportForm' onSubmit={handleReportSubmit}>
+                  <label className='report'>
+                    Reason for report:
+                    <input className='reportInput' type="text" value={reportReason} onChange={(e) => setReportReason(e.target.value)} placeholder='Write the reason of your report' />
+                  </label>
+                  <div className='reportBtns'>
+                    <button className='reportBtn' type="submit">Report post</button>
+                    <button className='cancelBtn' type="button" onClick={() => setShowReportForm(false)}>Cancel</button>
+                  </div>
+                </form>
+              )}
     </div>
   </div> 
         
-        
-
         </div>
         
       { updateMode ? <textarea  value={desc} className='textarea' autoFocus style={{border:'none'}} onChange={(e)=>setDesc(e.target.value)
@@ -167,6 +207,16 @@ const Post = ({ post, setPosts }) => {
         <div className="content">
         <p>{post.desc}</p>
         <img src={image}  alt="" />
+      </div>
+      )
+      }
+      { updateMode ? <textarea  value={hashtags} className='textarea' autoFocus style={{border:'none'}} onChange={(e)=>setHashtag(e.target.value)
+      }/>:
+      (
+        <div className="content" style={{color:"blue"}}>
+         {post.hashtags && <p>#{post.hashtags}</p>}
+         {post.image ? <img src={PF + post.image} alt="image" /> : <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8IHIodtO_PbMwrmVGhxM0DWGUBuQCiVcQRQ&usqp=CAU" alt="image not available" />}
+       
       </div>
       )
       }

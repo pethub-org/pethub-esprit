@@ -107,3 +107,107 @@
   height: 80%;
   overflow-y:visible ;
 }
+
+.rightBar{
+    .follower>div{
+    display: flex;
+    gap:10px;
+    align-items: center;
+
+    }
+    flex:3;
+    position: sticky;
+    top: 70px;
+    height: calc(100vh - 70px);
+    overflow: scroll;
+    &::-webkit-scrollbar{
+        display: none;
+    }
+    .container{
+        padding: 10px;
+        .user-container {
+            height: 153.8px; 
+            overflow: auto;
+            &::-webkit-scrollbar{
+                display: none;
+            }
+          }
+        .item{
+            box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.09);
+            -webkit-box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.09);
+            -moz-box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.09);
+            padding: 20px;
+             border-radius: 10px;
+            margin-bottom: 20px;
+            .follower{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 11px;
+                .followerImg{
+                    width: 40%;
+                    height: 40px;
+                    border-radius:50% ;
+                    object-fit: cover;
+                }
+            .name{
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+
+            }
+            .button{
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                padding-left: 20px;
+                padding-right: 20px;
+                height: 2rem;
+                border-radius: 0.5rem;
+                color: white;
+                cursor: pointer;
+                background-color: #5271ff ;
+                transition: all 100ms ease-out;
+                
+            }
+            .button:hover{
+                cursor: pointer;
+                color: #5271ff;
+                background-color: transparent;
+                border : 2px solid  #5271ff;
+            }
+
+            span{
+                color: gray;
+            }
+            .user{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin: 20px 0px;
+                .userInfo{
+                    display: flex;
+                    align-items: center;
+                    gap:20px;
+                    img{
+                        width: 40%;
+                        height: 40px;
+                        border-radius:50% ;
+                        object-fit: cover;
+                    }
+                    span{
+                        font-weight: 600;
+                        color: black;
+                    }
+
+                }
+                
+            }
+        }
+
+    }
+}
+}
