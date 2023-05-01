@@ -54,21 +54,21 @@ router.delete('/delete/:id', async (req, res) => {
 });
 
 //reaction 
-router.put("/:id/like",async(req,res)=>{
-    try{
+router.put("/:id/like", async (req, res) => {
+    try {
         const comment = await Comment.findById(req.params.id);
-        if(!comment.likes.includes(req.body.userId)){
-            await comment.updateOne({$push:{likes : req.body.userId}})
+        if (!comment.likes.includes(req.body.userId)) {
+            await comment.updateOne({ $push: { likes: req.body.userId } })
             res.status(200).json("the comment has been liked")
         }
-        else{
-            await comment.updateOne({$pull:{likes: req.body.userId}})
-            res.status(200).json ("the comment has been disliked")
+        else {
+            await comment.updateOne({ $pull: { likes: req.body.userId } })
+            res.status(200).json("the comment has been disliked")
 
         }
 
     }
-    catch(err){
+    catch (err) {
         res.status(500).json(err)
     }
 })
@@ -124,7 +124,7 @@ router.get('/:commentId/replies/all', async (req, res) => {
     }
 });
 
-  
-   
-  
+
+
+
 module.exports = router
