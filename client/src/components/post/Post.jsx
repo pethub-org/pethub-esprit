@@ -174,9 +174,19 @@ const Post = ({ post, setPosts }) => {
                 <form className='reportForm' onSubmit={handleReportSubmit}>
                   <label className='report'>
                     Reason for report:
-                    <input className='reportInput' type="text" value={reportReason} onChange={(e) => setReportReason(e.target.value)} placeholder='Write the reason of your report' />
+                    <input className='reportInput' type="text" value={reportReason} onChange={(e) => setReportReason(e.target.value)} placeholder='Write the reason of your report' style={{
+                      padding: '15px',
+                      borderRadius: '15px',
+                      marginTop: '5px',
+                      marginLeft: '6px',
+                      marginBottom: '10px',
+                      width: '100%',
+                      height: '50px',
+                      border: "none",
+                      opacity: "0.9"
+                    }} />
                   </label>
-                  <div className='reportBtns'>
+                  <div className='reportBtns' style={{marginBottom:"15px",borderRadius:"12px"}}>
                     <button className='reportBtn' type="submit">Report post</button>
                     <button className='cancelBtn' type="button" onClick={() => setShowReportForm(false)}>Cancel</button>
                   </div>
@@ -187,7 +197,14 @@ const Post = ({ post, setPosts }) => {
 
         </div>
 
-        {updateMode ? <textarea value={desc} className='textarea' autoFocus style={{ border: 'none' }} onChange={(e) => setDesc(e.target.value)
+        {updateMode ? <input value={desc} className='textarea' autoFocus      style={{
+                padding: '15px',
+                borderRadius: '15px',
+                marginTop:'6px',
+                opacity:"0.9",
+                border:"none"
+              }}
+              onChange={(e) => setDesc(e.target.value)
         } /> :
           (
             <div className="content" style={{ lineHeight: "1.8" }}>
@@ -196,7 +213,15 @@ const Post = ({ post, setPosts }) => {
             </div>
           )
         }
-        {updateMode ? <textarea value={hashtags} className='textarea' autoFocus style={{ border: 'none' }} onChange={(e) => setHashtag(e.target.value)
+        {updateMode ? <input value={hashtags} className='textarea' autoFocus style={{
+                padding: '15px',
+                borderRadius: '15px',
+                marginTop:'6px',
+                opacity:"0.9",
+                border:"none",
+               
+              }} 
+              onChange={(e) => setHashtag(e.target.value)
         } /> :
           (
             <div className="content" style={{ color: "blue", lineHeight: "1.8" }}>

@@ -160,12 +160,20 @@ function Comments({ postId }) {
               <span style={{ fontSize: "15px",textTransform:"capitalize" }}>{currentUser?.firstname} {' '}{currentUser?.lastname} </span>
               {editingComment === comment._id ? (
                 <>
-                  <textarea
+                  <input
                     value={updatedComment}
                     onChange={(event) => setUpdatedComment(event.target.value)}
                     placeholder='Update your comment'
+                    style={{
+                      padding: '15px',
+                      borderRadius: '15px',
+                      marginTop:'6px',
+                      opacity:"0.9",
+                      border:"none",
+                     
+                    }} 
                   />
-                  <div className='button-container'>
+                  <div className='button-container' style={{marginTop:"-5px"}}>
                     <button className='save-button' style={{ fontSize: "15px" }} onClick={() => handleUpdate(comment._id)}>
                       Save
                     </button>
@@ -185,7 +193,7 @@ function Comments({ postId }) {
             </div>
             <span className='date' style={{ marginLeft: "10px", marginRight:"20px"}}>{format(comment.createdAt)}</span>
 
-            <div className="likes">
+            <div className="likes" style={{marginTop:"-20px"}}>
               <button className="like-button" onClick={() => handleLike(comment._id)}>
                 {likedComments.includes(comment._id) ? (
                   <span style={{ color: 'white' }}><FavoriteBorderOutlinedIcon/> </span>
@@ -194,15 +202,16 @@ function Comments({ postId }) {
                 )}
 
               </button>
-            </div>
-            
-           
-            <button onClick={() => toggleReplies(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><QuickreplyOutlinedIcon/></button>
-           
+              <button onClick={() => toggleReplies(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><QuickreplyOutlinedIcon/></button>
             <button onClick={() => handleEdit(comment)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}>
               <ModeEditOutlineOutlinedIcon/></button>
             <button onClick={() => handleDelete(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><DeleteOutlineOutlinedIcon/></button>
+            
             {showReplies[comment._id] && <Reply commentId={comment._id} />}
+            </div>
+            
+           
+
           </div>
 
 

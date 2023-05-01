@@ -248,7 +248,12 @@
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
 
-
+    &:hover {
+      cursor: pointer;
+      color: #5271ff;
+      background-color: transparent;
+      border : 2px solid  #5271ff;
+    }
   }
 
   .reportInput:hover {
@@ -274,6 +279,13 @@
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      color: white;
+      background-color: transparent;
+      border : 2px solid  gray;
+    }
 
   }
 
