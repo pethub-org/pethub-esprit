@@ -3,7 +3,7 @@
 .home{
   @include themify($themes) {
     padding: 20px 70px;
-    background-color: themed("bgSoft");
+    background-color: #222;
 
     @include mobile {
       padding: 10px;

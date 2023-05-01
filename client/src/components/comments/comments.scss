@@ -50,6 +50,7 @@
      }
     .comment {
       margin: 10px 15px;
+      margin-top: 10px;
       display: flex;
       justify-content: space-around;
       gap: 20px;
@@ -106,7 +107,9 @@
         flex:1;
         align-self: center;
         color: gray;
-        font-size: 12px;
+        font-size: 10px;
+        margin-right: 60px;
+        margin-left: 60px;
       }
     }
   
@@ -142,6 +145,7 @@
   
       &:hover {
         transform: scale(1.2);
+        background-color: #222;
       }
     }
   

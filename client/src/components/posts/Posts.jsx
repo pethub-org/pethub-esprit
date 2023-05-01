@@ -21,7 +21,7 @@ const Posts = ({username,setPosts,posts}) => {
     {posts?.length > 0 ? (
       posts.map((post) => <Post key={post._id} post={post} setPosts={setPosts} />)
     ) : (
-      <p style={{fontSize:"25px" , textAlign:"center"}}>No posts to display.</p>
+      <p style={{fontSize:"25px" , textAlign:"center" , color:"white"}}>No posts to display.</p>
     )}
   </div>
 );

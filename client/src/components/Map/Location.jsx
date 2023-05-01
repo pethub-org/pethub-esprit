@@ -5,8 +5,8 @@ import axios from "axios";
 mapboxgl.accessToken = 'pk.eyJ1IjoiYW5pczc4OSIsImEiOiJjbGd2YmFybjUwMWh0M2xuMWdpOHBmYXJrIn0.pgwO7v2KveiHf7NDJ5j-Mw';
 
 const Location = ({ setOpen , post }) => {
-  const [lng, setLng] = useState(10,18962);
-  const [lat, setLat] = useState(36,89771);
+  const [lng, setLng] = useState(10,1843);
+  const [lat, setLat] = useState(36,7983);
   const [zoom, setZoom] = useState(12);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);

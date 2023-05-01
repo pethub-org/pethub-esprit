@@ -9,6 +9,8 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import QuickreplyOutlinedIcon from '@mui/icons-material/QuickreplyOutlined';
 import Reply from './Reply';
+import { Link } from 'react-router-dom'
+import defaultUser from '../../assets/defaultUser.png';
 
 import SendIcon from '@mui/icons-material/Send';
 import useAuth from '../../hooks/useAuth';
@@ -20,8 +22,8 @@ function Comments({ postId }) {
   const [updatedComment, setUpdatedComment] = useState('');
   const [showReplies, setShowReplies] = useState({});
   const [likedComments, setLikedComments] = useState([]);
-  const [like,setLike] = useState('')
-  const [islike,setIsLike] = useState(false)
+  const [like, setLike] = useState('')
+  const [islike, setIsLike] = useState(false)
 
   // const { user: currentUser } = useContext(AuthContext)
   const { auth: currentUser } = useAuth()
@@ -87,14 +89,14 @@ function Comments({ postId }) {
       console.error(error);
     }
   }
-    //show replies
-    function toggleReplies(commentId) {
-      setShowReplies((prevShowReplies) => ({
-        ...prevShowReplies,
-        [commentId]: !prevShowReplies[commentId],
-      }));
-    }
-     //like 
+  //show replies
+  function toggleReplies(commentId) {
+    setShowReplies((prevShowReplies) => ({
+      ...prevShowReplies,
+      [commentId]: !prevShowReplies[commentId],
+    }));
+  }
+  //like 
   async function handleLike(commentId) {
     try {
       const response = await axios.put(`/api/comments/${commentId}/like`, {
@@ -115,22 +117,33 @@ function Comments({ postId }) {
     } catch (error) {
       console.error(error);
     }
-    setLike(islike ? like-1 : like+1)
+    setLike(islike ? like - 1 : like + 1)
     setIsLike(!islike)
   }
 
   return (
     <div className='form-container'>
-      <h2>Comments</h2>
+      <h2>All Comments</h2>
 
       <form onSubmit={handleSubmit}>
-        <textarea
+        <input
+          style={{
+            padding: '15px',
+            borderRadius: '15px',
+            marginTop: '5px',
+            marginLeft: '6px',
+            marginBottom:'10px',
+            width: '100%',
+            height:'55px',
+            border:"none",
+            opacity: "0.9"
+          }}
           value={newComment}
           onChange={(event) => setNewComment(event.target.value)}
           placeholder='write a comment'
           onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
-              handleSubmit(event); 
+              handleSubmit(event);
             }
           }}
         />
@@ -140,9 +153,11 @@ function Comments({ postId }) {
       <ul>
         {comments.map((comment) => (
           <div className="comment" key={comment._id}>
-            <img src={currentUser?.profilePicture} alt="User" className="user-image" />
+            <Link to={`/profile/${comment.userId}`}>
+            <img src={currentUser.currentPhoto ? currentUser.currentPhoto.url : defaultUser} alt={currentUser.firstname}  />
+            </Link>
             <div className='info'>
-              <span>{currentUser?.firstname} {' '}{currentUser?.lastname} </span>
+              <span style={{ fontSize: "15px",textTransform:"capitalize" }}>{currentUser?.firstname} {' '}{currentUser?.lastname} </span>
               {editingComment === comment._id ? (
                 <>
                   <textarea
@@ -163,24 +178,30 @@ function Comments({ postId }) {
               ) : (
                 <>
                   <p>{comment.content}</p>
-                  <div className="likes">
-                      <button className="like-button" onClick={() => handleLike(comment._id)}>
-                        {likedComments.includes(comment._id) ? (
-                          <span style={{ color: 'red' }}><FavoriteOutlinedIcon /></span>
-                        ) : (
-                          <span><FavoriteBorderOutlinedIcon /></span>
-                        )}
-                      </button>
-                      <span className="num-likes"> {comment.likes.length} {comment.likes.length === 1 ? 'like' : 'likes'}</span>
-                    </div>
+
 
                 </>
               )}
             </div>
-            <button onClick={() => toggleReplies(comment._id)} style={{ fontSize: "10px" }}><QuickreplyOutlinedIcon /></button>
-            <span className='date'>{format(comment.createdAt)}</span>
-            <button onClick={() => handleEdit(comment)} style={{ fontSize: "15px" }}><ModeEditOutlineOutlinedIcon /></button>
-            <button onClick={() => handleDelete(comment._id)} style={{ fontSize: "10px" }}><DeleteOutlineOutlinedIcon /></button>
+            <span className='date' style={{ marginLeft: "10px", marginRight:"20px"}}>{format(comment.createdAt)}</span>
+
+            <div className="likes">
+              <button className="like-button" onClick={() => handleLike(comment._id)}>
+                {likedComments.includes(comment._id) ? (
+                  <span style={{ color: 'white' }}><FavoriteBorderOutlinedIcon/> </span>
+                ) : (
+                  <span style={{ color: 'red' }} > <FavoriteOutlinedIcon/> </span>
+                )}
+
+              </button>
+            </div>
+            
+           
+            <button onClick={() => toggleReplies(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><QuickreplyOutlinedIcon/></button>
+           
+            <button onClick={() => handleEdit(comment)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}>
+              <ModeEditOutlineOutlinedIcon/></button>
+            <button onClick={() => handleDelete(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><DeleteOutlineOutlinedIcon/></button>
             {showReplies[comment._id] && <Reply commentId={comment._id} />}
           </div>
 

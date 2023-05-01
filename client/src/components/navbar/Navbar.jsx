@@ -58,6 +58,7 @@ const Navbar = () => {
         <Link to="/" style={{ textDecoration: "none" }}>
           <span><Link to="/" style={{textDecoration:'none',color:'white'}}>PetsHub</Link></span>
         </Link>
+        
         <HomeOutlinedIcon />
         {darkMode ? (
           <WbSunnyOutlinedIcon onClick={toggle} />
@@ -65,9 +66,17 @@ const Navbar = () => {
           <DarkModeOutlinedIcon onClick={toggle} />
         )}
         <GridViewOutlinedIcon />
-        <div className="search">
+        <div className="search"            
+        style={{
+                padding: '10px',
+                borderRadius: '15px',
+                marginTop:'10px',
+                marginLeft:'5px',
+                opacity:"0.9",
+                height:"40px"
+              }}>
           <SearchOutlinedIcon />
-          <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleSearch} style={{color:'black' , border:'none'}} />
+          <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleSearch} style={{color:'black' , border:'1px', opacity:"0.9"}} />
         </div>
       </div>
       <div className="right">
@@ -76,16 +85,17 @@ const Navbar = () => {
           alignContent: 'center',
           justifyContent: 'center',
         }}>
+          <div >
+             <FriendRequests/>
+          </div>
              
-          <div>
+          <div style={{marginRight:"20px"}}>
                <NotifcationDropdown/>
           </div>
       
               {/* <MessageDropdown /> */}
           
-          <div>
-             <FriendRequests/>
-          </div>
+
 
 
           <div style={{marginRight:'18px'}}>

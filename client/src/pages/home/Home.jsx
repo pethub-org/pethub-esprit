@@ -6,9 +6,11 @@ import Feed from "../../components/feed/feed"
 import { useEffect, useState } from "react"
 import useAuth from "../../hooks/useAuth"
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
+import Game from "../../components/games/Game"
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  
   const axios = useAxiosPrivate();
   const { auth } = useAuth();
 
@@ -19,11 +21,12 @@ const Home = () => {
         }))
     })
   }, [axios])
+ 
   
   return (
-    <div className="home">
-      {/* <Stories/> */}
-      {/* <Share /> */}
+    <div className="home" >
+{/*<Stories /> */}
+      {/* <Share />*/} 
       <Feed posts={posts} setPosts={setPosts}/>
       
       <Posts posts={posts} setPosts={setPosts}/>

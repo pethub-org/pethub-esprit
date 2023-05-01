@@ -188,7 +188,7 @@ const Feed = ({posts,setPosts}) => {
   };
   useEffect(() => {
     const fetchUser = async () => {
-      const { data } = await axios.get("/users");
+      const { data } = await axios.get("/api/users");
       setPersons(data)
       console.log(data)
     }
@@ -266,23 +266,25 @@ const Feed = ({posts,setPosts}) => {
       const res = await axios.post("/api/posts/create", newPost);
       // console.log({res})
       setPosts(prevPosts => [res.data,...prevPosts] )
-      // window.location.reload();
+      window.location.reload();
     } catch (err) {}
   };
   return (
     <>
     <div className="share">
     <div className="shareWrapper">
-      <div className="shareTop">
+      <div className="shareTop" >
         <img className="shareProfileImg" src={user?.currentPhoto ? user?.currentPhoto?.url : ProfilePicture} alt={user?.firstname} />
         <input
-          placeholder={"What's in your mind " + user?.firstname + ' ' +user?.lastname}
+          placeholder={"What's in your mind " + user?.firstname.charAt(0).toUpperCase() + user?.firstname.slice(1) + ' ' + user?.lastname.charAt(0).toUpperCase() + user?.lastname.slice(1)}
+
           className="shareInput"
               ref={desc}
               style={{
                 padding: '15px',
                 borderRadius: '15px',
-                marginTop:'6px'
+                marginTop:'6px',
+                opacity:"0.9"
               }}
         />
                  {showInput && (
@@ -290,6 +292,13 @@ const Feed = ({posts,setPosts}) => {
               placeholder={"Add a hashtag to your post"}
               className="shareInput"
               ref={hashtags}
+              style={{
+                padding: '15px',
+                borderRadius: '15px',
+                marginTop:'6px',
+                marginLeft:'6px',
+                opacity:"0.9"
+              }}
             />)}
 
       </div>

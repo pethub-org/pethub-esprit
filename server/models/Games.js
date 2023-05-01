@@ -22,6 +22,11 @@ const gameSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  image : {
+    type: String,
+    required : true
+
+  },
   platforms: [{
     type: String,
     required: true

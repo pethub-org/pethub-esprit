@@ -5,10 +5,27 @@ const postModel = require('../models/Post');
 //add comments
 router.post('/create', async (req, res) => {
     try {
-        const comment = new Comment(req.body);
+        const { content, postId } = req.body;
+
+        const comment = new Comment({
+            content,
+            postId,
+        });
+
+        const mentions = [];
+        const regex = /@(\w+)/g;
+        let match;
+        while ((match = regex.exec(comment.content)) !== null) {
+            const username = match[1];
+            mentions.push(username);
+        }
+
+        comment.mentions = mentions;
+
         await comment.save();
+
         // Add comment to the associated post
-        const post = await postModel.findById(req.body.postId);
+        const post = await postModel.findById(postId);
         post.comments.push(comment);
         await post.save();
 

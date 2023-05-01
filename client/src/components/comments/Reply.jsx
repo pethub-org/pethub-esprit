@@ -80,9 +80,23 @@ function Reply({ commentId }) {
 
   return (
     <div className="reply">
-      <h4>Replies:</h4>
+      <h4>Replies</h4>
       <form onSubmit={handleSubmit}>
-  <textarea
+  <input
+            style={{
+              padding: '15px',
+              borderRadius: '15px',
+              marginTop: '6px',
+              marginLeft: '6px',
+              width: '100%',
+              height:'55px',
+              border:"none",
+              opacity: "0.9",
+              display: 'flex',
+              justifyContent: 'center', // align the child elements horizontally
+              alignItems: 'center', // align the child elements vertically
+              flexDirection: 'column',
+            }}
     value={newReply}
     onChange={(event) => setNewReply(event.target.value)}
     placeholder="write a reply"
@@ -102,7 +116,7 @@ function Reply({ commentId }) {
           <div className="comment" key={reply._id}>
             <img src={currentUser?.profilePicture} alt="User" className="user-image" />
             <div className="info">
-              <span>{currentUser?.firstname} {' '} {currentUser?.lastname}</span>
+              <span >{currentUser?.firstname} {' '} {currentUser?.lastname}</span>
               {editingReply === reply._id ? (
                 <>
                   <textarea

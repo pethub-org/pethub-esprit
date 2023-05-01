@@ -14,6 +14,7 @@ import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
 import {Link, useNavigate} from 'react-router-dom'
 import useAuth from "../../hooks/useAuth";
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 
 import ProfilePicture from '../../assets/defaultUser.png';
 
@@ -31,18 +32,25 @@ const LeftBar = () => {
     <div className="leftBar">
       <div className="container">
         <div className="menu">
+        <div className="item" >
+              <HomeOutlinedIcon style={{ width:"30px",height:"30px"}}/>
+            <Link to="/" style={{color:'white'}}>
+              <span>Home</span>
+            </Link>
+          </div>
           <div className="user">
             <img
+            style={{ width:"30px",height:"30px"}}
               // src={auth?.photos[0] ? auth?.photos[0] : defaultUser }
               src={ auth?.currentPhoto ? auth?.currentPhoto?.url : ProfilePicture}
               alt={auth?.firstname}
             />
             <span>
-              <Link to={"/profile/"+auth._id} style={{color:'white',textTransform:'capitalize'}}>{auth?.firstname}</Link>
+              <Link to={"/profile/"+auth._id} style={{color:'white',textTransform:'capitalize'}}>{auth?.firstname}{' '}{auth?.lastname}</Link>
             </span>
           </div>
           <div className="item" >
-              <img src={Friends} alt="" />
+              <img src={Friends} alt="" style={{ width:"30px",height:"30px"}}/>
             <Link to="/friends" style={{color:'white'}}>
               <span>Friends</span>
             </Link>
@@ -52,7 +60,7 @@ const LeftBar = () => {
             <span><Link to="/addprod">ADD PRODUCT</Link></span>
           </div> */}
           <div className="item">
-            <img src={Market} alt="" />
+            <img src={Market} alt=""  />
             <span><Link to="/market" style={{color:'white'}}>Marketplace</Link></span>
           </div>
           <div className="item">
@@ -73,7 +81,7 @@ const LeftBar = () => {
           </div>
           <div className="item">
             <img src={Gaming} alt="" />
-            <span>Gaming</span>
+            <span><Link to={'/games'} style={{color:"white"}}>Gaming</Link></span>
           </div>
           <div className="item">
             <img src={Gallery} alt="" />

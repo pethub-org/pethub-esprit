@@ -9,7 +9,7 @@ import styles from './notifcations.module.css';
 
 import PeopleIcon from '@mui/icons-material/People';
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
-
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 const NotifcationDropdown = () => {
   const [notifications, setNotifications] = useState([]);
   const [showNotifcations,setShowNotifcations] = useState(false);
@@ -47,7 +47,7 @@ const NotifcationDropdown = () => {
         await getUserNotifcations();
         setShowNotifcations(prev => !prev)
      }}>
-      <CircleNotificationsIcon />
+      <NotificationsNoneOutlinedIcon />
           {/* <FormControl fullWidth style={{
           color: 'white',
           
