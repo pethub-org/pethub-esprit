@@ -35,4 +35,16 @@ route.get("/", async (req, res) => {
     res.send("Error" + err);
   }
 });
+
+
+
+route.delete("/:id", async (req, res) => {
+  try {
+    const review = await Review.findByIdAndDelete(req.params.id);
+    res.json(review);
+    console.log("sucess");
+  } catch (err) {
+    res.send("Error" + err);
+  }
+});
 module.exports= route;

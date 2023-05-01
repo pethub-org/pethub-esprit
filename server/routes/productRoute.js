@@ -3,22 +3,25 @@ const Product = require("../models/produtModel");
 const route = require("express").Router();
 const multer = require("multer");
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads/");
+  destination: (req, file, callback) => {
+      callback(null, "C:/Users/USER/Documents/GitHub/pethub-esprit/client/public/uploads");
   },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
+
+  filename: (req, file, callback) => {
+      callback(null, Date.now() + file.originalname);
+  }
+})
 
 const upload = multer({
   storage: storage,
 });
 route.get("/", async (req, res) => {
   try {
-    const products = await Product.find();
+    const sort = req.query.sort || 'price'; // Default sort by price
+    const sortOrder = req.query.sortOrder || 'asc'; // Default sort order ascending
+    const products = await Product.find({}).sort({ [sort]: sortOrder });
     res.json(products);
-    console.log(products);
+
   } catch (err) {
     res.send("Error" + err);
   }
@@ -44,10 +47,12 @@ route.get("/bycategory/:categoryId", async (req, res) => {
   }
 });
 route.post("/", upload.single("image"), async (req, res) => {
-  console.log("request", req.file);
+  console.log("request", req.file
+  );
+  const image = req.file.filename;
   const product = new Product({
     name: req.body.name,
-    ///image: req.file.path,
+    image: image,
     category: req.body.category,
     description: req.body.description,
     price: req.body.price,

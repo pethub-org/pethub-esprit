@@ -1,34 +1,33 @@
 import { Link, useLocation } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 
-import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
-import ReplyAllOutlinedIcon from "@mui/icons-material/ReplyAllOutlined";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/icons-material/Save";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import "../product/market.scss";
+import * as React from 'react';
+import { spacing } from '@mui/system';
 
-import "./market.scss";
-import { useState } from "react";
-function Product(props) {
-  const location = useLocation();
-  const [imageSrc, setImageSrc] = useState("https://i.imgur.com/VcypK5c.png");
-  const [isImageError, setIsImageError] = useState(false);
+function Order(props) {
+ 
+    const location = useLocation();
 
-  function handleImageError() {
-    setIsImageError(true);
-  }
+
   const _id = location.pathname.split("/")[2];
   const axios = useAxiosPrivate();
-  const { product } = props;
+
+   const { order } = props;
   //delete
-  async function handleDelete(productid) {
+  async function handleDelete(orderid) {
     window.location.reload(false);
     try {
-      const response = await axios.delete(`/api/products/${productid}`);
+      const response = await axios.delete(`/api/orders/${orderid}`);
     } catch (error) {
       console.error(error);
     }
@@ -83,31 +82,61 @@ function Product(props) {
     //   </div>
     // </div>
 
-    <div className="container">
-      <div className="card">
-        <div className="image">
-          <Link to={"/market/" + product._id}>
-            {isImageError ? (
-              <img src="https://i.imgur.com/VcypK5c.png" alt="Default Image" />
-            ) : (
-              <img src={product.image} onError={handleImageError} alt="Image" />
-            )}
-          </Link>
-        </div>
-        <div className="vitamin">
-          <h3>{product.name}</h3>
-        </div>
 
-        <h4>price: ${product.price} </h4>
-        <div className="buttons">
-          <button onClick={() => handleDelete(product._id)}>delete</button>
-          <Link  to={"/updateprod/" + product._id}>
-          <button>update</button>
-          </Link>
-          <button>add to wishlist</button>
-        </div>
-      </div>
-    </div>
+    
+    <List sx={{ width: '100%' , maxWidth:700,  bgcolor: 'background.paper' ,  alignItems:"center" , borderRadius: 2 , m:5 }}>
+     
+      <ListItem alignItems="flex-start" >
+        <ListItemAvatar>
+          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        </ListItemAvatar>
+        <ListItemText
+          primary={order.name}
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: 'inline' }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+               {order.price}
+              </Typography>
+             
+            </React.Fragment>
+          }
+        />
+      </ListItem>
+     
+      <Stack direction="row" spacing={2} sx={{ml:60 }} >
+      <Link to={"/market/" + order.productid}>
+      <Button variant="contained">View</Button>
+ </Link>
+      <Button variant="contained" onClick={() => handleDelete(order._id)}>
+        Delete 
+      </Button>
+    </Stack>
+    
+       
+     
+   
+    </List>
+
+
+
+
+
+    // <div className="container">
+    //   <div className="card">
+   
+    //     <div className="vitamin">
+    //       <h3>{order.name}</h3>
+    //     </div>
+
+    //     <h4>price: ${order.price} </h4>
+       
+    //   </div>
+    // </div>
 
     ///////////////////////////////////////////////////////
     // <div className="card">
@@ -146,4 +175,4 @@ function Product(props) {
     // </div>
   );
 }
-export default Product;
+export default Order;

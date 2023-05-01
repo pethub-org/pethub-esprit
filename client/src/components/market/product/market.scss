@@ -413,7 +413,7 @@ button {
 
 .buttons button:hover {
   background-color: #ffffff;
-  color: #2932db;
+  color: rgb(41, 50, 219);
 }
 .card h4 {
   text-align: center;
@@ -515,6 +515,7 @@ button {
   width: 50%;
 }
 .Productname {
+  color: white;
   font-size: 48px;
   font-weight: 600;
   margin-top: 0;
@@ -523,15 +524,15 @@ button {
 }
 .ProdDescription {
   font-size: 20px;
-  color: rgba(255, 245, 245, 0.38);
+  color: rgb(255, 255, 255);
   margin-top: 0;
   margin-bottom: 16px;
   margin-left: 30px;
 }
 .Feature {
-  width: 80px;
-  height: 30 px;
-  background-color: gainsboro;
+  width: 100px;
+  height: 20 px;
+  background-color: rgb(41, 50, 219);
   border-radius: 8px;
   border: 0;
   margin-top: 10px;
@@ -541,9 +542,10 @@ button {
   cursor: pointer;
   font-weight: 500;
   font-size: 10px;
-  padding: 12px 24px;
+  padding: 12px;
 }
 .ProdPrice {
+  color: white;
   margin-left: 30px;
   font-weight: 600;
   font-size: 20px;
@@ -565,4 +567,51 @@ button {
 
 .ReviewListItem__MetaData {
   flex: 0 0 15rem;
+}
+
+
+//popup
+.popup-box {
+  position: fixed;
+  background: #00000050;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ 
+.box {
+  position: relative;
+
+  background: #fff;
+  border-radius: 4px;
+  padding: 32px;
+  width: 100%;
+  max-width: 640px;
+  border: 1px solid #999;
+}
+ 
+.close-icon {
+  content: "x";
+  cursor: pointer;
+position: absolute;
+top: 16px;
+right: 16px;
+width: 25px;
+height: 25px
+}
+.buttonpopup{
+  position: relative;
+  left: 510px;
+  margin-top: 10px;
+  
+}
+.review_user {
+  font-size: 0.8rem;
+  color: grey;
+  margin-left: 20px;
+  margin-bottom: 10px;
 }

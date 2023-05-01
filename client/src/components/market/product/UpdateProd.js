@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 // import Axios from "axios";
 import {useNavigate , useLocation} from "react-router-dom";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 import "./market.scss";
 function UpdateProd() {

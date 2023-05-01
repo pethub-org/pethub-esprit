@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {useNavigate } from "react-router-dom";
 
 // import Axios from "axios";
 import "./market.scss";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+
 function FormScreen() {
   const [name, setName] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const [categorie, setCategorie] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -30,6 +31,7 @@ function FormScreen() {
     formData.append("category", selectedCategory);
     formData.append("description", description);
     formData.append("price", price);
+    console.log(formData);
     axios.post("/api/products/", formData);
     navigate('/market')
   };
@@ -96,7 +98,7 @@ function FormScreen() {
     // </div>
     <div className="form-box">
       <h5 className="form-step"> </h5>
-      <form>
+      <form encType="multiple/form-data" onSubmit={addNewProduct}>
         <div className="field1">
           <label> add your product </label>
           <input
@@ -152,7 +154,6 @@ function FormScreen() {
           type="submit"
           id="submitBtn"
           className="submitButton"
-          onClick={addNewProduct}
         >
           submit
         </button>

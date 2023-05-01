@@ -43,13 +43,17 @@ const LeftBar = () => {
             <img src={Friends} alt="" />
             <span>Friends</span>
           </div>
-          <div className="item">
+          <div className="item" onClick={() => navigate('/addprod')}>
             <img src={Groups} alt="" />
-            <span><Link to="/addprod">ADD PRODUCT</Link></span>
+            <span>add product</span>
           </div>
-          <div className="item">
+          <div className="item " onClick={() => navigate('/market')}>
             <img src={Market} alt="" />
-            <span><Link to="/market">Marketplace</Link></span>
+            <span>Marketplace</span>
+          </div>
+          <div className="item" onClick={() => navigate('/save')}>
+            <img src={Market} alt="" />
+            <span>save prod for later</span>
           </div>
           <div className="item">
             <img src={Watch} alt="" />

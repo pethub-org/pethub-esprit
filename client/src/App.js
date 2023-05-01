@@ -23,10 +23,12 @@ import Event from "./pages/Event/event";
 import EditEvent from "./pages/Event/EditEvent";
 import SearchPage from "./pages/search/SearchPage";
 import useAuth from "./hooks/useAuth";
-import ProductDetail from "./components/market/ProductDetail";
-import FormScreen from "./components/market/Formscreen";
-import HomeProduct from "./components/market/HomeProduct";
-import UpdateProd from "./components/market/UpdateProd";
+import ProductDetail from "./components/market/product/ProductDetail";
+import FormScreen from "./components/market/product/Formscreen";
+import HomeProduct from "./components/market/product/HomeProduct";
+import UpdateProd from "./components/market/product/UpdateProd";
+import Order from "./components/market/Order/order";
+import Orderscreen from "./components/market/Order/Orderscreen";
 
 function App() {
   const { auth } = useAuth();
@@ -106,6 +108,10 @@ function App() {
         {
           path: "/updateprod/:id",
           element: <UpdateProd/>,
+        },
+        {
+          path: "/save",
+          element: <Orderscreen/>,
         },
       ],
     },

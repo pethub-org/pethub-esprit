@@ -21,6 +21,7 @@ const messagesRouter = require("./routes/message.routes");
 
 const commentRoute = require("./routes/comment");
 const postRoute = require("./routes/post");
+const orderRoute = require("./routes/order.routes");
 
 const reviewroute = require("./routes/reviewRoute");
 const prodroute = require("./routes/productRoute");
@@ -35,7 +36,7 @@ app.use(cookieParser());
 
 // Middlewares
 app.use("/static", express.static(path.join(__dirname, "uploads")));
-app.use("/uploads", express.static("uploads"));
+
 
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
@@ -75,7 +76,7 @@ app.use("/api/comments", commentRoute);
 app.use("/api/reviews", reviewroute);
 app.use("/api/products", prodroute);
 app.use("/api/categorie", catroute);
-
+app.use("/api/orders", orderRoute);
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
