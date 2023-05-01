@@ -1,31 +1,73 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const PostSchema = new mongoose.Schema({
+
+
+const PostSchema = new mongoose.Schema(
+  {
     userId: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     desc: {
-        type: String,
-        max: 500
+      type: String,
+      max: 500
     },
     image: {
-        type: String
+      type: String
     },
     likes: {
-        type: Array,
-        default: []
+      type: Array,
+      default: []
     },
-    comments: [{
+    comments: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment',
-    }],
+        ref: 'Comment'
+      }
+    ],
     shares: {
-        type: mongoose.Schema.Types.Mixed,
-        default: []
-
+      type: mongoose.Schema.Types.Mixed,
+      default: []
+    },
+    tags: {
+      type: [String],
+      default: []
+    },
+    location: {
+      type: {
+        type: String,
+        default: 'Point'
+      },
+      coordinates: {
+        type: [Number],
+        default: [0, 0]
+      }
+    },
+    hashtags: {
+      type: [String],
+      default: []
+    },
+    reports: [
+      {
+        reason: {
+          type: String,
+          required: true
+        },
+        user: {
+          type: mongoose.Types.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
+    feeling: {
+      type: String,
+      enum: ["happy", "sad", "angry", "excited", "bored"],
+      default: "happy"
     }
+  },
+  { timestamps: true }
+);
 
-}, { timestamps: true })
+PostSchema.index({ location: '2dsphere' }); // Add a geospatial index for the location field
 
-module.exports = mongoose.model("Posts", PostSchema)
+module.exports = mongoose.model('Post', PostSchema);

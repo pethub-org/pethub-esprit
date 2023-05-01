@@ -123,6 +123,33 @@ router.get('/:commentId/replies/all', async (req, res) => {
         res.status(400).send(err);
     }
 });
+// Add a reaction to a comment
+router.post('/:commentId/reactions', async (req, res) => {
+    const { type } = req.body;
+    const { commentId } = req.params;
+    const { userId } = req.body;
+  
+    try {
+      const comment = await Comment.findById(commentId);
+      if (!comment) {
+        return res.status(404).json({ message: 'Comment not found' });
+      }
+  
+      const reaction = comment.reactions.find((r) => r.type === type);
+      if (reaction) {
+        // Reaction already exists, add user to the list of users
+        reaction.users.push(userId);
+      } else {
+        // Create a new reaction
+        comment.reactions.push({ type, users: [userId] });
+      }
+  
+      const updatedComment = await comment.save();
+      res.json(updatedComment);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
 
   
    

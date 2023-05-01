@@ -4,6 +4,8 @@ const connectDB = require('./configs/db.config')
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const multer = require('multer')
+const morgan = require('morgan');
 const helmet = require("helmet");
 const { createServer } = require("http");
 require('dotenv').config()
@@ -22,6 +24,7 @@ const messagesRouter = require("./routes/message.routes");
 
 const commentRoute = require("./routes/comment");
 const postRoute = require("./routes/post");
+const gameRoute =require('./routes/game')
 
 const reviewroute = require("./routes/reviewRoute");
 const prodroute = require("./routes/productRoute");
@@ -35,6 +38,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser());
+app.use(morgan("common"));
+app.use(helmet());
 
 
 // Middlewares
@@ -42,7 +47,7 @@ app.use('/static', express.static(path.join(__dirname, 'uploads')))
 app.use("/uploads", express.static("uploads"));
 
 
-app.use("/images", express.static(path.join(__dirname, "public/images")));
+//app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use(express.json())
 app.use(cors({
@@ -64,6 +69,8 @@ app.use('/messages', messagesRouter);
 // anis
 app.use("/api/posts", postRoute);
 app.use("/api/comments", commentRoute);
+app.use("/api/games",gameRoute)
+
 
 // app.use("/api/users/:id", async (req, res) => {
 //     try {
@@ -137,6 +144,19 @@ io.on("connection", (socket) => {
         io.emit("getUsers", users);
     });
 });
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "images");
+    },
+    filename: (req, file, cb) => {
+      cb(null, req.body.name);
+    },
+  });
+  
+  const upload = multer({ storage: storage });
+  app.post("/api/upload", upload.single("file"), (req, res) => {
+    res.status(200).json("File has been uploaded");
+  });
 
 
 

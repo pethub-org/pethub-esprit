@@ -4,7 +4,9 @@ import './comments.scss'
 import { format } from 'timeago.js'
 // import { AuthContext } from '../../context/AuthContext';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import QuickreplyOutlinedIcon from '@mui/icons-material/QuickreplyOutlined';
 import Reply from './Reply';
 
@@ -17,6 +19,10 @@ function Comments({ postId }) {
   const [editingComment, setEditingComment] = useState(null);
   const [updatedComment, setUpdatedComment] = useState('');
   const [showReplies, setShowReplies] = useState({});
+  const [likedComments, setLikedComments] = useState([]);
+  const [like,setLike] = useState('')
+  const [islike,setIsLike] = useState(false)
+
   // const { user: currentUser } = useContext(AuthContext)
   const { auth: currentUser } = useAuth()
   const axios = useAxiosPrivate();
@@ -88,6 +94,30 @@ function Comments({ postId }) {
         [commentId]: !prevShowReplies[commentId],
       }));
     }
+     //like 
+  async function handleLike(commentId) {
+    try {
+      const response = await axios.put(`/comments/${commentId}/like`, {
+        userId: currentUser._id,
+      });
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment._id === response.data._id ? response.data : comment
+        )
+      );
+      setLikedComments((prevLikedComments) => {
+        if (prevLikedComments.includes(commentId)) {
+          return prevLikedComments.filter((id) => id !== commentId);
+        } else {
+          return [...prevLikedComments, commentId];
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    setLike(islike ? like-1 : like+1)
+    setIsLike(!islike)
+  }
 
   return (
     <div className='form-container'>
@@ -100,7 +130,7 @@ function Comments({ postId }) {
           placeholder='write a comment'
           onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
-              handleSubmit(event); // call your submit function when Enter is pressed
+              handleSubmit(event); 
             }
           }}
         />
@@ -133,6 +163,16 @@ function Comments({ postId }) {
               ) : (
                 <>
                   <p>{comment.content}</p>
+                  <div className="likes">
+                      <button className="like-button" onClick={() => handleLike(comment._id)}>
+                        {likedComments.includes(comment._id) ? (
+                          <span style={{ color: 'red' }}><FavoriteOutlinedIcon /></span>
+                        ) : (
+                          <span><FavoriteBorderOutlinedIcon /></span>
+                        )}
+                      </button>
+                      <span className="num-likes"> {comment.likes.length} {comment.likes.length === 1 ? 'like' : 'likes'}</span>
+                    </div>
 
                 </>
               )}

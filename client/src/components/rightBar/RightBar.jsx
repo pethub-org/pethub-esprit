@@ -5,10 +5,23 @@ import ChatBox from "../messages/ChatBox";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import ProfilePicture from '../../assets/defaultUser.png';
+import User from '../user/user'
 
 
 const RightBar = () => {
   const { auth } = useAuth();
+  const [persons, setPersons] = useState([]);
+  const axios = useAxiosPrivate();
+  useEffect(()=>{
+    const fetchUser = async()=>{
+      const {data} = await axios.get("/api/users/");
+      setPersons(data)
+      console.log(data)
+    }
+    fetchUser()
+  },[]);
+
+
   console.log({auth})
   // all users conversations
   const [conversations, setConversations] = useState([]);
@@ -52,7 +65,16 @@ const RightBar = () => {
   return (
     <div className="rightBar">
       <div className="container" >
-  
+      <div className="item">
+          <span>
+            Suggestions For You
+          </span>
+          <div className="user-container">
+            {persons.map((person, id) => {
+              if (person._id !== auth._id) return <User person={person} key={id} />;
+            })}
+          </div>
+        </div>
         <div className="item" style={{overflowY:'visible' , height:'800px'}}>
           <span>Friends</span>
             {friendList?.length > 0 ? friendList : <p style={{color:'white'}}>You dont have friends yet</p>}
