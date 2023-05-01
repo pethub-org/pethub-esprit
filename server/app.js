@@ -26,6 +26,7 @@ const postRoute = require("./routes/post");
 const reviewroute = require("./routes/reviewRoute");
 const prodroute = require("./routes/productRoute");
 const catroute = require("./routes/categoryRoute");
+const gameRoute = require('./routes/game')
 
 
 
@@ -64,6 +65,9 @@ app.use('/messages', messagesRouter);
 // anis
 app.use("/api/posts", postRoute);
 app.use("/api/comments", commentRoute);
+app.use("/api/games", gameRoute)
+
+
 
 // app.use("/api/users/:id", async (req, res) => {
 //     try {

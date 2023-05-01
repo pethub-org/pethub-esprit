@@ -163,5 +163,84 @@ router.get('/:id/copy-link', async (req, res) => {
   }
 });
 
+// get posts by hashtag
+router.get('/hashtags/:hashtag', async (req, res) => {
+  try {
+    const posts = await postModel.find({ hashtags: req.params.hashtag });
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+// Report post as inappropriate
+router.post('/:id/report', async (req, res) => {
+  const postId = req.params.id;
+  const { reason } = req.body;
+
+  try {
+    // Find the post by ID
+    const post = await postModel.findById(postId);
+
+    // Check if post exists
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    // Add report to post
+    post.reports.push({ reason });
+    await post.save();
+
+    res.status(200).json({ message: 'Post reported as inappropriate' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+//location to post 
+router.post('/:postId/location', async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const { latitude, longitude } = req.body;
+
+    // Find the post by ID
+    const post = await postModel.findById(postId);
+
+    // Add the location to the post
+    post.location = {
+      type: 'Point',
+      coordinates: [longitude, latitude]
+    };
+
+    // Save the post to the database
+    const savedPost = await post.save();
+
+    res.status(200).json(savedPost);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+//add feeling to post 
+router.post('/:postId/feeling', async (req, res) => {
+  try {
+    const post = await postModel.findById(req.params.postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    post.feeling = req.body.feeling;
+
+    await post.save();
+
+    res.status(200).json({ message: 'Feeling added to post successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 
 module.exports = router
