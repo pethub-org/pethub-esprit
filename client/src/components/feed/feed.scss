@@ -112,3 +112,61 @@
     cursor: pointer;
     opacity: 0.7;
   }
+  select {
+    background-color: goldenrod;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1rem;
+    margin-right: 10px;
+    padding: 5px;
+    position: relative;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    z-index: 1;
+  
+    option {
+      background-color: goldenrod;
+      color: white;
+      font-size: 1rem;
+      padding: 5px;
+  
+      &[value=""] {
+        color: white;
+      }
+  
+      &:before {
+        content: attr(data-icon);
+        display: inline-block;
+        font-size: 1.2rem;
+        margin-right: 10px;
+      }
+    }
+  
+    &:after {
+      content: "";
+      display: block;
+      height: 0.6rem;
+      width: 0.6rem;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      margin-top: -0.3rem;
+      background-color: #fff;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      z-index: -1;
+    }
+ 
+  }
+  h5 {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    font-size: 1rem;
+    margin-right: 0rem;
+    span {
+      margin-right: 0rem;
+    }
+  }
