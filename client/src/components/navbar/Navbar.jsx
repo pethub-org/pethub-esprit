@@ -76,7 +76,7 @@ const Navbar = () => {
                 height:"40px"
               }}>
           <SearchOutlinedIcon />
-          <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleSearch} style={{color:'black' , border:'1px', opacity:"0.9"}} />
+          <input id="search" type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleSearch} style={{ color: 'black', opacity: "0.9",border:'none'}} />
         </div>
       </div>
       <div className="right">
