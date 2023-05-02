@@ -66,7 +66,7 @@ function Product(props) {
           </Link>
         </div>
         <div className="vitamin">
-          <h3>{product.name}</h3>
+          <h3 style={{fontSize:30 , fontWeight:"bold"}}>{product.name} </h3>
         </div>
 
         <h4>price: ${product.price} </h4>

@@ -62,7 +62,7 @@ function ProductDetail() {
     <div>
       <div className="proddetail">
         <div className="prodimge">
-          <img src={prod.image} height="500" width="500" />
+          <img src={prod.image}  />
         </div>
         <div className="proddata">
           <h1 className="Productname">{prod.name}</h1>

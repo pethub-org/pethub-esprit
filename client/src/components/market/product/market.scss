@@ -86,7 +86,7 @@
   }
 }
 .marktes {
-  margin-left: 100px;
+  margin-left: 80px;
   display: flex;
   flex-flow: row wrap;
   align-content: space-between;
@@ -280,12 +280,16 @@ button {
 //detail
 
 .card {
-  height: 390px;
+  height: 350px;
   width: 330px;
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
   font-family: "Poppins", sans-serif;
+   box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+  -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+  -moz-box-shadow: 0px 0px 25px -10px rgba(219, 12, 12, 0.38);
+  border-radius: 20px;
 }
 .top_part {
   display: flex;
@@ -331,6 +335,8 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+ max-height: 100px;
+ margin-top: 50px;
 }
 .image img {
   width: 150px;
@@ -338,8 +344,9 @@ button {
 }
 .vitamin {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  
 }
 .rating {
   display: flex;
@@ -418,9 +425,10 @@ button {
 .card h4 {
   text-align: center;
   margin-top: 10px;
+  margin-bottom: 30px;
 }
 .gender {
-  margin-top: 10px;
+  margin-top: 10px; 
   display: flex;
   gap: 10px;
   width: 70%;
@@ -506,10 +514,12 @@ button {
 .prodimge {
   width: 50%;
   position: relative;
-  font-weight: 400;
+
+
 }
 .prodimge > img {
   width: 100%;
+
 }
 .proddata {
   width: 50%;
