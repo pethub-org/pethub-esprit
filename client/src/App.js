@@ -23,12 +23,13 @@ import Event from "./pages/Event/event";
 import EditEvent from "./pages/Event/EditEvent";
 import SearchPage from "./pages/search/SearchPage";
 import useAuth from './hooks/useAuth'
-import ProductList from "./components/market/Prod";
-import ProductDetail from "./components/market/ProductDetail";
-import FormScreen from "./components/market/Formscreen";
+import HomeProduct from "./components/market/product/HomeProduct";
+import ProductDetail from "./components/market/product/ProductDetail";
+import FormScreen from "./components/market/product/Formscreen";
 import Friends from "./pages/friends/Friends";
 import Game from "./components/games/Game";
-
+import UpdateProd from "./components/market/product/UpdateProd";
+import Orderscreen from "./components/market/Order/Orderscreen";
 function App() {
   const { auth } = useAuth();
 
@@ -94,7 +95,7 @@ function App() {
         },
         {
           path: "/market",
-          element: <ProductList />,
+          element: <HomeProduct />,
         },
         ,
         {
@@ -112,6 +113,14 @@ function App() {
         {
           path: "/friends",
           element: <Friends />,
+        },
+        {
+          path: "/updateprod/:id",
+          element: <UpdateProd/>,
+        },
+        {
+          path: "/save",
+          element: <Orderscreen/>,
         },
       ],
     },

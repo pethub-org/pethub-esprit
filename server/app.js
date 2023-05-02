@@ -23,6 +23,8 @@ const messagesRouter = require("./routes/message.routes");
 const commentRoute = require("./routes/comment");
 const postRoute = require("./routes/post");
 
+const orderRoute = require("./routes/order.routes");
+
 const reviewroute = require("./routes/reviewRoute");
 const prodroute = require("./routes/productRoute");
 const catroute = require("./routes/categoryRoute");
@@ -85,7 +87,7 @@ app.use("/api/stories", storyRoute)
 app.use("/api/reviews", reviewroute);
 app.use("/api/products", prodroute);
 app.use("/api/categorie", catroute);
-
+app.use("/api/orders", orderRoute);
 const server = createServer(app);
 const io = new Server(server, {
     cors: {

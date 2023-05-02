@@ -7,10 +7,13 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
 
-    
+    image: {
+      type: String,
+      required: false,
+    },
     category: {
       type: String,
-      required: true,
+      required: false,
     },
     description: {
       type: String,
@@ -20,6 +23,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    rating:{
+      type:Number , 
+      
+    }
   },
   {
     timestamps: true,
