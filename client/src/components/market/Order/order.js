@@ -109,7 +109,7 @@ function Order(props) {
       </ListItem>
      
       <Stack direction="row" spacing={2} sx={{ml:60 }} >
-      <Link to={"/market/" + order.productid}>
+      <Link to={"/market/" +  order.productid}>
       <Button variant="contained">View</Button>
  </Link>
       <Button variant="contained" onClick={() => handleDelete(order._id)}>

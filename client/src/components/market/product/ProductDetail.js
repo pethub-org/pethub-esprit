@@ -1,7 +1,7 @@
 import "./market.scss";
 
 import { useEffect, useReducer, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { blue } from "@mui/material/colors";
@@ -10,6 +10,7 @@ import { blue } from "@mui/material/colors";
 function ProductDetail() {
   const location = useLocation();
   const axios = useAxiosPrivate();
+  const navigate = useNavigate();
 
     const [isOpen, setIsOpen] = useState(false);
  
@@ -57,6 +58,21 @@ function ProductDetail() {
       console.error(error);
     }
   }
+  async function submitActionHandler(reviewid, event) {
+
+    axios
+      .put("/api/reviews/update/" + reviewid, {
+ 
+        description: descriprev,
+      })
+      .then((response) => {
+       
+
+      }).catch(error => {
+        alert("Error Ocurred updating employee:"+ error);
+      });
+
+  };
   return (
    
     <div>
@@ -86,11 +102,13 @@ function ProductDetail() {
         <h5 >Submit Review</h5>
         <textarea
          type="text"
+         
          onChange={(e) => {
           setdescriprev(e.target.value);
         }}
         />
-        <button className="buttonpopup" onClick={addNewProduct}>submit</button>
+      
+        <button className="buttonpopup" onClick={  addNewProduct}>submit</button>
       </div>
     </div>}
   
@@ -105,15 +123,42 @@ function ProductDetail() {
            <div  style={{padding: 10}}>
 		<div style={{width:500}}>
            
-    <hr style={{marginLeft:20 , width:700 , marginRight:20}}></hr>
+    <hr style={{marginLeft:20 , width:750 , marginRight:20}}></hr>
                 <div  style={{marginTop:3 , marginBottom:3}}>
                     <div class="rating-outer">
                         <div class="rating-inner"></div>
                     </div>
                     <p className="review_user">by John</p>
                     <p style={{marginLeft:20 , color:"white"}}>{review.description}</p>
-                    <button style={{ marginLeft:650 , backgroundColor: "blue" }} onClick={() => handleDelete(review._id)}>delete</button>
-                    <hr style={{marginLeft:20 , width:700 , marginRight:20}}></hr>
+                     <div style={{display:"flex" , marginRight:10 }}>
+                     <button  style={{ marginRight:12,marginLeft:600 , backgroundColor: "blue" }} onClick={togglePopup} >update</button>
+                     {isOpen && 
+     <div className="popup-box">
+      <div className="box">
+        <span className="close-icon" onClick={togglePopup}>x</span>
+        <h5 >Submit  new Review</h5>
+        <textarea
+         type="text"
+         onChange={(e) => {
+          setdescriprev(e.target.value);
+        }}
+        />
+      
+        <button className="buttonpopup" onClick={submitActionHandler(review._id)}>submit</button>
+      </div>
+    </div>}
+                     
+                    <button style={{   backgroundColor: "blue" }} onClick={() => handleDelete(review._id)}>delete</button> 
+                    
+                    </div> 
+              
+
+
+
+
+
+
+                    <hr style={{marginLeft:20 , width:750 , marginRight:20}}></hr>
                 </div>
         </div>
     </div>

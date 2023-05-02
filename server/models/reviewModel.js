@@ -4,7 +4,7 @@ const reviewSchema = new mongoose.Schema(
   {
     product_id: {
       type: String,
-      required: true,
+      required: false,
     },
     description: {
       type: String,
