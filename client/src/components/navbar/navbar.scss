@@ -1,5 +1,11 @@
 @import "../../style.scss";
-
+#search{
+  border:none;
+}
+#search:focus{
+  border:none;
+  outline:none;
+}
 .navbar {
   @include themify($themes) {
     display: flex;
