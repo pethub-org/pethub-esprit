@@ -186,19 +186,23 @@ function Comments({ postId }) {
               ) : (
                 <>
                   <p>{comment.content}</p>
-
-
+                  
+                  
                 </>
+                
               )}
+            
             </div>
+            
             <span className='date' style={{ marginLeft: "10px", marginRight:"20px"}}>{format(comment.createdAt)}</span>
 
             <div className="likes" style={{marginTop:"-20px"}}>
               <button className="like-button" onClick={() => handleLike(comment._id)}>
                 {likedComments.includes(comment._id) ? (
-                  <span style={{ color: 'white' }}><FavoriteBorderOutlinedIcon/> </span>
-                ) : (
                   <span style={{ color: 'red' }} > <FavoriteOutlinedIcon/> </span>
+                ) : (
+                  <span style={{ color: 'white' }}><FavoriteBorderOutlinedIcon/> </span>
+
                 )}
 
               </button>
@@ -206,9 +210,12 @@ function Comments({ postId }) {
             <button onClick={() => handleEdit(comment)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}>
               <ModeEditOutlineOutlinedIcon/></button>
             <button onClick={() => handleDelete(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><DeleteOutlineOutlinedIcon/></button>
-            
             {showReplies[comment._id] && <Reply commentId={comment._id} />}
+            
             </div>
+           
+         
+            
             
            
 
@@ -216,10 +223,15 @@ function Comments({ postId }) {
 
 
         ))}
+       
       </ul>
-
+     
     </div>
+    
+   
+    
   );
+  
 }
 
 export default Comments;

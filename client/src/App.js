@@ -28,6 +28,7 @@ import ProductDetail from "./components/market/ProductDetail";
 import FormScreen from "./components/market/Formscreen";
 import Friends from "./pages/friends/Friends";
 import Game from "./components/games/Game";
+import Groups from "./components/groups/Groups";
 
 function App() {
   const { auth } = useAuth();
@@ -96,10 +97,15 @@ function App() {
           path: "/market",
           element: <ProductList />,
         },
-        ,
+        
         {
           path: "/games",
           element: <Game/>,
+        },
+        
+        {
+          path: "/groups",
+          element: <Groups/>,
         },
         {
           path: "/market/:id",
