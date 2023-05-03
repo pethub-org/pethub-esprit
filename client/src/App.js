@@ -102,15 +102,15 @@ function App() {
           path: "/market",
           element: <HomeProduct />,
         },
-        
+
         {
           path: "/games",
           element: <Game />,
         },
-        
+
         {
           path: "/groups",
-          element: <Groups/>,
+          element: <Groups />,
         },
         {
           path: "/market/:id",
@@ -127,15 +127,16 @@ function App() {
         {
           path: '/post/:id',
           element: <SinglePost />
-        }
+        },
+        {
           path: "/updateprod/:id",
-          element: <UpdateProd/>,
+          element: <UpdateProd />,
         },
         {
           path: "/save",
-          element: <Orderscreen/>,
+          element: <Orderscreen />,
         },
-      ],
+      ]
     },
     {
       path: "/auth/confirm/:token",
