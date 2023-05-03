@@ -19,6 +19,7 @@ const postRoute = require("../routes/post");
 const reviewroute = require("../routes/reviewRoute");
 const prodroute = require("../routes/productRoute");
 const catroute = require("../routes/categoryRoute");
+const ordersRoute = require("../routes/order.routes");
 const gameRoute = require('../routes/game')
 const storyRoute = require('../routes/Story')
 require('dotenv').config();
@@ -92,6 +93,7 @@ class HttpServer {
             app.use("/api/reviews", reviewroute);
             app.use("/api/products", prodroute);
             app.use("/api/categorie", catroute);
+            app.use("/api/orders", ordersRoute);
             this.server = createServer(app);
 
             connectDB(PORT);
