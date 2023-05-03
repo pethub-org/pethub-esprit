@@ -70,7 +70,7 @@ const LeftBar = () => {
           </div>
           <div className="item">
             <img src={Memories} alt="" />
-            <span>Memories</span>
+            <span><Link to="/save" style={{color:'white'}}>Saved Product</Link></span>
           </div>
         </div>
         <hr />
