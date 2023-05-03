@@ -1,5 +1,6 @@
 const { Server } = require("socket.io");
 const HttpServer = require("./http.server");
+const connectDB = require("../configs/db.config");
 require("dotenv").config()
 
 class SocketServer {
@@ -15,52 +16,8 @@ class SocketServer {
             });
         }
         return this.io;
-        // return SocketManager();
-
-
     }
 }
 
 
 module.exports = SocketServer;
-
-// const { Server } = require("socket.io");
-// const HttpServer = require("./http.server");
-// require("dotenv").config();
-
-// let socketServerPromise;
-// let httpServerPromise;
-
-// function getSocketServer() {
-//     if (!socketServerPromise) {
-//         socketServerPromise = new Promise((resolve) => {
-//             const io = new Server(async () => await getHttpServer(), {
-//                 cors: {
-//                     origin: ["http://localhost:3000", "http://localhost:3001"],
-//                 },
-//                 cookie: true,
-//                 credentials: true,
-//             });
-//             resolve(io);
-//         });
-//     }
-//     return socketServerPromise;
-// }
-
-// function getHttpServer() {
-//     if (!httpServerPromise) {
-//         httpServerPromise = new Promise((resolve) => {
-//             const httpServer = HttpServer.getInstance();
-//             httpServer.listen(process.env.PORT || 8080, () => {
-//                 console.log(`HTTP server listening on port ${process.env.PORT || 8080}`);
-//                 resolve(httpServer);
-//             });
-//         });
-//     }
-//     return httpServerPromise;
-// }
-
-// module.exports = {
-//     getSocketServer,
-//     getHttpServer,
-// };

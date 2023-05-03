@@ -2,6 +2,7 @@ const User = require('../models/UserSchema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const generateToken = require('../services/token.service');
+const LoggedInUsers = require('../utils/users.socket');
 
 const login = async (req, res) => {
     try {
@@ -35,6 +36,11 @@ const login = async (req, res) => {
         user.accessToken = accessToken;
 
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 3600000 })
+        const io = req.app.get('socketio')
+        const loggedInUsers = LoggedInUsers.getInstance();
+        
+        // const socketId = loggedInUsers.getUser()
+        // const socket = io.sockets.sockets[socket.id]
         return res.status(200).json(user)
 
     }

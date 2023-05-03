@@ -24,6 +24,11 @@ const storyRoute = require('../routes/Story')
 require('dotenv').config();
 
 const errorHandler = require("../middlewares/error.middleware");
+const { Server } = require("socket.io");
+const LoggedInUsers = require("./users.socket");
+const connectDB = require("../configs/db.config");
+
+
 
 
 
@@ -88,6 +93,49 @@ class HttpServer {
             app.use("/api/products", prodroute);
             app.use("/api/categorie", catroute);
             this.server = createServer(app);
+
+            connectDB(PORT);
+
+            const io = new Server(this.server, {
+                cors: {
+                    origin: ['http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:5173/', 'http://localhost:5173', 'http://127.0.0.1:5174/', 'https://localhost:5173', 'https://127.0.0.1:5173', 'http://127.0.0.1:5500/', 'http://127.0.0.1:5173/']
+                },
+                cookie: true,
+                credentials: true
+            });
+            const loggedInUsers = LoggedInUsers.getInstance();
+            io.on("connection", (socket) => {
+                //when ceonnect
+                console.log("a user connected.", socket.id);
+
+                //take userId and socketId from user
+                socket.on("addUser", (userId) => {
+                    console.log({ userId })
+                    loggedInUsers.addUser(userId, socket.id);
+                    console.log(loggedInUsers.getUsers())
+
+                    io.emit("getUsers", loggedInUsers.getUsers());
+                });
+                //send and get message
+                // socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+                //     const user = loggedInUsers.getUser(receiverId);
+                //     io.to(user.socketId).emit("getMessage", {
+                //         senderId,
+                //         text,
+                //     });
+                // });
+                // const socket =io.sockets.sockets[socket.id]
+                //when disconnect
+                socket.on("disconnect", () => {
+                    console.log("a user disconnected!");
+                    loggedInUsers.removeUser(socket.id);
+                    console.log(loggedInUsers.getUsers())
+                    io.emit("getUsers", loggedInUsers.getUsers());
+                });
+            });
+
+
+            app.set('socketio', io)
         }
         return this.server;
     }
