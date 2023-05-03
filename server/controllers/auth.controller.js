@@ -26,7 +26,7 @@ const login = async (req, res) => {
         const refreshToken = generateToken(user, 'refresh_token');
         user.friendList = user.friendList.map(friend => {
             const currentPhoto = friend.photos.find(photo => photo.isMain);
-            console.log({ friend })
+            // console.log({ friend })
             return {
                 ...friend,
                 currentPhoto
