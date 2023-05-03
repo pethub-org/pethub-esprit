@@ -47,7 +47,8 @@ const PostSchema = new mongoose.Schema(
         },
         hashtags: {
             type: [String],
-            default: []
+            default: [],
+            required: false
         },
         reports: [
             {

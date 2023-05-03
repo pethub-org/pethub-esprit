@@ -5,7 +5,10 @@ import ChatBox from "../messages/ChatBox";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import ProfilePicture from '../../assets/defaultUser.png';
-import User from '../user/user'
+import User from '../user/user';
+import toast, { Toaster } from 'react-hot-toast';
+import useSocket from "../../hooks/useSocket";
+
 
 
 
@@ -15,6 +18,7 @@ const RightBar = () => {
   // all users conversations
   const [conversations, setConversations] = useState([]);
   const axiosPrivate = useAxiosPrivate();
+  const { socket } = useSocket();
 
   const [persons, setPersons] = useState([]);
   
@@ -44,6 +48,28 @@ const RightBar = () => {
   // current chatbox messages
   const [messages, setMessages] = useState([]);
   const [friendList, setFriendList] = useState([])
+
+
+  const notify = (data) => toast(data?.content ?data.content :'You have a new notification !' , { position: 'bottom-right', duration: '1000' });
+  
+  useEffect(() => {
+    socket.on('notification', (data) => {
+      // console.log('socket id for ',auth.username,' ',socket.id)
+      // console.log({ data })
+      if (data.sender === auth._id) {
+        return;
+      }
+      notify(data)
+      return () => {
+        socket.off('notification')
+      }
+    })
+
+    // return () => {
+    //   socket.off('notification');
+    // }
+  }, [socket,socket.id])
+
   
   useEffect(() => {
     axiosPrivate.get(`/messages/conversation/${chatData.conversationId}`).then(response => {
@@ -85,6 +111,9 @@ const RightBar = () => {
     
    
         </div>
+
+        <Toaster />
+        
       </div>
     </div>
   );

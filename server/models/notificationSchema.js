@@ -25,7 +25,7 @@ const NotificationSchema = new Schema({
         required: true
     },
     content: {
-        type: mongoose.Schema.Types.Mixed,
+        type: mongoose.Schema.Types.String,
         required: true
     },
 }, {

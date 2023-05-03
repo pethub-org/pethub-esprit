@@ -1,11 +1,4 @@
-const express = require("express");
-const path = require("path")
-const connectDB = require('./configs/db.config')
-const cors = require("cors");
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const helmet = require("helmet");
-const { createServer } = require("http");
+const HttpServer = require("./utils/http.server");
 require('dotenv').config()
 const PORT = process.env.PORT || 8080
 
@@ -151,6 +144,7 @@ server.listen(PORT, () => {
     connectDB(PORT);
 })
 
+const PORT = process.env.PORT || 8080
+const server = HttpServer.getInstance();
 
-module.exports = io;
-module.exports = { users }
+server.listen(PORT)

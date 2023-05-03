@@ -28,6 +28,8 @@ import ProductDetail from "./components/market/product/ProductDetail";
 import FormScreen from "./components/market/product/Formscreen";
 import Friends from "./pages/friends/Friends";
 import Game from "./components/games/Game";
+
+import SinglePost from "./components/post/SinglePost";
 import UpdateProd from "./components/market/product/UpdateProd";
 import Orderscreen from "./components/market/Order/Orderscreen";
 
@@ -103,7 +105,7 @@ function App() {
         
         {
           path: "/games",
-          element: <Game/>,
+          element: <Game />,
         },
         
         {
@@ -123,6 +125,9 @@ function App() {
           element: <Friends />,
         },
         {
+          path: '/post/:id',
+          element: <SinglePost />
+        }
           path: "/updateprod/:id",
           element: <UpdateProd/>,
         },
@@ -164,6 +169,7 @@ function App() {
       path: '/admin/update/user/:id',
       element: <EditProfile />
     }
+
   ]);
 
   return (
