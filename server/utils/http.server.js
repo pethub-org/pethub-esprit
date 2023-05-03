@@ -109,9 +109,9 @@ class HttpServer {
                 console.log("a user connected.", socket.id);
 
                 //take userId and socketId from user
-                socket.on("addUser", (userId) => {
-                    console.log({ userId })
-                    loggedInUsers.addUser(userId, socket.id);
+                socket.on("addUser", (data) => {
+                    console.log({ data })
+                    loggedInUsers.addUser(data.userId, socket.id);
                     console.log(loggedInUsers.getUsers())
 
                     io.emit("getUsers", loggedInUsers.getUsers());
