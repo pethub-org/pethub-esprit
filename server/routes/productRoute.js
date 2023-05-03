@@ -46,23 +46,16 @@ route.get("/bycategory/:categoryId", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-route.post("/", upload.single("image"), async (req, res) => {
-  console.log("request", req.file
-  );
- // const image = req.file.path;
-  const product = new Product({
-    name: req.body.name,
- ///   image: image,
-    //category: req.body.category,
-    description: req.body.description,
-    price: req.body.price,
-  });
+route.post("/", async (req, res) => {
+   const newPost = new Product(req.body)
   try {
-    const p1 = await product.save();
-    res.json(p1);
-  } catch (err) {
-    res.send("Error");
+    const savedProduct = await newPost.save();
+    res.status(200).json(savedProduct)
   }
+  catch (err) {
+    res.status(500).json(err)
+  }
+
 });
 // route.post("/review", async (req, res) => {
 //   const { comment, name, productId } = req.body;

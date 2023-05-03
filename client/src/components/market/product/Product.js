@@ -10,10 +10,12 @@ import ReplyAllOutlinedIcon from "@mui/icons-material/ReplyAllOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import useAuth from '../../../hooks/useAuth';
 
 import "./market.scss";
 import { useState } from "react";
 function Product(props) {
+  const { auth: currentUser } = useAuth()
   const location = useLocation();
   const [imageSrc, setImageSrc] = useState("https://i.imgur.com/VcypK5c.png");
   const [isImageError, setIsImageError] = useState(false);
@@ -71,10 +73,12 @@ function Product(props) {
 
         <h4>price: ${product.price} </h4>
         <div className="buttons">
-          <button onClick={() => handleDelete(product._id)}>delete</button>
+          {product.userId === currentUser._id &&
+          <button onClick={() => handleDelete(product._id)}>delete</button>}
+          {product.userId === currentUser._id &&
           <Link  to={"/updateprod/" + product._id}>
           <button>update</button>
-          </Link>
+          </Link>}
           <button onClick={() => submitorder(product._id)}>add to wishlist</button>
         </div>
       </div>

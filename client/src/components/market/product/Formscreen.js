@@ -4,12 +4,16 @@ import {useNavigate } from "react-router-dom";
 // import Axios from "axios";
 import "./market.scss";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import useAuth from "../../../hooks/useAuth";
 
 function FormScreen() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
+  const {auth:user} = useAuth()
   const [categorie, setCategorie] = useState([]);
+  const [users, setUsers] = useState([]);
+
   const [selectedCategory, setSelectedCategory] = useState("");
   const axios = useAxiosPrivate();
   const navigate = useNavigate();
@@ -26,8 +30,9 @@ function FormScreen() {
 
   const addNewProduct = () => {
     const formData = new FormData();
+    formData.append("userId", user._id);
     formData.append("name", name);
-    formData.append("image", image);
+
     formData.append("category", selectedCategory);
     formData.append("description", description);
     formData.append("price", price);
@@ -116,7 +121,7 @@ function FormScreen() {
               setPrice(e.target.value);
             }}
           />
-          <input
+          {/* <input
             style={{
               alignItems: "center",
             }}
@@ -126,7 +131,7 @@ function FormScreen() {
               console.log(e.target.files[0]);
               setImage(e.target.files[0]);
             }}
-          />
+          /> */}
           <textarea
             placeholder="Description"
             type="number"
