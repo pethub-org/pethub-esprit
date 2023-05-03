@@ -49,6 +49,7 @@ const LeftBar = () => {
               <Link to={"/profile/"+auth._id} style={{color:'white',textTransform:'capitalize'}}>{auth?.firstname}{' '}{auth?.lastname}</Link>
             </span>
           </div>
+          <hr style={{marginTop:"3px", marginBottom:"-5px"}}/>
           <div className="item" >
               <img src={Friends} alt="" style={{ width:"30px",height:"30px"}}/>
             <Link to="/friends" style={{color:'white'}}>
@@ -84,8 +85,8 @@ const LeftBar = () => {
             <span><Link to={'/games'} style={{color:"white"}}>Gaming</Link></span>
           </div>
           <div className="item">
-            <img src={Gallery} alt="" />
-            <span>Gallery</span>
+            <img src={Groups} alt="" />
+            <span><Link to={'/groups'} style={{color:"white"}}>Groups</Link></span>
           </div>
           <div className="item">
             <img src={Videos} alt="" />

@@ -30,6 +30,9 @@ import Friends from "./pages/friends/Friends";
 import Game from "./components/games/Game";
 import UpdateProd from "./components/market/product/UpdateProd";
 import Orderscreen from "./components/market/Order/Orderscreen";
+
+import Groups from "./components/groups/Groups";
+
 function App() {
   const { auth } = useAuth();
 
@@ -97,10 +100,15 @@ function App() {
           path: "/market",
           element: <HomeProduct />,
         },
-        ,
+        
         {
           path: "/games",
           element: <Game/>,
+        },
+        
+        {
+          path: "/groups",
+          element: <Groups/>,
         },
         {
           path: "/market/:id",

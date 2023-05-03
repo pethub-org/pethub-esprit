@@ -30,7 +30,7 @@ const prodroute = require("./routes/productRoute");
 const catroute = require("./routes/categoryRoute");
 const gameRoute = require('./routes/game')
 const storyRoute = require ('./routes/Story')
-
+const groupRoute = require ('./routes/groupe')
 
 
 const { Server } = require("socket.io");
@@ -70,7 +70,7 @@ app.use("/api/posts", postRoute);
 app.use("/api/comments", commentRoute);
 app.use("/api/games", gameRoute)
 app.use("/api/stories", storyRoute)
-
+app.use("/api/groups", groupRoute)
 
 // app.use("/api/users/:id", async (req, res) => {
 //     try {
