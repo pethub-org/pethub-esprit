@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import {useNavigate } from "react-router-dom";
+
 // import Axios from "axios";
 import "./market.scss";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import useAuth from "../../../hooks/useAuth";
+
 function FormScreen() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
+  const {auth:user} = useAuth()
   const [categorie, setCategorie] = useState([]);
+  const [users, setUsers] = useState([]);
+
   const [selectedCategory, setSelectedCategory] = useState("");
   const axios = useAxiosPrivate();
+  const navigate = useNavigate();
 
   const [price, setPrice] = useState(0);
 
@@ -22,16 +30,17 @@ function FormScreen() {
 
   const addNewProduct = () => {
     const formData = new FormData();
+    formData.append("userId", user._id);
     formData.append("name", name);
-    formData.append("image", image);
+
     formData.append("category", selectedCategory);
     formData.append("description", description);
     formData.append("price", price);
+    console.log(formData);
     axios.post("/api/products/", formData);
+    navigate('/market')
   };
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
-  };
+
   return (
     // <div className="container">
     //   <label htmlFor="">Name: </label>
@@ -94,7 +103,7 @@ function FormScreen() {
     // </div>
     <div className="form-box">
       <h5 className="form-step"> </h5>
-      <form>
+      <form encType="multiple/form-data" onSubmit={addNewProduct}>
         <div className="field1">
           <label> add your product </label>
           <input
@@ -105,13 +114,24 @@ function FormScreen() {
             }}
           />
           <input
+            className="input-field"
             placeholder="price"
             type="number"
             onChange={(e) => {
               setPrice(e.target.value);
             }}
           />
-
+          {/* <input
+            style={{
+              alignItems: "center",
+            }}
+            placeholder="image"
+            type="file"
+            onChange={(e) => {
+              console.log(e.target.files[0]);
+              setImage(e.target.files[0]);
+            }}
+          /> */}
           <textarea
             placeholder="Description"
             type="number"
@@ -139,7 +159,6 @@ function FormScreen() {
           type="submit"
           id="submitBtn"
           className="submitButton"
-          onClick={addNewProduct}
         >
           submit
         </button>

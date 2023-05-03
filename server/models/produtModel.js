@@ -2,15 +2,24 @@ const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema(
   {
+    userId: {
+      ref: 'User',
+      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+
+  },
     name: {
       type: String,
       required: true,
     },
 
-    
+    image: {
+      type: String,
+      required: false,
+    },
     category: {
       type: String,
-      required: true,
+      required: false,
     },
     description: {
       type: String,
@@ -20,6 +29,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    rating:{
+      type:Number , 
+      
+    }
   },
   {
     timestamps: true,

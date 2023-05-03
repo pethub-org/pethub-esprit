@@ -82,33 +82,34 @@ function Reply({ commentId }) {
     <div className="reply">
       <h4>Replies</h4>
       <form onSubmit={handleSubmit}>
-  <input
-            style={{
-              padding: '15px',
-              borderRadius: '15px',
-              marginTop: '6px',
-              marginLeft: '6px',
-              width: '100%',
-              height:'55px',
-              border:"none",
-              opacity: "0.9",
-              display: 'flex',
-              justifyContent: 'center', // align the child elements horizontally
-              alignItems: 'center', // align the child elements vertically
-              flexDirection: 'column',
-            }}
-    value={newReply}
-    onChange={(event) => setNewReply(event.target.value)}
-    placeholder="write a reply"
-    onKeyDown={(event) => {
-      if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        handleSubmit(event);
-      }
-    }}
-  />
+        <input
+          style={{
+            padding: '15px',
+            borderRadius: '15px',
+            marginTop: '6px',
+            marginLeft: '6px',
+            width: '100%',
+            height: '55px',
+            border: "none",
+            opacity: "0.9",
+            display: 'flex',
+            justifyContent: 'center', // align the child elements horizontally
+            alignItems: 'center', // align the child elements vertically
+            flexDirection: 'column',
+         
+          }}
+          value={newReply}
+          onChange={(event) => setNewReply(event.target.value)}
+          placeholder="write a reply"
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+              event.preventDefault();
+              handleSubmit(event);
+            }
+          }}
+        />
 
-</form>
+      </form>
 
 
       <ul>
@@ -120,6 +121,7 @@ function Reply({ commentId }) {
               {editingReply === reply._id ? (
                 <>
                   <textarea
+
                     value={updatedReply}
                     onChange={(event) => setUpdatedReply(event.target.value)}
                     placeholder="Update your reply"

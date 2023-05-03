@@ -18,6 +18,7 @@ import { format } from 'timeago.js'
 import useAuth from '../../hooks/useAuth';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import defaultUser from '../../assets/defaultUser.png';
+import toast, { Toaster } from 'react-hot-toast';
 // import { AuthContext } from '../../context/AuthContext';
 
 
@@ -36,6 +37,7 @@ const Post = ({ post, setPosts }) => {
   const [islike, setIsLike] = useState(false)
   const [image, setImage] = useState('')
   const [desc, setDesc] = useState('');
+  
   //transorme lpost lel update
   const [updateMode, setUpdateMode] = useState(false);
   const axios = useAxiosPrivate();
@@ -63,7 +65,8 @@ const Post = ({ post, setPosts }) => {
   const updateHandler = async () => {
     try {
       await axios.put("/api/posts/" + post._id, { user: currentUser.userId, desc, image })
-      window.location.reload();
+      //window.location.reload();
+      
     }
     catch (err) { }
 
@@ -98,6 +101,8 @@ const Post = ({ post, setPosts }) => {
     try {
       navigator.clipboard.writeText(`http://localhost:3000/post/${post._id}`)
       //alert("Link copied to clipboard!");
+      toast( 'Link post copied')
+
     }
     catch (err) {
       console.log("Failed to copy: ", err);
@@ -110,8 +115,9 @@ const Post = ({ post, setPosts }) => {
   const shareHandler = async () => {
     try {
       await axios.post(`/api/posts/${post._id}/share`, { userId: currentUser._id });
-      alert('Post shared!');
-      window.location.reload();
+      //alert('Post shared!');
+      toast(currentUser.firstname.charAt(0).toUpperCase()+ currentUser.firstname.slice(1)+' ' + currentUser.lastname.charAt(0).toUpperCase() +currentUser.lastname.slice(1) + ' ' + 'has shared your post')
+  
     } catch (err) {
       // console.log(err);
       alert('Failed to share post!');
@@ -125,7 +131,8 @@ const Post = ({ post, setPosts }) => {
     e.preventDefault();
     try {
       await axios.post(`/api/posts/${post._id}/report`, { reason: reportReason });
-      alert('Post reported as inappropriate');
+      //alert('Post reported as inappropriate');
+      toast( 'Post reported as inappropriate')
       setShowReportForm(false);
       setReportReason('');
     } catch (error) {
@@ -295,6 +302,7 @@ const Post = ({ post, setPosts }) => {
             </div>
 
           </div>
+          
           <div class="dropdown">
             <button class="dropbtn"><MoreHorizRoundedIcon htmlColor="white" />
               <i class="fa fa-caret-down"></i>
@@ -302,11 +310,12 @@ const Post = ({ post, setPosts }) => {
             <div class="dropdown-content">
               {post.userId._id === currentUser._id &&
                 <a onClick={DeleteHandler}><DeleteOutlineOutlinedIcon /> Delete Post </a>}
+                
               {post.userId._id === currentUser._id &&
                 <a onClick={() => setUpdateMode(true)}> <EditOutlinedIcon /> Edit post</a>}
 
-              <a onClick={copyHandler} ><InsertLinkOutlinedIcon /> Copy Link Post</a>
-              <a onClick={() => setShowReportForm(true)}><ReportGmailerrorredOutlinedIcon /> Report Post</a>
+              <a onClick={copyHandler} ><InsertLinkOutlinedIcon /> <Toaster/> Copy Link Post</a>
+              <a onClick={() => setShowReportForm(true)}><ReportGmailerrorredOutlinedIcon /> <Toaster/> Report Post</a>
               {showReportForm && (
                 <form className='reportForm' onSubmit={handleReportSubmit}>
                   <label className='report'>
@@ -333,6 +342,9 @@ const Post = ({ post, setPosts }) => {
           </div>
 
         </div>
+        
+     
+            
 
         {updateMode ? <input value={desc} className='textarea' autoFocus      style={{
                 padding: '15px',
@@ -344,12 +356,13 @@ const Post = ({ post, setPosts }) => {
               onChange={(e) => setDesc(e.target.value)
         } /> :
           (
-            <div className="content" style={{ lineHeight: "1.8" }}>
-              <p>{post.desc}</p>
-
-            </div>
+            <>
+              <p style={{ lineHeight: "1.8" }}>{post.desc}</p>
+              </>
+            
           )
         }
+            
         {updateMode ? <input value={hashtags} className='textarea' autoFocus style={{
                 padding: '15px',
                 borderRadius: '15px',
@@ -387,6 +400,8 @@ const Post = ({ post, setPosts }) => {
 
           <div className="item" onClick={shareHandler}>
             <ReplyAllOutlinedIcon />
+             <Toaster />
+           
             {share} Share
           </div>
         </div>

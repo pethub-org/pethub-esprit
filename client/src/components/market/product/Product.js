@@ -9,16 +9,44 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import ReplyAllOutlinedIcon from "@mui/icons-material/ReplyAllOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import useAuth from '../../../hooks/useAuth';
 
+import "./market.scss";
+import { useState } from "react";
 function Product(props) {
+  const { auth: currentUser } = useAuth()
   const location = useLocation();
-
+  const [imageSrc, setImageSrc] = useState("https://i.imgur.com/VcypK5c.png");
+  const [isImageError, setIsImageError] = useState(false);
+  const { product } = props;
+  function handleImageError() {
+    setIsImageError(true);
+  }
   const _id = location.pathname.split("/")[2];
   const axios = useAxiosPrivate();
-  const { product } = props;
+
+  const submitorder = (productid) => {
+
+    axios
+      .post(`/api/orders/${productid}`, {
+        productid: productid,
+        name: product.name,
+        price: product.price,
+        
+      })
+      .then((response) => {
+        alert("order added successfully");
+
+
+      }).catch(error => {
+        alert("Error Ocurred updating employee:"+ error);
+      });
+
+  };
   //delete
   async function handleDelete(productid) {
+    window.location.reload(false);
     try {
       const response = await axios.delete(`/api/products/${productid}`);
     } catch (error) {
@@ -26,51 +54,32 @@ function Product(props) {
     }
   }
   return (
-    // <Card key={_id}>
-    //   <Link to={"/product/" + product._id}>
-    //     <img src={product.image} className="card-img-top" alt={product.name} />
-    //   </Link>
-    //   <Card.Body>
-    //     <Link to={"/product/" + product._id}>
-    //       <Card.Title>{product.name}</Card.Title>
-    //     </Link>
-    //     <Card.Text>DT{product.price}</Card.Text>
-    //   </Card.Body>
+    
 
-    //   <Button>add to wishlist</Button>
-    // </Card>
-
-    // <Card style={{ width: "18rem" }} key={_id}>
-    //   <Link to={"/market/" + product._id}>
-    //     <img src={product.image} className="card-img-top" alt={product.name} />
-    //   </Link>
-
-    //   <Card.Body>
-    //     <Card.Title>{product.name}</Card.Title>
-    //     <Card.Title>DT{product.price}</Card.Title>
-
-    //     <Button variant="primary">add to wishlist</Button>
-    //   </Card.Body>
-    // </Card>
-
-    <div className="market">
-      <div className="container">
-        <div className="content">
-          <img src={""} alt="" />
+    <div className="container">
+      <div className="card">
+        <div className="image">
+          <Link to={"/market/" + product._id}>
+            {isImageError ? (   
+              <img src={`/uploads/${product.image}`} alt="Default Image" />
+            ) : (
+              <img src={product.image} onError={handleImageError} alt="Image" />
+            )}
+          </Link>
         </div>
-        <Link to={"/market/" + product._id}>
-          <p>{product.name}</p>
-        </Link>
-        <div className="info" style={{ gap: 120 }}>
-          <div className="item">
-            <button onClick={() => handleDelete(product._id)}>
-              {" "}
-              <DeleteIcon />
-            </button>
-          </div>
-          <div className="item">
-            <SaveIcon />
-          </div>
+        <div className="vitamin">
+          <h3 style={{fontSize:30 , fontWeight:"bold"}}>{product.name} </h3>
+        </div>
+
+        <h4>price: ${product.price} </h4>
+        <div className="buttons">
+          {product.userId === currentUser._id &&
+          <button onClick={() => handleDelete(product._id)}>delete</button>}
+          {product.userId === currentUser._id &&
+          <Link  to={"/updateprod/" + product._id}>
+          <button>update</button>
+          </Link>}
+          <button onClick={() => submitorder(product._id)}>add to wishlist</button>
         </div>
       </div>
     </div>

@@ -30,7 +30,7 @@ const Register = () => {
   }
 
   return (
-    <div className="register">
+    <div className="register" style={{backgroundColor:"rgb(236, 236, 236)"}}>
       <div className="card">
         <div className="left">
           <h1>PetHub</h1>
