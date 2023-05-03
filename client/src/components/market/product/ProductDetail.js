@@ -110,7 +110,7 @@ function ProductDetail() {
         </div>
         <div className="proddata">
           <h1 className="Productname">{prod.name}</h1>
-                  <h2 style={{marginLeft:30 , color:"white"}}> uploaded by {currentUser.firstname}</h2>
+                  <h2 style={{marginLeft:30 , color:"white" ,fontWeight:20}}> uploaded by {currentUser.firstname}</h2>
       
          
           <hr style={{marginLeft:20 , width:300 , marginRight:20}}></hr>
