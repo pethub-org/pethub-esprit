@@ -22,6 +22,9 @@ import defaultUser from '../../assets/defaultUser.png';
 
 
 const Post = ({ post, setPosts }) => {
+
+  console.log({ post });
+  
   const { auth: currentUser } = useAuth()
   const [like, setLike] = useState(post.likes.length)
   const [share, setShare] = useState(post.shares.length)
@@ -92,8 +95,7 @@ const Post = ({ post, setPosts }) => {
   //copy link  post
   const copyHandler = () => {
     try {
-
-      navigator.clipboard.writeText(`http://localhost:8080/api/posts/${post._id}`)
+      navigator.clipboard.writeText(`http://localhost:3000/post/${post._id}`)
       //alert("Link copied to clipboard!");
     }
     catch (err) {
@@ -130,20 +132,23 @@ const Post = ({ post, setPosts }) => {
       alert('Error reporting post');
     }
   };
+  if(post?.userId?._id === currentUser?._id)
 
   return (
     <div className='post'>
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}>
-              <img src={currentUser.currentPhoto ? currentUser.currentPhoto.url : defaultUser} alt={currentUser.firstname} />
+            <Link to={`/profile/${post?.userId?._id}`} style={{ textDecoration: "none", color: "inherit" }}>
+              <img src={currentUser?.currentPhoto ? currentUser?.currentPhoto.url : defaultUser} alt={currentUser.firstname} />
             </Link>
             <div className="details">
-              <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}>
-                <span className='name' style={{ color: 'white' }}>
-                  {currentUser.firstname.charAt(0).toUpperCase()}{currentUser.firstname.slice(1)} {' '}
-                  {currentUser.lastname.charAt(0).toUpperCase()}{currentUser.lastname.slice(1)}
+              <Link to={`/profile/${post.userId._id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                <span className='name' style={{ color: 'white' ,textTransform:'capitalize'}}>
+                  {currentUser.firstname} {' '}
+                  {currentUser.lastname}
+                  {/* {currentUser.firstname.charAt(0).toUpperCase()}{currentUser.firstname.slice(1)} {' '}
+                  {currentUser.lastname.charAt(0).toUpperCase()}{currentUser.lastname.slice(1)} */}
                 </span>
 
               </Link>
@@ -163,9 +168,140 @@ const Post = ({ post, setPosts }) => {
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">
-              {post.userId === currentUser._id &&
+              {post?.userId?._id === currentUser?._id &&
                 <a onClick={DeleteHandler}><DeleteOutlineOutlinedIcon /> Delete Post </a>}
-              {post.userId === currentUser._id &&
+              {post?.userId?._id === currentUser._id &&
+                <a onClick={() => setUpdateMode(true)}> <EditOutlinedIcon /> Edit post</a>}
+
+              <a onClick={copyHandler} ><InsertLinkOutlinedIcon /> Copy Link Post</a>
+              <a onClick={() => setShowReportForm(true)}><ReportGmailerrorredOutlinedIcon /> Report Post</a>
+              {showReportForm && (
+                <form className='reportForm' onSubmit={handleReportSubmit}>
+                  <label className='report'>
+                    Reason for report:
+                    <input className='reportInput' type="text" value={reportReason} onChange={(e) => setReportReason(e.target.value)} placeholder='Write the reason of your report' style={{
+                      padding: '15px',
+                      borderRadius: '15px',
+                      marginTop: '5px',
+                      marginLeft: '6px',
+                      marginBottom: '10px',
+                      width: '100%',
+                      height: '50px',
+                      border: "none",
+                      opacity: "0.9"
+                    }} />
+                  </label>
+                  <div className='reportBtns' style={{marginBottom:"15px",borderRadius:"12px"}}>
+                    <button className='reportBtn' type="submit">Report post</button>
+                    <button className='cancelBtn' type="button" onClick={() => setShowReportForm(false)}>Cancel</button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+
+        </div>
+
+        {updateMode ? <input value={desc} className='textarea' autoFocus      style={{
+                padding: '15px',
+                borderRadius: '15px',
+                marginTop:'6px',
+                opacity:"0.9",
+                border:"none"
+              }}
+              onChange={(e) => setDesc(e.target.value)
+        } /> :
+          (
+            <div className="content" style={{ lineHeight: "1.8" }}>
+              <p>{post.desc}</p>
+
+            </div>
+          )
+        }
+        {updateMode ? <input value={hashtags} className='textarea' autoFocus style={{
+                padding: '15px',
+                borderRadius: '15px',
+                marginTop:'6px',
+                opacity:"0.9",
+                border:"none",
+               
+              }} 
+              onChange={(e) => setHashtag(e.target.value)
+        } /> :
+          (
+            <div className="content" style={{ color: "blue", lineHeight: "1.8" }}>
+              {post.hashtags && <p>#{post.hashtags}</p>}
+              {post.image ? <img src={PF + post.image} alt="image" /> : <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8IHIodtO_PbMwrmVGhxM0DWGUBuQCiVcQRQ&usqp=CAU" alt="image not available" style={{ borderRadius: "20px" }} />}
+
+            </div>
+          )
+        }
+        {updateMode && (
+          <button className='change' onClick={updateHandler}>Save changes</button>
+
+        )}
+         <hr style={{marginTop:"10px",marginBottom:"10px"}}/>
+
+        <div className="info" >
+          <div className="item" >
+            {islike ? <FavoriteOutlinedIcon onClick={likeHandler} style={{ color: 'red' }} /> : <FavoriteBorderOutlinedIcon onClick={likeHandler} />}
+            {like} Likes
+
+          </div>
+          <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
+            <SmsOutlinedIcon />
+            {com} Comments
+          </div>
+
+          <div className="item" onClick={shareHandler}>
+            <ReplyAllOutlinedIcon />
+            {share} Share
+          </div>
+        </div>
+        <hr style={{marginTop:"10px"}}/>
+        {commentOpen && <Comments postId={post._id} />}
+
+      </div>
+    </div>
+    )
+  
+  return   (
+    <div className='post'>
+      <div className="container">
+        <div className="user">
+          <div className="userInfo">
+            <Link to={`/profile/${post.userId._id}`} style={{ textDecoration: "none", color: "inherit" }}>
+              <img src={post.userId.currentPhoto ? post.userId.currentPhoto.url : defaultUser} alt={post.userId.firstname} />
+            </Link>
+            <div className="details">
+              <Link to={`/profile/${post.userId._id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                <span className='name' style={{ color: 'white' ,textTransform:'capitalize'}}>
+                  {/* {currentUser.firstname.charAt(0).toUpperCase()}{currentUser.firstname.slice(1)} {' '}
+                  {currentUser.lastname.charAt(0).toUpperCase()}{currentUser.lastname.slice(1)} */}
+                  {post.userId.firstname} {' '}
+                  {post.userId.lastname}
+                </span>
+
+              </Link>
+              <div className="location-date">
+                <span className='date'>{format(post.createdAt)}</span>
+                <p className="location"><LocationOnOutlinedIcon />Tunisia</p>
+              </div>
+
+              <div>
+                <h5 style={{ marginTop: "1px", marginRight: "1px", color: "goldenrod" }} onChange={(e) => setFeeling(e.target.value)} ><span>&#128512;</span>{post.feeling}</h5>
+              </div>
+            </div>
+
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn"><MoreHorizRoundedIcon htmlColor="white" />
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+              {post.userId._id === currentUser._id &&
+                <a onClick={DeleteHandler}><DeleteOutlineOutlinedIcon /> Delete Post </a>}
+              {post.userId._id === currentUser._id &&
                 <a onClick={() => setUpdateMode(true)}> <EditOutlinedIcon /> Edit post</a>}
 
               <a onClick={copyHandler} ><InsertLinkOutlinedIcon /> Copy Link Post</a>
@@ -260,5 +396,6 @@ const Post = ({ post, setPosts }) => {
     </div>
   )
 }
+
 
 export default Post

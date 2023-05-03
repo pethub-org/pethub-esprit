@@ -28,6 +28,7 @@ import ProductDetail from "./components/market/ProductDetail";
 import FormScreen from "./components/market/Formscreen";
 import Friends from "./pages/friends/Friends";
 import Game from "./components/games/Game";
+import SinglePost from "./components/post/SinglePost";
 
 function App() {
   const { auth } = useAuth();
@@ -99,7 +100,7 @@ function App() {
         ,
         {
           path: "/games",
-          element: <Game/>,
+          element: <Game />,
         },
         {
           path: "/market/:id",
@@ -113,6 +114,10 @@ function App() {
           path: "/friends",
           element: <Friends />,
         },
+        {
+          path: '/post/:id',
+          element: <SinglePost />
+        }
       ],
     },
     {
@@ -147,6 +152,7 @@ function App() {
       path: '/admin/update/user/:id',
       element: <EditProfile />
     }
+
   ]);
 
   return (

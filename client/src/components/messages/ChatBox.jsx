@@ -62,14 +62,13 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
     }
     useEffect(() => {
         socket.on('getMessage', (data) => {
-            // console.log({data})
             setMessages(prev => [...prev,data.message])
         })
 
         return () => {
             socket.off('getMessage');
         }
-    }, [socket,setMessages])
+    }, [socket.id,setMessages,socket])
     return (
         // <div className={styles.relative}>
             <div className={styles.container} >

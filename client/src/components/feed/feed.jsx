@@ -248,7 +248,7 @@ const Feed = ({posts,setPosts}) => {
     const newPost = {
       userId: user._id,
       desc: desc.current.value,
-      hashtags: hashtags.current.value,
+      hashtags: hashtags?.current?.value ? hashtags.current.value  : null ,
 
     };
     if (file) {

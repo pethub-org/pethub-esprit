@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import Post from "./Post";
 
 
 const SinglePost = () => {
@@ -14,8 +15,8 @@ const SinglePost = () => {
       async function fetchPost() {
         try {
            
-            const res = await axios.get(`/posts/${id}`);
-    setPost(res.data);
+          const res = await axios.get(`/api/posts/${id}`);
+          setPost(res.data);
         } catch (err) {
           console.log(err);
         }
@@ -31,11 +32,8 @@ const SinglePost = () => {
   
     return (
     
-      <div>
-      <h1>{post.user}</h1>
-        <p>{post.desc}</p>
-        <img src={post.image} alt="" />
-      </div>
+      <Post post={post}>  
+      </Post>
       
     );
 }

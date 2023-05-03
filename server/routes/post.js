@@ -19,7 +19,7 @@ router.post("/create", async (req, res) => {
 // all post 
 router.get("/timeline/all", async (req, res) => {
   try {
-    const posts = await postModel.find({});
+    const posts = await postModel.find({}).populate({ path: 'userId', model: 'User' });
     return res.status(200).json(posts)
   } catch (err) {
     res.status(500).json(err);
@@ -29,11 +29,11 @@ router.get("/timeline/all", async (req, res) => {
 
 // update post 
 router.put("/:id", async (req, res) => {
-  const post = await postModel.findById(req.params.id);
+  const post = await postModel.findById(req.params.id).populate({ path: 'userId', model: 'User' });
   try {
     if (post.userId === req.body.user) {
       // await post.updateOne({ $set: req.body })
-      const post = await postModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      const post = await postModel.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate({ path: 'userId', model: 'User' });
       // res.status(200).json("the post has been updated")
       res.status(200).json(post)
 
@@ -97,7 +97,7 @@ router.put("/:id/like", async (req, res) => {
 // get post 
 router.get("/:id", async (req, res) => {
   try {
-    const post = await postModel.findById(req.params.id);
+    const post = await postModel.findById(req.params.id).populate({ path: 'userId', model: 'User' });
     res.status(200).json(post)
 
   } catch (err) {
@@ -110,13 +110,52 @@ router.get("/:id", async (req, res) => {
 router.get("/timeline/all/:userId", async (req, res) => {
   try {
     const currentUser = await userModel.findById(req.params.userId);
-    const userPosts = await postModel.find({ userId: currentUser._id });
-    const friendPosts = await Promise.all(
-      currentUser.followersPeople.map((friendId) => {
-        return postModel.find({ userId: friendId });
-      })
-    );
-    res.json(userPosts.concat(...friendPosts))
+    let userPosts = await postModel.find({ userId: currentUser._id })
+      .populate({ path: 'userId', model: 'User' })
+      .populate({ path: 'userId.photos', model: 'Photo' });
+    // userPosts.userId.currentPhoto = userPosts.userId.photos.find(photo => photo.isMain);
+    // console.log(userPosts)
+    // console.log({ userPosts })
+
+    userPosts = userPosts.map(post => {
+      post.userId.currentPhoto = post.userId.photos.find(photo => photo.isMain);
+      return post;
+    })
+    // userPosts.forEach(post => console.log(post.userId._id))
+
+    // console.log({ currentUser })
+    // if (currentUser.followersPeople.lenght > 0) {
+    //   const friendPosts = await Promise.all(
+    //     currentUser.followersPeople.map((friendId) => {
+    //       return userPosts = postModel.find({ userId: friendId })
+    //       // .populate({ path: 'userId', model: 'User' })
+    //       // .populate({ path: 'userId.photos', model: 'Photo' });
+
+    //       // userP.userId.currentPhoto = userP.photos.find(photo => photo.isMain);
+    //       // return userP;
+    //       // return userPosts;
+
+    //       // return userPosts;
+
+    //     })
+    //   );
+    // }
+    if (currentUser.followersPeople.length > 0) {
+      const friendPosts = await Promise.all(
+        currentUser.followersPeople.map((friendId) => {
+          return postModel.find({ userId: friendId })
+            .populate({ path: 'userId', model: 'User' })
+
+        })
+      );
+
+      return res.json(userPosts.concat(...friendPosts))
+
+    }
+
+
+    // res.json(userPosts.concat(...friendPosts))
+    return res.json(userPosts);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -154,8 +193,8 @@ router.post("/:id/share", async (req, res) => {
 //copy link 
 router.get('/:id/copy-link', async (req, res) => {
   try {
-    const post = await postModel.findById(req.params.id);
-    const postLink = `${req.protocol}://${req.get('host')}/posts/${post._id}`;
+    const post = await postModel.findById(req.params.id).populate({ path: 'userId', model: 'User' });
+    const postLink = `${process.env.FRONT_URL}/posts/${post._id}`;
     res.send(postLink);
   } catch (error) {
     console.log(error);
