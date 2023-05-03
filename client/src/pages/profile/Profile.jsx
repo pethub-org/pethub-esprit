@@ -35,7 +35,7 @@ const Profile = () => {
   const [userProfileData, setUserProfileData] = useState({});
   const { auth, setAuth } = useAuth();
   const [isMain, setIsMain] = useState(false);
-
+  
 
   
   const handleSelectFile = (e) => {

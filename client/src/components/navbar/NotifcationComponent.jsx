@@ -29,13 +29,11 @@ const NotificationComponent = ({notification,setNotifications}) => {
 
     // navigate to the post or comment related to the notification
     if (notification.type === 'comment') {
-      navigate(`/comments/${notification.content}`)
-    } else if(notification.type === 'post') {
-      navigate(`/posts/${notification.content}`)
+      navigate(`/post/${notification.content}`)
+    } else if(notification.type === 'like') {
+      navigate(`/post/${notification.content}`)
     }
-    if (notification.type === 'request') {
-      
-    }
+  
 
   }
   
@@ -51,14 +49,14 @@ const NotificationComponent = ({notification,setNotifications}) => {
 
 
   return (
-    <div className={style.container} onClick={handleClick}>
+    <div className={style.container} style={{cursor:'pointer'}} onClick={handleClick}>
       <div>
          <img src={defaultPicture} alt="profile pic" className={style.img} />
       </div>
       <div className={style.informations}>
-        <p><span className={style.username}>{notification.sender.firstname}</span> : liked your post</p>
+        <p style={{fontSize:'12px'}}><span style={{fontSize:'12px',textTransform:'capitalize'}} className={style.username}>{notification.sender.firstname}</span> : {notification.type === 'like' ? 'Liked Your Post' : 'Commented On Your Post'}</p>
         <span>{formatedDate}</span>
-        <small style={{alignSelf:'end'}}>{notification.seen ? 'seen' : 'Not seen yet'}</small>
+        <small style={{alignSelf:'end',color:'black',fontSize:'10px',fontWeight:'600'}}>{notification.seen ? 'seen' : 'Not seen'}</small>
       </div>
     </div>
   )

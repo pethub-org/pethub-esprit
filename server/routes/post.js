@@ -2,7 +2,8 @@ const router = require('express').Router();
 const authenticationMiddleware = require('../middlewares/auth.middleware');
 const postModel = require('../models/Post');
 const userModel = require('../models/UserSchema');
-const { createNotificationService } = require("../services/notification.service")
+const { createNotificationService } = require("../services/notification.service");
+const LoggedInUsers = require('../utils/users.socket');
 // create post 
 router.post("/create", async (req, res) => {
   const newPost = new postModel(req.body)
@@ -75,10 +76,21 @@ router.delete("/:id", async (req, res) => {
 // like & dislike post 
 router.put("/:id/like", async (req, res) => {
   try {
-    const post = await postModel.findById(req.params.id);
+    const post = await postModel.findById(req.params.id).populate({ path: 'userId', model: 'User' });
+
+    // console.log(req.body.userId);
+
     if (!post.likes.includes(req.body.userId)) {
       await post.updateOne({ $push: { likes: req.body.userId } })
-      await createNotificationService({ type: 'like', sender: userId, receiver: post.userId, content: 'Your post has been liked' })
+      await createNotificationService({ type: 'like', sender: req.body.userId, receiver: post.userId._id, content: post._id })
+      // console.log({ sender: userId, receiver: post.userId._id, content: post._id })
+
+      const io = req.app.get('socketio')
+      const loggedInUsers = LoggedInUsers.getInstance();
+      const socketId = loggedInUsers.getUser(post.userId._id)
+
+      io.to(socketId).emit("notification", { type: 'like', sender: req.body.userId, receiver: post.userId._id, content: post._id });
+
       res.status(200).json("the post has been liked")
     }
     else {

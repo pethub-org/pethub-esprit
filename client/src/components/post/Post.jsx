@@ -24,7 +24,7 @@ import defaultUser from '../../assets/defaultUser.png';
 const Post = ({ post, setPosts }) => {
 
   console.log({ post });
-  
+
   const { auth: currentUser } = useAuth()
   const [like, setLike] = useState(post.likes.length)
   const [share, setShare] = useState(post.shares.length)
@@ -81,6 +81,7 @@ const Post = ({ post, setPosts }) => {
 
   const likeHandler = () => {
     try {
+      // user id ili aaamal like
       axios.put("/api/posts/" + post._id + "/like", { userId: currentUser._id })
     }
     catch (err) {
