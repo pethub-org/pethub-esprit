@@ -87,9 +87,14 @@ router.put("/:id/like", async (req, res) => {
 
       const io = req.app.get('socketio')
       const loggedInUsers = LoggedInUsers.getInstance();
-      const socketId = loggedInUsers.getUser(post.userId._id)
+      const socketId = loggedInUsers.getUser(post.userId._id.toString())
 
-      io.to(socketId).emit("notification", { type: 'like', sender: req.body.userId, receiver: post.userId._id, content: post._id });
+      io.to(socketId).emit("notification", {
+        type: 'like',
+        sender: req.body.userId,
+        receiver: post.userId._id,
+        content: `${post.userId.firstname} ${post.userId.lastname} Liked your post.`
+      });
 
       res.status(200).json("the post has been liked")
     }
