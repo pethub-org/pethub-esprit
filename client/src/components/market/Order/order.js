@@ -88,7 +88,7 @@ function Order(props) {
      
       <ListItem alignItems="flex-start" >
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          <Avatar alt="Remy Sharp" src="https://m.media-amazon.com/images/I/41wwcmSE5nL._SX300_SY300_QL70_FMwebp_.jpg" />
         </ListItemAvatar>
         <ListItemText
           primary={order.name}
@@ -100,7 +100,7 @@ function Order(props) {
                 variant="body2"
                 color="text.primary"
               >
-               {order.price}
+               DT {order.price}
               </Typography>
              
             </React.Fragment>

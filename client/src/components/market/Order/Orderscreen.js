@@ -3,17 +3,21 @@ import Order from './order'
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import "../product/market.scss";
+import useAuth from '../../../hooks/useAuth';
 function Orderscreen() {
   const [orders, setOrder] = useState([]);
+  const {auth:user} = useAuth()
   const axios = useAxiosPrivate();
-
   useEffect(() => {
-    const fetchCategories = async () => {
-      const { data } = await axios.get("/api/orders/");
-      setOrder(data);
+    const getProduct = async () => {
+      try {
+        const result = await axios.get("/api/orders/" + user._id);
+        setOrder(result.data);
+      } catch {}
     };
-    fetchCategories();
-  }, []);
+    getProduct();
+  }, [user._id]);
+  
   return (
      <div  >
    <h1 style={{color:"white"}}> All item saved</h1>

@@ -18,6 +18,7 @@ route.get("/", async (req, res) => {
     return res.json({ message: `product already being saved` })
    }else{
     const order = new Order({
+      userId: req.body.userId,
       productid: productid,
       name: req.body.name,
       price: req.body.price,
@@ -35,8 +36,18 @@ route.get("/", async (req, res) => {
 }
 });
 
-   
-   
+route.get("/:userId", async (req, res) => {
+  try {
+    const order = await Order.find({
+      userId: req.params.userId,
+    });
+
+    res.json(order);
+    console.log(order);
+  } catch (err) {
+    res.send("Error" + err);
+  }
+});
  
   
   

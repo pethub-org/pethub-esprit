@@ -73,15 +73,14 @@ const HomeProduct = () => {
         </form>
         <div>
         <form style={{ marginRight:25}}>
-        <label htmlFor="sort" style={{color:"white",  marginRight:10 , marginLeft:20}}>Sort by:</label>
-        <select id="sort" value={sort} onChange={handleSortChange} style={{borderRadius:20}}>
-          <option value="name">Name</option>
+        <label style={{color:"white",  marginRight:10 , marginLeft:20 }}>Sort by:</label>
+        <select id="sort" value={sort} onChange={handleSortChange} style={{borderRadius:20 , backgroundColor:"White" , color:"black"}}>
           <option value="price">Price</option>
         </select>
         <label htmlFor="sortOrder" style={{color:"white" , marginRight:10 , marginLeft:20}}>Sort order:</label>
-        <select id="sortOrder" value={sortOrder} onChange={handleSortOrderChange} style={{borderRadius:20}}>
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
+        <select id="sortOrder" value={sortOrder} onChange={handleSortOrderChange} style={{borderRadius:20 , backgroundColor:"White" , color:"black"}}>
+          <option value="asc" style={{backgroundColor:"white" , color:"black"}}>Ascending</option>
+          <option value="desc" style={{backgroundColor:"white" , color:"black"}}>Descending</option>
         </select>
       </form>
         </div>

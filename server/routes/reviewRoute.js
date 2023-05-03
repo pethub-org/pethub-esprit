@@ -5,6 +5,7 @@ route.post("/:id", async (req, res) => {
   const id = req.params.id;
   const review = new Review({
     product_id: id,
+    userId: req.body.userId,
     description: req.body.description,
   });
   try {
