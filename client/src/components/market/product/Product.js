@@ -17,7 +17,7 @@ import { useState } from "react";
 function Product(props) {
   const { auth: currentUser } = useAuth()
   const location = useLocation();
-  const [imageSrc, setImageSrc] = useState("https://i.imgur.com/VcypK5c.png");
+  const [imageSrc, setImageSrc] = useState("https://m.media-amazon.com/images/I/41wwcmSE5nL._SX300_SY300_QL70_FMwebp_.jpg");
   const [isImageError, setIsImageError] = useState(false);
   const { product } = props;
   function handleImageError() {
@@ -25,11 +25,13 @@ function Product(props) {
   }
   const _id = location.pathname.split("/")[2];
   const axios = useAxiosPrivate();
-
+  const {auth:user} = useAuth()
   const submitorder = (productid) => {
 
     axios
       .post(`/api/orders/${productid}`, {
+        userId: user._id,
+
         productid: productid,
         name: product.name,
         price: product.price,
@@ -57,21 +59,30 @@ function Product(props) {
     
 
     <div className="container">
-      <div className="card">
+      <div className="card" >
         <div className="image">
           <Link to={"/market/" + product._id}>
-            {isImageError ? (   
-              <img src={`/uploads/${product.image}`} alt="Default Image" />
+            {product.image ? (   
+              <img 
+              src={isImageError ? imageSrc : product.image}
+              onError={handleImageError}
+              alt="Product Image"
+           
+              
+            />
             ) : (
-              <img src={product.image} onError={handleImageError} alt="Image" />
+              <img 
+          src={imageSrc}
+          alt="Default Product Image"
+        />
             )}
           </Link>
         </div>
         <div className="vitamin">
-          <h3 style={{fontSize:30 , fontWeight:"bold"}}>{product.name} </h3>
+          <h3 style={{fontSize:30 , fontWeight:"bold", color:"White" ,marginTop:3}}>{product.name} </h3>
         </div>
 
-        <h4>price: ${product.price} </h4>
+        <h4 style={{ color:"White" }}>price: DT {product.price} </h4>
         <div className="buttons">
           {product.userId === currentUser._id &&
           <button onClick={() => handleDelete(product._id)}>delete</button>}

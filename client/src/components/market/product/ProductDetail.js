@@ -10,6 +10,8 @@ import useAuth from "../../../hooks/useAuth";
 
 function ProductDetail() {
   const { auth: currentUser } = useAuth()
+  const {auth:user} = useAuth()
+
   const location = useLocation();
   const axios = useAxiosPrivate();
   const navigate = useNavigate();
@@ -19,33 +21,28 @@ function ProductDetail() {
   const togglePopup = () => {
     setIsOpen(!isOpen);
   }
+  function handleImageError() {
+    setIsImageError(true);
+  }
   const togglePopupdate = () => {
     setIsOpennnn(!isOpennnn);
   }
- 
+  const [imageSrc, setImageSrc] = useState("https://m.media-amazon.com/images/I/41wwcmSE5nL._SX300_SY300_QL70_FMwebp_.jpg");
+  const [isImageError, setIsImageError] = useState(false);
   const _id = location.pathname.split("/")[2];
   const [prod, setProd] = useState({});
   const [review, setreview] = useState([]);
   const [descriprev, setdescriprev] = useState("");
-  const [user, setUser] = useState({})
 
   const addNewProduct = () => {
     window.location.reload(false);
 
     axios.post("/api/reviews/" + _id, {
+      userId: user._id,
       description: descriprev,
+
     });
   };
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const res = await axios.get(`/api/users/${prod.userId}`);
-      setUser(res.data)
-    
-    };
-    fetchUser();
-
-  }, [])
 
 
 
@@ -98,18 +95,29 @@ function ProductDetail() {
     <div>
       <div className="proddetail">
         <div className="prodimge">
-          <img src={prod.image}  />
+        {prod.image ? (   
+              <img 
+              src={isImageError ? imageSrc : prod.image}
+              onError={handleImageError}
+              alt="Product Image"
+            />
+            ) : (
+              <img 
+          src={imageSrc}
+          alt="Default Product Image"
+        />
+            )}
         </div>
         <div className="proddata">
           <h1 className="Productname">{prod.name}</h1>
-                  <h2>{currentUser.firstname}</h2>
+                  <h2 style={{marginLeft:30 , color:"white"}}> uploaded by {currentUser.firstname}</h2>
       
          
           <hr style={{marginLeft:20 , width:300 , marginRight:20}}></hr>
           <p className="ProdPrice"> {prod.price} DT</p>
         
           <hr style={{marginLeft:20 , width:300 , marginRight:20}}></hr>
-          <h4 style={{marginTop:2 , marginLeft:30}}>Description:</h4>
+          <h4 style={{marginTop:2 , marginLeft:30 , color: "white"}}>Description:</h4>
           <p className="ProdDescription"> {prod.description}</p>
           <hr style={{marginLeft:20 , width:300 , marginRight:20}}></hr>
 
@@ -141,52 +149,58 @@ function ProductDetail() {
       </div>
       <div>
       <h3 style={{color:"white" , alignItems:"flex-start", display: 'flex'  , marginLeft:30}}> Reviews:</h3>
-      {review.map((review) => (
-          <h1>
-           <div  style={{padding: 10}}>
-		<div style={{width:500}}>
-           
-    <hr style={{marginLeft:20 , width:750 , marginRight:20}}></hr>
-                <div  style={{marginTop:3 , marginBottom:3}}>
-                    <div class="rating-outer">
-                        <div class="rating-inner"></div>
-                    </div>
-                    <p className="review_user">by John</p>
-                    <p style={{marginLeft:20 , color:"white"}}>{review.description}</p>
-                     <div style={{display:"flex" , marginRight:10 }}>
-                     <button  style={{ marginRight:12,marginLeft:600 , backgroundColor: "blue" }} onClick={togglePopupdate} >update</button>
-                     {isOpennnn && 
-     <div className="popup-box">
-      <div className="box">
-        <span className="close-icon" onClick={togglePopupdate}>x</span>
-        <h5 >Submit  new Review</h5>
-        <textarea
-         type="text"
-         onChange={(e) => {
-          setdescriprev(e.target.value);
-        }}
-        />
+      {review?.length > 0 ? (
+      review.map((review) => <h1>
+      <div  style={{padding: 10}}>
+<div style={{width:500}}>
       
-        <button className="buttonpopup" onClick={submitActionHandler(review._id)}>submit</button>
-      </div>
-    </div>}
-                     
-                    <button style={{   backgroundColor: "blue" }} onClick={() => handleDelete(review._id)}>delete</button> 
-                    
-                    </div> 
-              
+<hr style={{marginLeft:20 , width:750 , marginRight:20}}></hr>
+           <div  style={{marginTop:3 , marginBottom:3}}>
+               <div class="rating-outer">
+                   <div class="rating-inner"></div>
+               </div>
+               <p className="review_user">by {user.firstname}</p>
+               <p style={{marginLeft:20 , color:"white"}}>{review.description}</p>
+                <div style={{display:"flex" , marginRight:10 }}>
+                <button  style={{ marginRight:12,marginLeft:600 , backgroundColor: "blue" }} onClick={togglePopupdate} >update</button>
+                {isOpennnn && 
+<div className="popup-box">
+ <div className="box">
+   <span className="close-icon" onClick={togglePopupdate}>x</span>
+   <h5 >update your Review</h5>
+   <textarea
+    type="text"
+    onChange={(e) => {
+     setdescriprev(e.target.value);
+   }}
+   />
+ 
+   <button className="buttonpopup" onClick={submitActionHandler(review._id)}>submit</button>
+ </div>
+</div>}
+                
+               <button style={{   backgroundColor: "blue" }} onClick={() => handleDelete(review._id)}>delete</button> 
+               
+               </div> 
+         
 
 
 
 
 
 
-                    <hr style={{marginLeft:20 , width:750 , marginRight:20}}></hr>
-                </div>
-        </div>
-    </div>
-          </h1>
-          ))}
+               <hr style={{marginLeft:20 , width:750 , marginRight:20}}></hr>
+           </div>
+   </div>
+</div>
+     </h1>)
+    ) : (
+      <p style={{fontSize:"25px" , textAlign:"center" , color:"white"}}>No reviews for {prod.name}</p>
+    )}
+ 
+   
+          
+     
       </div>
 
       
