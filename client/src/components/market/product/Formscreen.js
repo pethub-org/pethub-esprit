@@ -105,7 +105,7 @@ function FormScreen() {
       <h5 className="form-step"> </h5>
       <form encType="multiple/form-data" onSubmit={addNewProduct}>
         <div className="field1">
-          <label> add your product </label>
+          <label style={{color:"white"}}> add your product </label>
           <input
             placeholder="Name"
             type="text"

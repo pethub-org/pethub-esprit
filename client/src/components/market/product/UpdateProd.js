@@ -65,7 +65,7 @@ function UpdateProd() {
       <h5 className="form-step"> </h5>
       <form>
         <div className="field1">
-          <label> update your product </label>
+          <label style={{color:"white"}}> update your product </label>
           <input
             placeholder="Name"
             type="text"

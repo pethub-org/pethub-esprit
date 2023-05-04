@@ -161,28 +161,34 @@ function ProductDetail() {
                </div>
                <p className="review_user">by {user.firstname}</p>
                <p style={{marginLeft:20 , color:"white"}}>{review.description}</p>
-                <div style={{display:"flex" , marginRight:10 }}>
-                <button  style={{ marginRight:12,marginLeft:600 , backgroundColor: "blue" }} onClick={togglePopupdate} >update</button>
-                {isOpennnn && 
-<div className="popup-box">
- <div className="box">
-   <span className="close-icon" onClick={togglePopupdate}>x</span>
-   <h5 >update your Review</h5>
-   <textarea
-    type="text"
-    onChange={(e) => {
-     setdescriprev(e.target.value);
-   }}
-   />
- 
-   <button className="buttonpopup" onClick={submitActionHandler(review._id)}>submit</button>
- </div>
-</div>}
-                
-               <button style={{   backgroundColor: "blue" }} onClick={() => handleDelete(review._id)}>delete</button> 
-               
-               </div> 
          
+
+                < div style={{display:"flex" , marginRight:10 }}>
+                {review.userId === currentUser._id &&  
+
+                <button  style={{ marginRight:12,marginLeft:600 , backgroundColor: "blue" }} onClick={togglePopupdate} >update</button>
+                }
+                {isOpennnn && 
+                  <div className="popup-box">
+                       <div className="box">
+                           <span className="close-icon" onClick={togglePopupdate}>x</span>
+                             <h5 >update your Review</h5>
+                                <textarea
+                                 type="text"
+                           onChange={(e) => {
+                          setdescriprev(e.target.value);
+                              }}
+                                />
+ 
+                 <button className="buttonpopup" onClick={submitActionHandler(review._id)}>submit</button>
+                   </div>
+                </div>}
+                {review.userId === currentUser._id &&  
+
+               <button style={{   backgroundColor: "blue" }} onClick={() => handleDelete(review._id)}>delete</button>
+                }
+               </div>  
+                    
 
 
 
