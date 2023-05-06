@@ -33,6 +33,7 @@ function ProductDetail() {
   const [prod, setProd] = useState({});
   const [review, setreview] = useState([]);
   const [descriprev, setdescriprev] = useState("");
+  const [userr, setUser] = useState({})
 
   const addNewProduct = () => {
     window.location.reload(false);
@@ -44,6 +45,15 @@ function ProductDetail() {
     });
   };
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await axios.get(`/api/users/${review.userId}`);
+      setUser(res.data)
+    
+    };
+    fetchUser();
+
+  }, [])
 
 
 
@@ -159,7 +169,10 @@ function ProductDetail() {
                <div class="rating-outer">
                    <div class="rating-inner"></div>
                </div>
-               <p className="review_user">by {user.firstname}</p>
+                 <p className="review_user">by {user.firstname}</p>
+
+               
+              
                <p style={{marginLeft:20 , color:"white"}}>{review.description}</p>
          
 
