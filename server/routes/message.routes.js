@@ -8,7 +8,7 @@ const yup = require('yup');
 
 
 router.post('/', createMessage)
-router.get('/conversation/:conversationId', getUserConversation)
+router.get('/conversation/:conversationId', authenticationMiddleware, getUserConversation)
 
 
 module.exports = router;

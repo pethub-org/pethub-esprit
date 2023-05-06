@@ -1,11 +1,5 @@
 import "./profile.scss";
-import FacebookTwoToneIcon from "@mui/icons-material/FacebookTwoTone";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import PinterestIcon from "@mui/icons-material/Pinterest";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import PlaceIcon from "@mui/icons-material/Place";
-import LanguageIcon from "@mui/icons-material/Language";
+
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts"
@@ -35,7 +29,7 @@ const Profile = () => {
   const [userProfileData, setUserProfileData] = useState({});
   const { auth, setAuth } = useAuth();
   const [isMain, setIsMain] = useState(false);
-
+  
 
   
   const handleSelectFile = (e) => {
@@ -47,9 +41,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const response = await axiosPrivate.post(`/users/update/photos/${auth._id}`, { image,isMain }, { headers: { "Content-Type": 'multipart/form-data' } })
-      // console.log({response})
       const currentPhoto = response.data.photos.find(photo => photo.isMain);
-      // console.log({ currentPhoto })
       
       setAuth(prev => {
         return {
@@ -95,17 +87,6 @@ const Profile = () => {
 
     
       <div className="images">
-        {/* <img
-          src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt=""
-          className="cover"
-        />
-        <img
-          src="https://images.pexels.com/photos/14028501/pexels-photo-14028501.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
-          alt=""
-          className="profilePic"
-        /> */}
-
          <img
           src={userProfileData?.currentPhoto ? userProfileData?.currentPhoto?.url : ProfilePicture}
           alt=""
@@ -115,21 +96,7 @@ const Profile = () => {
       <div className="profileContainer">
         <div className="uInfo">
           <div className="left">
-            {/* <a href="http://facebook.com">
-              <FacebookTwoToneIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <InstagramIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <TwitterIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <LinkedInIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <PinterestIcon fontSize="large" />
-            </a> */}
+
           </div>
           <div className="center">
             <br/>
@@ -138,23 +105,12 @@ const Profile = () => {
             <br/>
             <br/>
             <h4 style={{textTransform:'capitalize'}}>{userProfileData?.firstname} {' '} {userProfileData?.lastname} </h4>
-            {/* <div className="info">
-              <div className="item">
-                <PlaceIcon />
-                <span>USA</span>
-              </div>
-              <div className="item">
-                <LanguageIcon />
-                <span>lama.dev</span>
-              </div>
-            </div> */}
             <div>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent:'center'
               }}>
-                {/* <button onClick={() => setToggleUpdate(prev => !prev)}  style={{marginRight:'16px'}}>ADD</button> */}
                 
               </div>
             </div>
@@ -162,7 +118,7 @@ const Profile = () => {
            
           </div>
         
-          <div className="right">
+          <div className="right" style={{visibility:'hidden'}}>
             <EmailOutlinedIcon />
             <MoreVertIcon />
           </div>
@@ -179,26 +135,8 @@ const Profile = () => {
   }
   return (
     <div className="profile">
-      {/* <button onClick={async() => {
-        const response = await axios.get(`${BASE_URL}/users`, {withCredentials:true}, {
-          headers: {
-            'Authorization': 'Bearer ' + currentUser.token,
-            'Content-Type': 'application/json'
-          },
-        });
-        console.log({response});
-      }}>Test http</button> */}
+   
       <div className="images">
-        {/* <img
-          src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt=""
-          className="cover"
-        /> */}
-        {/* <img
-          src="https://images.pexels.com/photos/14028501/pexels-photo-14028501.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
-          alt=""
-          className="profilePic"
-        /> */}
 
          <img
           src={auth?.currentPhoto ? auth?.currentPhoto?.url : ProfilePicture}
@@ -209,25 +147,10 @@ const Profile = () => {
       <div className="profileContainer">
         <div className="uInfo">
           <div className="left">
-            {/* <a href="http://facebook.com">
-              <FacebookTwoToneIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <InstagramIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <TwitterIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <LinkedInIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <PinterestIcon fontSize="large" />
-            </a> */}
+
 
           </div>
           <div className="center">
-            {/* <span>{firstname} </span> */}
             <br />
             <br />
             <br />
@@ -235,14 +158,7 @@ const Profile = () => {
             <span>{auth?.firstname} {' '} {auth?.lastname} </span>
 
             <div className="info">
-              {/* <div className="item">
-                <PlaceIcon />
-                <span>USA</span>
-              </div> */}
-              {/* <div className="item">
-                <LanguageIcon />
-                <span>lama.dev</span>
-              </div> */}
+           
             </div>
             <div>
               <div style={{
@@ -254,7 +170,6 @@ const Profile = () => {
                 <button onClick={() => setToggleUpdate(prev => !prev)} style={{ marginRight: '16px' }}>Update</button>
                 <button onClick={() => {
                   setShowPhotos(prev => !prev)
-                  // console.log({auth})
                 }}  style={{marginRight:'16px'}}>show my photos </button>
                 
                 <button onClick={() => setToggleUplodatePicture(prev => !prev)}><FontAwesomeIcon icon={faImage} size="1x" /></button>
@@ -265,7 +180,7 @@ const Profile = () => {
            
           </div>
         
-          <div className="right">
+          <div className="right" style={{visibility:'hidden'}}>
             <EmailOutlinedIcon />
             <MoreVertIcon />
           </div>
@@ -299,7 +214,6 @@ const Profile = () => {
         
         
         
-        {/* <p style={{ color: 'white' }}>test</p> */}
         {showPhotos && auth?.photos?.length <= 0 && <h4 style={{ color: 'white', textAlign: 'center' }}>You don't have photos yet.</h4>}
         <br/>
         
@@ -318,12 +232,12 @@ const Profile = () => {
               flexDirection: 'column',
             padding:'18px'
           }}>
-              <input type="email" placeholder="email" value={email} palceholder="email" onChange={(e) => setEmail(e.target.value)} />
+              <input type="email" placeholder="email" value={auth.email} palceholder="email" onChange={(e) => setEmail(e.target.value)} />
               <br/>
-              <input type="text" placeholder="firstname" value={firstname} palceholder="Firstname" onChange={(e) => setFirstname(e.target.value)} />
+              <input type="text" placeholder="firstname" value={auth.firstname} palceholder="Firstname" onChange={(e) => setFirstname(e.target.value)} />
                             <br/>
 
-              <input type="text" placeholder="last" value={lastname} palceholder="Lastname" onChange={(e) => setLastname(e.target.value)} />
+              <input type="text" placeholder="last" value={auth.lastname} palceholder="Lastname" onChange={(e) => setLastname(e.target.value)} />
                             <br/>
 
               <input type="password" value={password} placeholder='Enter New Password' onChange={(e) => setPassword(e.target.value)} />

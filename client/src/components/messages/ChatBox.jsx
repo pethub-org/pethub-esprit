@@ -45,15 +45,30 @@ const ChatBox = ({ conversations,chatData, setShowChatBox,messages,setMessages }
         axiosPrivate.post(`/messages`, {
             sender: auth._id,
             conversationId:chatData.conversationId,
-            text:message
+            text: message,
+            recieverId:chatData._id
         }).then(response => {
             setMessages(prev => [...prev, response.data])
             // 
-            socket.emit('sendMessage',{senderId:auth._id,text:message})
+            // console.log({chatData})
+            socket.emit('sendMessage', {
+                senderId: auth._id,
+                text: message,
+                conversationId: chatData.conversationId,
+                recieverId: chatData._id
+            })
         })
         }
-      
     }
+    useEffect(() => {
+        socket.on('getMessage', (data) => {
+            setMessages(prev => [...prev,data.message])
+        })
+
+        return () => {
+            socket.off('getMessage');
+        }
+    }, [socket.id,setMessages,socket])
     return (
         // <div className={styles.relative}>
             <div className={styles.container} >

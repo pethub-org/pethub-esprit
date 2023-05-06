@@ -1,9 +1,12 @@
 const router = require('express').Router();
+const authenticationMiddleware = require('../middlewares/auth.middleware');
 const Comment = require('../models/Comment');
 const postModel = require('../models/Post');
+const { createNotificationService } = require('../services/notification.service');
+const LoggedInUsers = require("../utils/users.socket")
 
 //add comments
-router.post('/create', async (req, res) => {
+router.post('/create', authenticationMiddleware, async (req, res) => {
     try {
         const { content, postId } = req.body;
 
@@ -25,9 +28,34 @@ router.post('/create', async (req, res) => {
         await comment.save();
 
         // Add comment to the associated post
-        const post = await postModel.findById(postId);
+        const post = await postModel.findById(postId).populate({ path: 'userId', model: 'User' });
         post.comments.push(comment);
+
+
+
+
         await post.save();
+
+        await createNotificationService({
+            type: 'comment',
+            sender: req?.user?._id,
+            receiver: post?.userId?._id,
+            content: post?._id
+        })
+
+
+        const io = req.app.get('socketio')
+        const loggedInUsers = LoggedInUsers.getInstance();
+        const socketId = loggedInUsers.getUser(post.userId._id.toString())
+        // console.log("post id => ", post.userId._id)
+        // console.log('emmiting notification event for comment to ', socketId, ' user recieving ', req.user.firstname, 'user emiting', post.userId.firstname)
+        io.to(socketId).emit("notification", {
+            type: 'comment',
+            sender: req?.user?._id,
+            receiver: post?.userId?._id,
+            content: `${req.user.firstname} ${req.user.lastname} has commented on your post.`
+
+        });
 
         res.send(comment);
     } catch (err) {
