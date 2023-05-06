@@ -63,6 +63,7 @@ const HomeProduct = () => {
             </option>
           ))}
         </select>
+      
 
         <form>
           <input
@@ -85,7 +86,10 @@ const HomeProduct = () => {
       </form>
         </div>
       </div>
-
+      <Link to={'/addprod'}>
+  
+      <button style={{marginLeft:350}}>add product</button>
+      </Link>
       <div className="marktes">
         {products
           .filter((product) => {

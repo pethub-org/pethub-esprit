@@ -33,6 +33,7 @@ function ProductDetail() {
   const [prod, setProd] = useState({});
   const [review, setreview] = useState([]);
   const [descriprev, setdescriprev] = useState("");
+  const [userr, setUser] = useState({})
 
   const addNewProduct = () => {
     window.location.reload(false);
@@ -44,6 +45,15 @@ function ProductDetail() {
     });
   };
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await axios.get(`/api/users/${review.userId}`);
+      setUser(res.data)
+    
+    };
+    fetchUser();
+
+  }, [])
 
 
 
@@ -148,6 +158,67 @@ function ProductDetail() {
         </div>
       </div>
       <div>
+
+      <h3 style={{color:"white" , alignItems:"flex-start", display: 'flex'  , marginLeft:30}}> Reviews:</h3>
+      {review?.length > 0 ? (
+      review.map((review) => <h1>
+      <div  style={{padding: 10}}>
+<div style={{width:500}}>
+      
+<hr style={{marginLeft:20 , width:750 , marginRight:20}}></hr>
+           <div  style={{marginTop:3 , marginBottom:3}}>
+               <div class="rating-outer">
+                   <div class="rating-inner"></div>
+               </div>
+                 <p className="review_user">by {user.firstname}</p>
+
+               
+              
+               <p style={{marginLeft:20 , color:"white"}}>{review.description}</p>
+         
+
+                < div style={{display:"flex" , marginRight:10 }}>
+                {review.userId === currentUser._id &&  
+
+                <button  style={{ marginRight:12,marginLeft:600 , backgroundColor: "blue" }} onClick={togglePopupdate} >update</button>
+                }
+                {isOpennnn && 
+                  <div className="popup-box">
+                       <div className="box">
+                           <span className="close-icon" onClick={togglePopupdate}>x</span>
+                             <h5 >update your Review</h5>
+                                <textarea
+                                 type="text"
+                           onChange={(e) => {
+                          setdescriprev(e.target.value);
+                              }}
+                                />
+ 
+                 <button className="buttonpopup" onClick={submitActionHandler(review._id)}>submit</button>
+                   </div>
+                </div>}
+                {review.userId === currentUser._id &&  
+
+               <button style={{   backgroundColor: "blue" }} onClick={() => handleDelete(review._id)}>delete</button>
+                }
+               </div>  
+                    
+
+
+
+
+
+
+               <hr style={{marginLeft:20 , width:750 , marginRight:20}}></hr>
+           </div>
+   </div>
+</div>
+     </h1>)
+    ) : (
+      <p style={{fontSize:"25px" , textAlign:"center" , color:"white"}}>No reviews for {prod.name}</p>
+    )}
+ 
+   
         <h3 style={{ color: "white", alignItems: "flex-start", display: 'flex', marginLeft: 30 }}> Reviews:</h3>
         {review?.length > 0 ? (
           review.map((review) => <h1>
@@ -197,6 +268,7 @@ function ProductDetail() {
         ) : (
           <p style={{ fontSize: "25px", textAlign: "center", color: "white" }}>No reviews for {prod.name}</p>
         )}
+
 
 
 
