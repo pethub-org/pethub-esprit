@@ -12,7 +12,6 @@ import Video from '../Video/Video';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Posts from '../posts/Posts';
 import ProfilePicture from '../../assets/defaultUser.png';
-import ReactEmoji from "react-emoji-render";
 
 
 const Feed = ({posts,setPosts}) => {

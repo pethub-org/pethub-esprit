@@ -118,7 +118,7 @@ function Reply({ commentId }) {
           <div className="comment" key={reply._id}>
               <img src={currentUser.currentPhoto ? currentUser.currentPhoto.url : defaultUser} alt={currentUser.firstname} />
               <div className="info">
-              <span >{currentUser?.firstname} {' '} {currentUser?.lastname}</span>
+              <span style={{ fontSize: "15px",textTransform: "capitalize"}} >{currentUser?.firstname} {' '} {currentUser?.lastname}</span>
               {editingReply === reply._id ? (
                 <>
                   <textarea
@@ -145,10 +145,10 @@ function Reply({ commentId }) {
                   </div>
                 </>
               ) : (
-                <p>{reply.content}</p>
+                <p style={{color:"white"}}>{reply.content}</p>
               )}
               <div className="actions">
-                <span>{format(reply.createdAt)}</span>
+                <span className='date'  >{format(reply.createdAt)}</span>
                 {currentUser._id === reply.userId && (
                   <>
                     <DeleteOutlineOutlinedIcon

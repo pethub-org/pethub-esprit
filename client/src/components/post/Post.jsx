@@ -37,7 +37,7 @@ const Post = ({ post, setPosts }) => {
   const [islike, setIsLike] = useState(false)
   const [image, setImage] = useState('')
   const [desc, setDesc] = useState('');
-  
+  const [isShared, setIsShared] = useState(false);
   //transorme lpost lel update
   const [updateMode, setUpdateMode] = useState(false);
   const axios = useAxiosPrivate();
@@ -115,6 +115,7 @@ const Post = ({ post, setPosts }) => {
   const shareHandler = async () => {
     try {
       await axios.post(`/api/posts/${post._id}/share`, { userId: currentUser._id });
+      setIsShared(true);
       //alert('Post shared!');
       toast(currentUser.firstname.charAt(0).toUpperCase()+ currentUser.firstname.slice(1)+' ' + currentUser.lastname.charAt(0).toUpperCase() +currentUser.lastname.slice(1) + ' ' + 'has shared your post', {position:'bottom-right'})
   
@@ -132,7 +133,7 @@ const Post = ({ post, setPosts }) => {
     try {
       await axios.post(`/api/posts/${post._id}/report`, { reason: reportReason });
       //alert('Post reported as inappropriate');
-      toast( 'Post reported as inappropriate')
+      toast( 'The post has been reported by ' + ' ' + currentUser.firstname.charAt(0).toUpperCase()+ currentUser.firstname.slice(1)+' ' + currentUser.lastname.charAt(0).toUpperCase() +currentUser.lastname.slice(1)  , {position:"bottom-right"})
       setShowReportForm(false);
       setReportReason('');
     } catch (error) {
@@ -143,8 +144,12 @@ const Post = ({ post, setPosts }) => {
   if(post?.userId?._id === currentUser?._id)
 
   return (
+    
     <div className='post'>
+      
+       {isShared && <h2>{currentUser.firstname}{' '}{currentUser.lastname} has shared the post</h2>}
       <div className="container">
+     
         <div className="user">
           <div className="userInfo">
             <Link to={`/profile/${post?.userId?._id}`} style={{ textDecoration: "none", color: "inherit" }}>

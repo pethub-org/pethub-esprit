@@ -42,10 +42,7 @@ router.get('/:id',  async(req, res) =>{
       res.status(400).send(err);
   }
 });
-
-// @route     PUT api/groups/:id
-// @desc      Update a group by ID
-// @access    Private
+//delete
 router.delete('/:id',  async (req, res) =>{
   const group = Group.findById(req.params.id);
   try {
@@ -58,9 +55,7 @@ router.delete('/:id',  async (req, res) =>{
   }
 })
 
-// @route     DELETE api/groups/:id
-// @desc      Delete a group by ID
-// @access    Private
+//update
 router.put('/:id',  async (req, res) =>{
   
   try {

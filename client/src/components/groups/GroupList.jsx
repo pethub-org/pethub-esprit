@@ -19,7 +19,7 @@ const GroupList = () => {
 
   const handleJoinGroup = async (groupId) => {
     try {
-      await axios.put(`http://localhost:8080/api/groups/join/${groupId}`);
+      await axios.put(`http://localhost:8080/api/groups/${groupId}/join`);
       // Refresh the group list
       const res = await axios.get('http://localhost:8080/api/groups/all');
       setGroups(res.data);
@@ -28,6 +28,7 @@ const GroupList = () => {
       // Handle error
     }
   };
+  
 
   if (selectedGroupId) {
     return <GroupDetail groupId={selectedGroupId} />;
@@ -44,6 +45,7 @@ const GroupList = () => {
              
             />
             <div className="group-name">{group.name}</div>
+     
             <span style={{
                       marginTop: "5px",
                       fontSize: "0.8rem",
@@ -58,6 +60,7 @@ const GroupList = () => {
               <button onClick={() => handleJoinGroup(group._id)}>Join the Group</button>
             )}
           </div>
+          
         ))}
       </div>
     </div>

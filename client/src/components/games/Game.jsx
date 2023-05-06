@@ -40,7 +40,8 @@ const Game = () => {
         <option value="">All genres</option>
         <option value="Action">Action</option>
         <option value="Adventure">Adventure</option>
-        <option value="Strategy">Strategy</option>
+        <option value="Sport">Sport</option>
+        <option value="Puzzle">Puzzle</option>
       </select>
     </div>
       <div className="games-container">
@@ -51,10 +52,11 @@ const Game = () => {
             className="game-image"
             style={{ backgroundImage: `url(${game.image})` }}
           ></div>
-          <h2 className="game-title" style={{color:"black"}}>{game.title}</h2>
+          <h2 className="game-title" style={{color:"black",fontSize:"20px"}}>{game.title}</h2>
           <button onClick={() => window.open(game.link, '_blank', 'width=800,height=600,toolbar=no')} >
-            Play
-          </button>
+  Play
+</button>
+
         </div>
       ))}
     </div>

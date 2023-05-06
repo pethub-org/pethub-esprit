@@ -26,7 +26,8 @@ router.post('/', async (req, res) => {
     releaseDate: req.body.releaseDate,
     genre: req.body.genre,
     platforms: req.body.platforms,
-    rating: req.body.rating
+    rating: req.body.rating,
+    link: req.body.link
   });
 
   try {
