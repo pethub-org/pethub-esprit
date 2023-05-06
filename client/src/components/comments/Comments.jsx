@@ -203,7 +203,7 @@ function Comments({ postId }) {
               <button onClick={() => toggleReplies(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><QuickreplyOutlinedIcon /></button>
               <button onClick={() => handleEdit(comment)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><ModeEditOutlineOutlinedIcon /></button>
               <button onClick={() => handleDelete(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><DeleteOutlineOutlinedIcon /></button>
-              {showReplies[comment._id] && <Reply commentId={comment._id} />}
+              {showReplies[comment._id] && <Reply commentId={comment._id}   />}
 
             </div>
 

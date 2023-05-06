@@ -308,6 +308,19 @@ router.put('/:postId/feeling', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+//search 
+router.get('/', async (req, res) => {
+  const { hashtags } = req.query;
+
+  const query = hashtags ? { hashtags: hashtags } : {};
+
+  try {
+    const hashtags = await postModel.find(query);
+    res.json(hashtags);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 
 

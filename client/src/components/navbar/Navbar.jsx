@@ -52,6 +52,7 @@ const Navbar = () => {
     }
   }
 
+  
   return (
     <div className="navbar" style={{ width:'100%' }}>
       <div className="left">

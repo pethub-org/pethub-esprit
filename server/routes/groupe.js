@@ -77,104 +77,46 @@ router.put('/:id',  async (req, res) =>{
 })
   
   
-   
   
-  
-  
-  // @route     PUT api/groups/leave/:id
-  // @desc      Leave a group by ID
-  // @access    Private
-  router.put('/leave/:id', async (req, res) => {
+ 
+
+  //join
+  router.put("/:id/join", async (req, res) => {
     try {
+      const user = await userModel.findById(req.body.userId);
       const group = await Group.findById(req.params.id);
-  
-      if (!group) {
-        return res.status(404).json({ msg: 'Group not found' });
+      if (!user || !group) {
+        return res.status(404).json("User or group not found");
       }
-  
-      // Check if user is not a member
-      if (!group.members.includes(req.user.id)) {
-        return res.status(400).json({ msg: 'User is not a member of group' });
+      if (group.members.includes(user._id)) {
+        return res.status(403).json("User already joined the group");
       }
-  
-      const index = group.members.indexOf(req.user.id);
-      group.members.splice(index, 1);
-  
-      const updatedGroup = await group.save();
-  
-      res.json(updatedGroup);
+      await user.updateOne({ $push: { groups: group._id } });
+      await group.updateOne({ $push: { members: user._id } });
+      res.status(200).json("User has joined the group");
     } catch (err) {
-      console.error(err.message);
-  
-      if (err.kind === 'ObjectId') {
-        return res.status(404).json({ msg: 'Group not found' });
-      }
-  
-      res.status(500).send('Server Error');
+      res.status(500).json(err);
     }
   });
-
-  //follow 
-router.put("/:id/join", async (req, res) => {
-  // mouch nafss id ok
-  // console.log('follow')
-  if (req.body._id !== req.params.id) {
-      try {
-          const user = await userModel.findById(req.params.id);
-          const groupe = await Group.findById(req.body._id)
-          //follow 
-          if (!user.groups.includes(req.body._id)) {
-              await user.updateOne({ $push: { groups: req.body._id } })
-              await groupe.updateOne({ $push: { members: req.params.id } })
-              res.status(200).json("user has joined the group")
-          }
-          //deja 3amelou follow
-          else {
-              res.status(403).json("already member")
-
-          }
-      }
-      catch (err) {
-          res.status(500).json(err)
-
-      }
-  }
-  //nafss id  no
-  else {
-      res.status(403).json("you can't follow yourself !")
-  }
-})
 
 //leave 
 
 router.put("/:id/unfollow", async (req, res) => {
-  // mouch nafss id ok
-  // console.log("here")
-  if (req.body.userId !== req.params.id) {
-      try {
-          const user = await userModel.findById(req.params.id);
-          const group = await Group.findById(req.body._id)
-          //unfollow 
-          if (user.groups.includes(req.body._id)) {
-            await user.updateOne({ $pull: { groups: req.body._id } })
-            await group.updateOne({ $pull: { members: req.params.id } })
-            res.status(200).json("user has left the group")
-        }
-          //deja 3amelou unfollow
-          else {
-              res.status(403).json("you already left the group")
-
-          }
-      }
-      catch (err) {
-          res.status(500).json(err)
-
-      }
+  try {
+    const user = await userModel.findById(req.body.userId);
+    const group = await Group.findById(req.params.id);
+    if (!user || !group) {
+      return res.status(404).json("User or group not found");
+    }
+    if (!group.members.includes(user._id)) {
+      return res.status(403).json("User already left the group");
+    }
+    await user.updateOne({ $pull: { groups: group._id } });
+    await group.updateOne({ $pull: { members: user._id } });
+    res.status(200).json("User has left the group");
+  } catch (err) {
+    res.status(500).json(err);
   }
-  //nafss id  no
-  else {
-      res.status(403).json("you don't follow this person !")
-  }
-})
+});
   module.exports = router;  
 

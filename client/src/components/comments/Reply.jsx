@@ -80,7 +80,7 @@ function Reply({ commentId }) {
   }
 
   return (
-    <div className="reply">
+    <div className="reply" >
       <h4>Replies</h4>
       <form onSubmit={handleSubmit}>
         <input

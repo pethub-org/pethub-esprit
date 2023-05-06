@@ -21,6 +21,7 @@
     "nodemon": "^2.0.21"
   },
   "dependencies": {
-    "cloudinary": "^1.35.0"
+    "cloudinary": "^1.35.0",
+    "emoji-mart": "^5.5.2"
   }
 }
