@@ -22,9 +22,8 @@ function Comments({ postId }) {
   const [updatedComment, setUpdatedComment] = useState('');
   const [showReplies, setShowReplies] = useState({});
   const [likedComments, setLikedComments] = useState([]);
-  const [like, setLike] = useState('')
+  const [like, setLike] = useState(0)
   const [islike, setIsLike] = useState(false)
-
   // const { user: currentUser } = useContext(AuthContext)
   const { auth: currentUser } = useAuth()
   const axios = useAxiosPrivate();
@@ -74,6 +73,9 @@ function Comments({ postId }) {
     setUpdatedComment(comment.content);
   }
   async function handleUpdate(commentId) {
+    if (!updatedComment.trim()) {
+      return; // do nothing if updated comment is empty or only contains whitespace
+    }
     try {
       const response = await axios.put(`/api/comments/${commentId}`, {
         content: updatedComment,
@@ -89,6 +91,7 @@ function Comments({ postId }) {
       console.error(error);
     }
   }
+  
   //show replies
   function toggleReplies(commentId) {
     setShowReplies((prevShowReplies) => ({
@@ -132,10 +135,10 @@ function Comments({ postId }) {
             borderRadius: '15px',
             marginTop: '5px',
             marginLeft: '6px',
-            marginBottom:'10px',
+            marginBottom: '10px',
             width: '100%',
-            height:'55px',
-            border:"none",
+            height: '55px',
+            border: "none",
             opacity: "0.9"
           }}
           value={newComment}
@@ -154,84 +157,74 @@ function Comments({ postId }) {
         {comments.map((comment) => (
           <div className="comment" key={comment._id}>
             <Link to={`/profile/${comment.userId}`}>
-            <img src={currentUser.currentPhoto ? currentUser.currentPhoto.url : defaultUser} alt={currentUser.firstname}  />
+              <img src={currentUser.currentPhoto ? currentUser.currentPhoto.url : defaultUser} alt={currentUser.firstname} />
             </Link>
             <div className='info'>
-              <span style={{ fontSize: "15px",textTransform:"capitalize" }}>{currentUser?.firstname} {' '}{currentUser?.lastname} </span>
+              <span style={{ fontSize: "15px", textTransform: "capitalize" }}>
+                {currentUser?.firstname} {' '}{currentUser?.lastname}
+              </span>
               {editingComment === comment._id ? (
-                <>
-                  <input
-                    value={updatedComment}
-                    onChange={(event) => setUpdatedComment(event.target.value)}
-                    placeholder='Update your comment'
-                    style={{
-                      padding: '15px',
-                      borderRadius: '15px',
-                      marginTop:'6px',
-                      opacity:"0.9",
-                      border:"none",
-                     
-                    }} 
-                  />
-                  <div className='button-container' style={{marginTop:"-5px"}}>
-                    <button className='save-button' style={{ fontSize: "15px" }} onClick={() => handleUpdate(comment._id)}>
-                      Save
-                    </button>
-                    <button className='cancel-button' style={{ fontSize: "15px" }} onClick={() => setEditingComment(null)}>
-                      Cancel
-                    </button>
-                  </div>
-                </>
-
+                <input
+                  value={updatedComment}
+                  onChange={(event) => setUpdatedComment(event.target.value)}
+                  placeholder='Update your comment'
+                  style={{
+                    padding: '15px',
+                    borderRadius: '15px',
+                    marginTop: '6px',
+                    opacity: "0.9",
+                    border: "none",
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      handleUpdate(comment._id);
+                      setEditingComment(null);
+                    }
+                  }}
+                />
               ) : (
-                <>
-                  <p>{comment.content}</p>
-                  
-                  
-                </>
-                
+                <span>{comment.content}</span>
               )}
-            
             </div>
-            
-            <span className='date' style={{ marginLeft: "10px", marginRight:"20px"}}>{format(comment.createdAt)}</span>
 
-            <div className="likes" style={{marginTop:"-20px"}}>
+
+            <span className='date' style={{ marginLeft: "10px", marginRight: "20px" }}>{format(comment.createdAt)}</span>
+
+            <div className="likes" style={{ marginTop: "-20px" }}>
               <button className="like-button" onClick={() => handleLike(comment._id)}>
                 {likedComments.includes(comment._id) ? (
-                  <span style={{ color: 'red' }} > <FavoriteOutlinedIcon/> </span>
+                  <span style={{ color: 'red' }} onClick={handleLike} > <FavoriteOutlinedIcon /> </span>
                 ) : (
-                  <span style={{ color: 'white' }}><FavoriteBorderOutlinedIcon/> </span>
+                  <span style={{ color: 'white' }} onClick={handleLike} ><FavoriteBorderOutlinedIcon /> </span>
 
                 )}
 
               </button>
-              <button onClick={() => toggleReplies(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><QuickreplyOutlinedIcon/></button>
-            <button onClick={() => handleEdit(comment)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}>
-              <ModeEditOutlineOutlinedIcon/></button>
-            <button onClick={() => handleDelete(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><DeleteOutlineOutlinedIcon/></button>
-            {showReplies[comment._id] && <Reply commentId={comment._id} />}
-            
+              <button onClick={() => toggleReplies(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><QuickreplyOutlinedIcon /></button>
+              <button onClick={() => handleEdit(comment)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><ModeEditOutlineOutlinedIcon /></button>
+              <button onClick={() => handleDelete(comment._id)} style={{ fontSize: "15px", backgroundColor: "#222", color: "white" }}><DeleteOutlineOutlinedIcon /></button>
+              {showReplies[comment._id] && <Reply commentId={comment._id} />}
+
             </div>
-           
-         
-            
-            
-           
+
+
+
+
+
 
           </div>
 
 
         ))}
-       
+
       </ul>
-     
+
     </div>
-    
-   
-    
+
+
+
   );
-  
+
 }
 
 export default Comments;

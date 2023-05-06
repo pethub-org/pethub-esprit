@@ -4,7 +4,7 @@ import './list.scss';
 import GroupDetail from './GroupDetail';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import useAuth from '../../hooks/useAuth';
-
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 const GroupList = () => {
   const [groups, setGroups] = useState([]);
   const [selectedGroupId, setSelectedGroupId] = useState(null);
@@ -35,7 +35,7 @@ const GroupList = () => {
 
   return (
     <div className="group-list">
-      <h2>Suggestions Groups</h2>
+      <h2 style={{marginTop:"20px" , marginLeft:"20px"}}><GroupsOutlinedIcon/> Suggestions Groups</h2>
       <div className="group-container">
         
         {groups.map((group) => (

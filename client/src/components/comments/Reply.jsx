@@ -7,6 +7,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import defaultUser from '../../assets/defaultUser.png';
 
 function Reply({ commentId }) {
   const [replies, setReplies] = useState([]);
@@ -115,8 +116,8 @@ function Reply({ commentId }) {
       <ul>
         {replies.map((reply) => (
           <div className="comment" key={reply._id}>
-            <img src={currentUser?.profilePicture} alt="User" className="user-image" />
-            <div className="info">
+              <img src={currentUser.currentPhoto ? currentUser.currentPhoto.url : defaultUser} alt={currentUser.firstname} />
+              <div className="info">
               <span >{currentUser?.firstname} {' '} {currentUser?.lastname}</span>
               {editingReply === reply._id ? (
                 <>

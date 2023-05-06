@@ -22,6 +22,7 @@ const catroute = require("../routes/categoryRoute");
 const ordersRoute = require("../routes/order.routes");
 const gameRoute = require('../routes/game')
 const storyRoute = require('../routes/Story')
+const groupRoute = require ('../routes/groupe')
 require('dotenv').config();
 
 const errorHandler = require("../middlewares/error.middleware");
@@ -76,6 +77,7 @@ class HttpServer {
             app.use("/api/comments", commentRoute);
             app.use("/api/games", gameRoute)
             app.use("/api/stories", storyRoute)
+            app.use("/api/groups", groupRoute)
 
 
             // app.use("/api/users/:id", async (req, res) => {

@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import "./detail.scss"
+import "./list.scss"
 import Feed from "../feed/feed"
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import useAuth from '../../hooks/useAuth';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 const GroupDetail = ({ groupId }) => {
   const [group, setGroup] = useState(null);
-  const [isJoined, setIsJoined] = useState(false);
+  const {auth:currentUser} = useAuth()
+  const [isJoined, setIsJoined] = useState(group?.members?.includes(currentUser?._id));
+  const axios = useAxiosPrivate();
+
   useEffect(() => {
     const fetchGroup = async () => {
       const res = await axios.get(`http://localhost:8080/api/groups/${groupId}`);
@@ -15,7 +19,26 @@ const GroupDetail = ({ groupId }) => {
   }, [groupId]);
 
   if (!group) {
-    return <div>Loading...</div>;
+    return <div style={{color:"white"}}>Loading...</div>;
+  }
+  const handleFollow = async(userId) => {
+    await axios.put(`http://localhost:8080/api/groups/${userId}/join`, {userId: currentUser._id})
+      .then(response => {
+        setIsJoined(true)
+      })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+
+  const handleUnfollow = async(userId) => {
+    await axios.put(`http://localhost:8080/api/groups/${userId}/unfollow`, {userId: currentUser?._id})
+      .then(response => {
+        setIsJoined(false)
+      })
+      .catch(error => {
+        console.log(error)
+      });
   }
 
 
@@ -38,15 +61,24 @@ const GroupDetail = ({ groupId }) => {
       />
       <div className='btn' style={{display:"flex", justifyContent:"space-around" ,marginTop:"15px"}}>
       <h2    style={{borderRadius:"20px",marginLeft:"-30px", color:"white" , textTransform:"capitalize"}}>{group.name}</h2>
-      <button
+      <button className='btn'
         style={{  backgroundColor: isJoined ? 'gray' : '#5271ff', color: 'white', borderRadius: '13px', fontSize: '15px' }}
         onClick={handleJoinClick}
       >
         <GroupsOutlinedIcon />
-        {isJoined ? 'Leave the group' : 'Join the group'}
+        {isJoined ? (
+        <button className='button'  onClick={handleFollow} style={{backgroundColor:"grey",color:'white' }}>
+          Leave the group
+        </button>
+      ) : (
+        <button   style={{backgroundColor:"transparent", border:"none" }} onClick={handleUnfollow}>
+          Join The group
+        </button>
+      )}
       </button>      </div>
       <hr/>
       <Feed/>
+      
     </div> 
     
   

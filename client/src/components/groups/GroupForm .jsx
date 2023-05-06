@@ -31,7 +31,7 @@ const GroupForm = () => {
 
   return (
     <div className="group-form">
-      <button onClick={toggleForm}><AddOutlinedIcon/> Create a new group</button>
+      <button onClick={toggleForm} style={{backgroundColor:"transparent",border:"none"}}><AddOutlinedIcon/> Create a new group</button>
       {displayForm && (
         <form onSubmit={onSubmit}>
           <div>
