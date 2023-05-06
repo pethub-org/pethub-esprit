@@ -4,7 +4,7 @@ const route = require("express").Router();
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-      callback(null, "C:/Users/USER/Documents/GitHub/pethub-esprit/client/public/uploads");
+      callback(null, "./uploads/");
   },
 
   filename: (req, file, callback) => {
@@ -46,34 +46,24 @@ route.get("/bycategory/:categoryId", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 route.post("/", async (req, res) => {
-   const newPost = new Product(req.body)
+  
+  const product = new Product({
+    price:req.body.price,
+    name:req.body.name,
+    category:req.body.category,
+    userId: req.body.userId,
+    description: req.body.description,
+  });
   try {
-    const savedProduct = await newPost.save();
-    res.status(200).json(savedProduct)
+    const p1 = await product.save();
+    res.json(p1);
+  } catch (err) {
+    res.send("Error");
   }
-  catch (err) {
-    res.status(500).json(err)
-  }
-
 });
-// route.post("/review", async (req, res) => {
-//   const { comment, name, productId } = req.body;
-//   const product = await Product.findById(productId);
 
-//   const review = new Review({
-//     name,
-//     comment,
-//   });
-
-//   try {
-//     product.reviews.push(review);
-//     const p1 = await review.save();
-//     res.json(p1);
-//   } catch (err) {
-//     res.send("Error");
-//   }
-// });
 
 route.put('/update/:id', async (req, resp, next) => {
 

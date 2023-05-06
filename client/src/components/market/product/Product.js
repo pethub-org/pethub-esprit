@@ -59,7 +59,10 @@ function Product(props) {
     
 
     <div className="container">
+
       <div className="market-card" >
+
+      
         <div className="image">
           <Link to={"/market/" + product._id}>
             {product.image ? (   
