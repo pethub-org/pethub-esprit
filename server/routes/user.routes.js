@@ -1,7 +1,7 @@
 const express = require("express");
 const { createUser, deleteUser, getUser, getUsers, updateUser, resetPassword, banAccount, updateRole, uploadPhoto, confirmAccountAdmin, adminUpdateUser, resetPasswordEmail, getUserByName, deletePhoto, setPhotoToMainController,
 
-    acceptFriendRequestController, declineFriendRequestController, deleteFriendRequestcontroller, getUserFriendRequestsController, sendFriendRequestController
+    acceptFriendRequestController, declineFriendRequestController, deleteFriendRequestcontroller, getUserFriendRequestsController, sendFriendRequestController, deleteFriend
 
 } = require("../controllers/user.controller")
 const validationMiddleware = require('../middlewares/validation.middleware')
@@ -55,6 +55,7 @@ const router = express.Router();
 router.put('/add-friend/:recieverId', authenticationMiddleware, sendFriendRequestController);
 router.put('/decline-friend-request/:friendRequestId', authenticationMiddleware, declineFriendRequestController);
 router.put('/accept-friend/:friendRequestId', authenticationMiddleware, acceptFriendRequestController);
+// router.delete('/delete-friend/:friendId', authenticationMiddleware, deleteFriendRequestcontroller);
 router.delete('/delete-friend/:friendId', authenticationMiddleware, deleteFriendRequestcontroller);
 router.get('/friend-requests', authenticationMiddleware, getUserFriendRequestsController);
 router.get('/search/:name', authenticationMiddleware, getUserByName);

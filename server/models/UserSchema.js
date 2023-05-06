@@ -51,7 +51,7 @@ const UserSchema = new Schema({
     groups: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Group'
-      }],
+    }],
     friendList: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
