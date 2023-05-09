@@ -125,14 +125,15 @@ router.get("/timeline/all/:userId", async (req, res) => {
     const currentUser = await userModel.findById(req.params.userId);
     let userPosts = await postModel.find({ userId: currentUser._id })
       .populate({ path: 'userId', model: 'User' })
-      .populate({ path: 'userId.photos', model: 'Photo' });
+      .populate({ path: 'userId.photos', model: 'Photo' })
+      .lean();
     // userPosts.userId.currentPhoto = userPosts.userId.photos.find(photo => photo.isMain);
     // console.log(userPosts)
     // console.log({ userPosts })
 
     userPosts = userPosts.map(post => {
-      post.userId.currentPhoto = post.userId.photos.find(photo => photo.isMain);
-      return post;
+      const currentPhoto = post.userId.photos.find(photo => photo.isMain);
+      return { ...post, currentPhoto };
     })
     // userPosts.forEach(post => console.log(post.userId._id))
 

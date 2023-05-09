@@ -124,7 +124,7 @@ const Feed = ({posts,setPosts}) => {
       newPost.image = fileName;
       // console.log(newPost);
       try {
-        await axios.post("/api/upload", data);
+        await axios.post("/api/upload", data);  
       } catch (err) {}
     }
     try {

@@ -36,7 +36,24 @@ const HomeProduct = () => {
       }
     };
     fetchProducts();
-  }, [selectedCategory , sort, sortOrder]);
+  }, [selectedCategory, sort, sortOrder]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        let url = `/api/products?sort=${sort}&sortOrder=${sortOrder}`;
+        if (selectedCategory) {
+          url = `/api/products/bycategory/${selectedCategory}`;
+        }
+        const { data } = await axios.get(url);
+        setProducts(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProducts();
+  }, [])
+
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
@@ -63,7 +80,7 @@ const HomeProduct = () => {
             </option>
           ))}
         </select>
-      
+
 
         <form>
           <input
@@ -73,22 +90,22 @@ const HomeProduct = () => {
           />
         </form>
         <div>
-        <form style={{ marginRight:25}}>
-        <label style={{color:"white",  marginRight:10 , marginLeft:20 }}>Sort by:</label>
-        <select id="sort" value={sort} onChange={handleSortChange} style={{borderRadius:20 , backgroundColor:"White" , color:"black"}}>
-          <option value="price">Price</option>
-        </select>
-        <label htmlFor="sortOrder" style={{color:"white" , marginRight:10 , marginLeft:20}}>Sort order:</label>
-        <select id="sortOrder" value={sortOrder} onChange={handleSortOrderChange} style={{borderRadius:20 , backgroundColor:"White" , color:"black"}}>
-          <option value="asc" style={{backgroundColor:"white" , color:"black"}}>Ascending</option>
-          <option value="desc" style={{backgroundColor:"white" , color:"black"}}>Descending</option>
-        </select>
-      </form>
+          <form style={{ marginRight: 25 }}>
+            <label style={{ color: "white", marginRight: 10, marginLeft: 20 }}>Sort by:</label>
+            <select id="sort" value={sort} onChange={handleSortChange} style={{ borderRadius: 20, backgroundColor: "White", color: "black" }}>
+              <option value="price">Price</option>
+            </select>
+            <label htmlFor="sortOrder" style={{ color: "white", marginRight: 10, marginLeft: 20 }}>Sort order:</label>
+            <select id="sortOrder" value={sortOrder} onChange={handleSortOrderChange} style={{ borderRadius: 20, backgroundColor: "White", color: "black" }}>
+              <option value="asc" style={{ backgroundColor: "white", color: "black" }}>Ascending</option>
+              <option value="desc" style={{ backgroundColor: "white", color: "black" }}>Descending</option>
+            </select>
+          </form>
         </div>
       </div>
       <Link to={'/addprod'}>
-  
-      <button style={{marginLeft:350}}>add product</button>
+
+        <button style={{ marginLeft: 350 }}>add product</button>
       </Link>
       <div className="marktes">
         {products
@@ -98,7 +115,7 @@ const HomeProduct = () => {
               : product.name.toLowerCase().includes(search);
           })
           .map((product) => (
-            <Product product={product} className="posts"></Product>
+            <Product setProducts={setProducts} product={product} className="posts"></Product>
           ))}
       </div>
     </div>

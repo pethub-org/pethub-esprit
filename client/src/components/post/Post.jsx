@@ -50,7 +50,7 @@ const Post = ({ post, setPosts }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/api/users/${post.userId}`);
+      const res = await axios.get(`/users/${post.userId._id}`);
       setUser(res.data)
       setDesc(res.data.desc)
       setImage(res.data.image)
@@ -277,6 +277,8 @@ const Post = ({ post, setPosts }) => {
       </div>
     </div>
     )
+  
+    
   
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // import Axios from "axios";
 import "./market.scss";
@@ -8,9 +8,9 @@ import useAuth from "../../../hooks/useAuth";
 
 function FormScreen() {
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [description, setDescription] = useState("");
-  const {auth:user} = useAuth()
+  const { auth: user } = useAuth()
   const [categorie, setCategorie] = useState([]);
   const [users, setUsers] = useState([]);
 
@@ -20,6 +20,10 @@ function FormScreen() {
 
   const [price, setPrice] = useState(0);
 
+  const handleSelectFile = (e) => {
+    setImage(e.target.files[0])
+  }
+
   useEffect(() => {
     const fetchCategories = async () => {
       const { data } = await axios.get("/api/categorie");
@@ -28,16 +32,11 @@ function FormScreen() {
     fetchCategories();
   }, []);
 
-  const addNewProduct = () => {
-    const formData = new FormData();
-    formData.append("userId", user._id);
-    formData.append("name", name);
 
-    formData.append("category", selectedCategory);
-    formData.append("description", description);
-    formData.append("price", price);
-    console.log(formData);
-    axios.post("/api/products/", formData);
+  const addNewProduct = () => {
+    axios.post('/api/products/', { name, description, selectedCategory, price, image, userId: user._id }, { headers: { "Content-Type": 'multipart/form-data' } }).then(response => {
+      console.log(response)
+    })
     navigate('/market')
   };
 
@@ -105,7 +104,7 @@ function FormScreen() {
       <h5 className="form-step"> </h5>
       <form encType="multiple/form-data" onSubmit={addNewProduct}>
         <div className="field1">
-          <label style={{color:"white"}}> add your product </label>
+          <label style={{ color: "white" }}> add your product </label>
           <input
             placeholder="Name"
             type="text"
@@ -139,6 +138,7 @@ function FormScreen() {
               setDescription(e.target.value);
             }}
           />
+          <input name="image" type="file" placeholder="product image" onChange={handleSelectFile} style={{ color: 'white' }} />
           <select
             className="categorie"
             value={selectedCategory}
