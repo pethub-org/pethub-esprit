@@ -13,7 +13,7 @@ import useSocket from "../../hooks/useSocket";
 
 
 const RightBar = () => {
-  const { auth } = useAuth();
+  const { auth,setAuth } = useAuth();
   // console.log({auth})
   // all users conversations
   const [conversations, setConversations] = useState([]);
@@ -24,7 +24,15 @@ const RightBar = () => {
   
   useEffect(()=>{
     const fetchUser = async()=>{
-      const {data} = await axiosPrivate.get("/users");
+      let { data } = await axiosPrivate.get("/users");
+      data = data.map(user => {
+        const currentPhoto = user.photos.find(photo => photo.isMain)
+        return {
+          ...user,
+          currentPhoto
+        }
+      })
+      console.log({data})
       setPersons(data)
       // console.log(data)
     }
@@ -50,7 +58,7 @@ const RightBar = () => {
   const [friendList, setFriendList] = useState([])
 
 
-  const notify = (data) => toast(data?.content ?data.content :'You have a new notification !' , { position: 'bottom-right', duration: '1000' });
+  const notify = (data) => toast(data?.content ?data.content :'You have a new notification !' , { position: 'bottom-right', duration: 1500 },);
   
   useEffect(() => {
     socket.on('notification', (data) => {
@@ -66,7 +74,29 @@ const RightBar = () => {
     })
 
     socket.on('getNewFriend', (data) => {
-      console.log({data})
+      // console.log({data})
+      // console.log(data)
+      // console.log({ data })
+      console.log(data.sender === auth._id)
+      const userId = data.sender === auth._id ? data.receiver : data.sender;
+      // console.log({userId})
+
+      axiosPrivate.get('/users/' + userId).then(response => {
+        const user = response.data.user;
+
+        setAuth(prev => {
+          return {
+            ...prev,
+            friendList: [...prev.friendList,user]
+          }
+        })
+      })
+      return () => {}
+    })
+
+    socket.on('getMessage', (data) => {
+      notify({ content: 'You have recieved a message.' })
+      return () => {}
     })
 
     // return () => {
@@ -92,7 +122,7 @@ const RightBar = () => {
                                                 setMessages={setMessages}
                                                 />)
     setFriendList(friends)
- },[auth.friendList,conversations])
+ },[auth.friendList,conversations,friendList])
   return (
     <div className="rightBar">
       <div className="container" >

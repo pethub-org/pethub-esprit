@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import defaultPhoto from '../../assets/defaultUser.png'
 
 const User = ({ person }) => {
   // console.log({person})
@@ -32,7 +33,7 @@ const User = ({ person }) => {
   return (
     <div className='follower'>
       <div>
-        <img src={person?.currentPhoto} alt="" className='followerImg'/>
+        <img src={person?.currentPhoto ?person?.currentPhoto?.url : defaultPhoto} alt="" className='followerImg' style={{width:'35px',height:'35px',borderRadius:'50%'}}/>
         <div className="name">
           <span>{person?.firstname }{' '} {person?.lastname}</span>
         </div>

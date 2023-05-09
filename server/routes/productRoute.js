@@ -1,20 +1,8 @@
 const Review = require("../models/reviewModel");
 const Product = require("../models/produtModel");
 const route = require("express").Router();
-const multer = require("multer");
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-      callback(null, "./uploads/");
-  },
+const upload = require('../configs/multer.config');
 
-  filename: (req, file, callback) => {
-      callback(null, Date.now() + file.originalname);
-  }
-})
-
-const upload = multer({
-  storage: storage,
-});
 route.get("/", async (req, res) => {
   try {
     const sort = req.query.sort || 'price'; // Default sort by price
@@ -47,14 +35,15 @@ route.get("/bycategory/:categoryId", async (req, res) => {
   }
 });
 
-route.post("/", async (req, res) => {
-  
+route.post("/", upload.single('image'), async (req, res) => {
+
   const product = new Product({
-    price:req.body.price,
-    name:req.body.name,
-    category:req.body.category,
+    price: req.body.price,
+    name: req.body.name,
+    category: req.body.category,
     userId: req.body.userId,
     description: req.body.description,
+    image: req.file.path
   });
   try {
     const p1 = await product.save();
@@ -68,17 +57,18 @@ route.post("/", async (req, res) => {
 route.put('/update/:id', async (req, resp, next) => {
 
   try {
-    const requestBody = {   
+    const requestBody = {
       name: req.body.name,
       category: req.body.category,
 
       description: req.body.description,
-      price: req.body.price, };
+      price: req.body.price,
+    };
 
     let emp_rec = await Product.findById(req.params.id);
 
     if (!emp_rec)
-    return res.status(404).json({ msg: 'Employee record not found' });
+      return res.status(404).json({ msg: 'Employee record not found' });
 
     const updatedEmp = await Product.findByIdAndUpdate(
       req.params.id, requestBody, { new: true });

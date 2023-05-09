@@ -25,6 +25,11 @@ const SocketContextProvider = ({ children }) => {
         });
 
         return () => {
+            socket.off('notifcation');
+            socket.off('getUser');
+            socket.off('addUser');
+            socket.off('getMessage');
+            socket.off('getNewFriend');
             socket.disconnect();
         }
     }, [])

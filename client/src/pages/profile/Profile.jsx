@@ -14,6 +14,17 @@ import Button from "../search/Button";
 import Picture from "./Picture";
 import { ToastContainer, toast } from 'react-toastify';
 
+const inputInLineStyle = {
+            borderRadius:'12px',
+            border: 'none',
+            padding: '5px',
+            outline: 'none',
+            ':focus': {
+              border: 'none',
+              outline:'none'
+                },
+
+              }
 
 const Profile = () => {
   const {id} = useParams();
@@ -36,6 +47,7 @@ const Profile = () => {
   const emailRef = useRef(null)
   const [buttonType, setButtonType] = useState();
   const [friendRequest, setFriendRequest] = useState();
+  const [posts,setPosts]= useState([])
 
   
   const handleSelectFile = (e) => {
@@ -47,6 +59,16 @@ const Profile = () => {
     e.preventDefault();
     setIsLoading(true)
     try {
+      if (!image) {
+        toast.error('Image is required!', {
+        position: "top-right",
+        autoClose: 1000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "dark",
+        });
+        return;
+      }
       const response = await axiosPrivate.post(`/users/update/photos/${auth._id}`, { image,isMain }, { headers: { "Content-Type": 'multipart/form-data' } })
       const currentPhoto = response.data.photos.find(photo => photo.isMain);
       console.log(response.data.friendList)
@@ -80,6 +102,7 @@ const Profile = () => {
 }
 
   useEffect(() => {
+  
       if (id === auth._id) {
           setEmail(auth.email)
           setFirstname(auth.firstname)
@@ -141,7 +164,14 @@ const Profile = () => {
 
  
   },[id,auth._id,auth.friendList])
-  const handleUpdate = async (e) => {
+  useEffect(() => {
+      axiosPrivate.get('/api/posts/timeline/all/' + id).then(response => {
+        console.log('fetching posts')
+        setPosts(response.data)
+      })
+  },[id])
+    
+    const handleUpdate = async (e) => {
     e.preventDefault();
     if (email === '') {
     toast.error('Email can not be empty', {
@@ -279,7 +309,7 @@ const Profile = () => {
           </div>
         </div>
 
-      <Posts/>
+      <Posts posts={posts} setPosts={setPosts}/>
       </div>
     </div>
   );
@@ -376,13 +406,13 @@ const Profile = () => {
 
                 </div>
                 <div style={{marginLeft:'50px',marginTop:'24px'}}>
-                  <Button className="btn btn-primary"
+                  <button className="btn btn-primary"
                     style={{ backgroundColor: '#5271ff', color: 'white', textTransform: 'none' }}
                     onClick={uploadPicture}
                     disabled={isLoading}
                   >
-                        Upload
-                  </Button>
+                        Upload Picture
+                  </button>
 
                 </div>
             </div>
@@ -409,18 +439,31 @@ const Profile = () => {
               flexDirection: 'column',
             padding:'18px'
           }}>
-              <input type="email" placeholder="email" value={email} palceholder="email" onChange={(e) => setEmail(e.target.value)} ref={emailRef} />
+              <input
+                        style={inputInLineStyle}  
+                type="email" placeholder="email" value={email} palceholder="email" onChange={(e) => setEmail(e.target.value)} ref={emailRef} />
               <br/>
-              <input type="text" placeholder="firstname" value={firstname} palceholder="Firstname" onChange={(e) => setFirstname(e.target.value)} />
+              <input
+                        style={inputInLineStyle}  
+                
+                type="text" placeholder="firstname" value={firstname} palceholder="Firstname" onChange={(e) => setFirstname(e.target.value)} />
                             <br/>
 
-              <input type="text" placeholder="last" value={lastname} palceholder="Lastname" onChange={(e) => setLastname(e.target.value)} />
+              <input
+                        style={inputInLineStyle}  
+              
+                type="text" placeholder="last" value={lastname} palceholder="Lastname" onChange={(e) => setLastname(e.target.value)} />
                             <br/>
 
-              <input type="password" value={password} placeholder='Enter New Password' onChange={(e) => setPassword(e.target.value)} />
+              <input
+                        style={inputInLineStyle}  
+              
+                type="password" value={password} placeholder='Enter New Password' onChange={(e) => setPassword(e.target.value)} />
                             <br/>
 
-              <input type="password" value={confirmPassword} placeholder='Confirm New Password' onChange={(e) => setConfirmPassword(e.target.value)} />
+              <input
+                        style={inputInLineStyle}  
+                type="password" value={confirmPassword} placeholder='Confirm New Password' onChange={(e) => setConfirmPassword(e.target.value)} />
               <br />
               <button className="btn btn-primary" onClick={handleUpdate}>Save Changes</button>
 
@@ -440,7 +483,7 @@ const Profile = () => {
         pauseOnHover={false}
         theme="dark"
         />
-      <Posts/>
+      <Posts posts={posts} setPosts={setPosts}/>
       </div>
     </div>
   );
