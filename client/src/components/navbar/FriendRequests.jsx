@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth';
-import { axiosPrivate } from '../../api/axios';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import PeopleIcon from '@mui/icons-material/People';
 import styles from './friendRequest.module.css';
@@ -8,14 +7,15 @@ const FriendRequests = () => {
   const { auth } = useAuth();
   const [showFriendRequests, setShowFriendRequests] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
+  const axios = useAxiosPrivate();
 
   // useEffect(() => {
-  //   axiosPrivate.get('/users/friend-requests',{headers:{Authorization:`Bearer ${auth.token}`}}).then(response => {
+  //   axios.get('/users/friend-requests',{headers:{Authorization:`Bearer ${auth.token}`}}).then(response => {
   //     setFriendRequests(response.data)
   //   })
   // },[])
   useEffect(() => {
-    axiosPrivate.get('/users/friend-requests').then(res => {
+    axios.get('/users/friend-requests').then(res => {
         setFriendRequests(res.data)
       })
   }, [showFriendRequests])
@@ -25,7 +25,7 @@ const FriendRequests = () => {
     <>
       <div style={{marginLeft:'20px'}} onClick={() => {
         setShowFriendRequests(prev => !prev)
-          axiosPrivate.get('/users/friend-requests',{headers:{Authorization:`Bearer ${auth.token}`}}).then(response => {
+          axios.get('/users/friend-requests',{headers:{Authorization:`Bearer ${auth.token}`}}).then(response => {
           setFriendRequests(response.data)
     })
       }} ><PeopleIcon/></div>
@@ -49,12 +49,12 @@ export default FriendRequests
 
 const FriendRequest = ({ friendRequest,setShowFriendRequests }) => {
 
-  const axiosPrivate = useAxiosPrivate();
+  const axios = useAxiosPrivate();
   const {setAuth} = useAuth();
   const handleAcceptFriendRequest = async () => {
     
-    const res = await axiosPrivate.put('/users/accept-friend/' + friendRequest._id, {});
-    const friendRequester = await axiosPrivate.get(`/users/${friendRequest.requester._id}`);
+    const res = await axios.put('/users/accept-friend/' + friendRequest._id, {});
+    const friendRequester = await axios.get(`/users/${friendRequest.requester._id}`);
     setAuth(prev => {
       return {
         ...prev,
@@ -66,7 +66,7 @@ const FriendRequest = ({ friendRequest,setShowFriendRequests }) => {
 
   }
   const handleDeclineFriendRequest = () => {
-    axiosPrivate.put('/users/decline-friend-request/' + friendRequest._id, {}).then(response => {
+    axios.put('/users/decline-friend-request/' + friendRequest._id, {}).then(response => {
       console.log({ response })
       setShowFriendRequests(false)
     })
