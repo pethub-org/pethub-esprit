@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import "./resetPasswordForm.scss";
 import axios  from '../../api/axios';
-
-
+import { ToastContainer,toast } from 'react-toastify';
 
 
 const ResetPasswordForm = () => {
@@ -13,17 +12,61 @@ const ResetPasswordForm = () => {
     
   const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
-    
+  const [isLoading, setIsLoading] = useState(false);
+
     const changePassword = async (e) => {
-        e.preventDefault()
-        try {
+      e.preventDefault()
+      setIsLoading(true)
+      try {
+        if (!password.trim()) {
+            toast.error('Password can not be empty!', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+            });
+          return;
+        }
+         if (!confirmPassword.trim()) {
+            toast.error('Confirm Password can not be empty!', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+            });
+          return;
+        }
+         if (!password.trim() !== confirmPassword.trim()) {
+            toast.error('Password and confirm password must match!', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+            });
+          return;
+          }
             const response = await axios.post(`/users/reset-password`, { password,confirmPassword,token })
             setError(false)
-            setSuccess(true)
+          setSuccess(true)
+          setIsLoading(false)
+          toast.success('Password reseted succesfully!', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+            });
             console.log({response})
         } catch (error) {
             setSuccess(false);
-            setError(true)
+        setError(true)
+          setIsLoading(false)
+        
+        } finally {
+          setIsLoading(false)
         }
     } 
   return (
@@ -45,10 +88,11 @@ const ResetPasswordForm = () => {
             
             {error && <p className="error"> {error}</p>}
             {success && <p> Password Updated successfully !</p>}
-            <button onClick={changePassword}>Change Password</button>
+            <button onClick={changePassword} disabled={isLoading}>Change Password</button>
           </form>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

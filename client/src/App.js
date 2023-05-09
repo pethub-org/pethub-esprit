@@ -154,21 +154,29 @@ function App() {
       path: "/reset-password",
       element: <ResetPassword />,
     },
-    {
-      path: "/reset-password",
-      element: <ResetPassword />,
-    },
+    // {
+    //   path: "/reset-password",
+    //   element: <ResetPassword />,
+    // },
     {
       path: "/users/reset-password/:token",
       element: <ResetPasswordForm />,
     },
     {
       path: '/admin',
-      element: <Admin />,
+      element: (
+        <ProtectedRoute>
+          <Admin />
+        </ProtectedRoute>
+      ),
     },
     {
       path: '/admin/update/user/:id',
-      element: <EditProfile />
+      element: (
+        <ProtectedRoute>
+          <EditProfile />
+        </ProtectedRoute>
+      ),
     }
 
   ]);
