@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import "./register.scss";
 import { useState } from "react";
 import axios from "../../api/axios";
+import {ToastContainer,toast} from 'react-toastify'
+
 const Register = () => {
   const [email,setEmail] = useState('')
   const [firstname,setFirstname] = useState('')
@@ -10,21 +12,107 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
   const handleRegister = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     setError('');
     setSuccess(false);
 
     try {
+      if (!email.trim() || !email.trim().includes('@') || !email.trim().includes('.')) {
+            toast.error('Invalid Email.', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+              });
+        return;
+      }
+
+        if (!firstname.trim()  ) {
+            toast.error('Firstname can not be emmpty!', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+              });
+        return;
+      }
+        if (!lastname.trim()  ) {
+            toast.error('Lastname can not be emmpty!', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+              });
+        return;
+      }
+        if (!password.trim()  ) {
+            toast.error('password can not be emmpty!', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+              });
+        return;
+      }
+        if (!confirmPassword.trim()  ) {
+            toast.error('password can not be emmpty!', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+              });
+        return;
+      }
+        if (confirmPassword.trim() !== password.trim()) {
+            toast.error('password and confirm password must match!', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+              });
+        return;
+      }
+
+
       const response = await axios.post(`/users`, { email, firstname, lastname, password, confirmPassword })
-      console.log("sucess => ", { response })
+      // console.log("sucess => ", { response })
+        toast.success('Please Confirm.Your account an email has been sent', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+              });
       if (response.status === 201) {
         setSuccess(true)
+        setIsLoading(false)
+
       }
     } catch (error) {
       console.log({error})
       setError(error.response.data.message || error.response.data.error[0]);
+      setIsLoading(false)
+          toast.error('Something went wrong.', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+              });
+
+    } finally{
+      setIsLoading(false)
+
     }
     
   }
@@ -50,11 +138,12 @@ const Register = () => {
             <input type="password" placeholder="Confirm Password"  onChange={(e) => setConfirmPassword(e.target.value)}/>
             {error && <p className="error"> {error}</p>}
             {success && <p>Please confirm the registration by checking your email !</p>}
-            <button onClick={handleRegister}>Register</button>
+            <button onClick={handleRegister} disabled={isLoading}>Register</button>
             <Link to="/reset-password">Forgot Password?</Link>
           </form>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 };
