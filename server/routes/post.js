@@ -4,9 +4,18 @@ const postModel = require('../models/Post');
 const userModel = require('../models/UserSchema');
 const { createNotificationService } = require("../services/notification.service");
 const LoggedInUsers = require('../utils/users.socket');
+const upload = require('../configs/multer.config');
+
+
 // create post 
-router.post("/create", async (req, res) => {
-  const newPost = new postModel(req.body)
+router.post("/create", upload.single('image'), async (req, res) => {
+  let image;
+  if (req.file) {
+    image = req?.file?.path;
+  } else {
+    image = '';
+  }
+  const newPost = new postModel({ ...req.body, image })
   try {
     const savedPost = await newPost.save();
     res.status(200).json(savedPost)

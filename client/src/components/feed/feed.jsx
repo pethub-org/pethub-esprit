@@ -20,7 +20,7 @@ const Feed = ({posts,setPosts}) => {
   const desc = useRef()
   const hashtags = useRef()
   const tags = useRef()
-  const [setTags] = useState()
+  const [setHashtags] = useState('')
   const image = useRef()
   const [file, setFile] = useState(null)
   const [open, setOpen] = useState(false)
@@ -33,7 +33,7 @@ const Feed = ({posts,setPosts}) => {
   const [users, setUsers] = useState([]);
   const [selectDisplay, setSelectDisplay] = useState(false);
   const [stream, setStream] = useState(false)
-  const [img,setImg]=useState('')
+  const [img,setImg]=useState(null)
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [showSelect, setShowSelect] = useState(false);
   const [feeling, setFeeling] = useState('');
@@ -44,11 +44,11 @@ const Feed = ({posts,setPosts}) => {
 
   //feelings
   const handleFeelingChange = async (e) => {
+    const newFeeling = e.target.value;
+    setFeeling(newFeeling);
+
     try {
-      const response = await axios.put(`/posts/${post._id}/feeling`, {
-        feeling: e.target.value
-      });
-      setPost(response.data);
+      await axios.put(`/api/posts/${post._id}/feeling`, { feeling: newFeeling });
     } catch (err) {
       console.error(err);
     }
@@ -62,6 +62,10 @@ const Feed = ({posts,setPosts}) => {
   const handleSelectClose = () => {
     setShowSelect(false);
   };
+
+  const handleSelectFile=(e) => {
+    setImg(e.target.files[0])
+  }
   useEffect(() => {
     const fetchUser = async () => {
       const { data } = await axios.get("/api/users");
@@ -86,7 +90,6 @@ const Feed = ({posts,setPosts}) => {
   const handleToggleInput = () => {
     setShowInput(!showInput);
   };
-
   //map
   const handleLocationClick = () => {
     setShowMap((prevState) => !prevState);
@@ -117,22 +120,32 @@ const Feed = ({posts,setPosts}) => {
       hashtags: hashtags?.current?.value ? hashtags.current.value  : null ,
     };
     if (file) {
-      const data = new FormData();
-      const fileName = Date.now() + file.name;
-      data.append("name", fileName);
-      data.append("file", file);
-      newPost.image = fileName;
-      // console.log(newPost);
-      try {
-        await axios.post("/api/upload", data);  
-      } catch (err) {}
-    }
-    try {
-      const res = await axios.post("/api/posts/create", newPost);
+      // const data = new FormData();
+      // const fileName = Date.now() + file.name;
+      // data.append("name", fileName);
+      // data.append("file", file);
+      // newPost.image = fileName;
+      // // console.log(newPost);
+      // try {
+      //   await axios.post("/api/upload", data);
+      // } catch (err) {}
+       try {
+      const res = await axios.post("/api/posts/create", {...newPost,image:img},{ headers: { "Content-Type": 'multipart/form-data' } });
       // console.log({res})
       setPosts(prevPosts => [res.data,...prevPosts] )
-      window.location.reload();
-    } catch (err) {}
+        window.location.reload();
+        } catch (err) {}
+    } else {
+           try {
+      const res = await axios.post("/api/posts/create",newPost);
+      // console.log({res})
+      setPosts(prevPosts => [res.data,...prevPosts] )
+        window.location.reload();
+        } catch (err) {}
+      
+    }
+    
+   
   };
   return (
     <>
@@ -147,11 +160,9 @@ const Feed = ({posts,setPosts}) => {
       <input
         placeholder={
           "What's in your mind " +
-          user?.firstname.charAt(0).toUpperCase() +
-          user?.firstname.slice(1) +
+          user?.firstname + 
           " " +
-          user?.lastname.charAt(0).toUpperCase() +
-          user?.lastname.slice(1)
+          user?.lastname
         }
         className="shareInput"
         ref={desc}
@@ -160,6 +171,7 @@ const Feed = ({posts,setPosts}) => {
           borderRadius: "15px",
           marginTop: "6px",
           opacity: "0.9",
+          textTransform:"capitalize"
         }}
         onChange={handleInputChange}
         
@@ -188,7 +200,7 @@ const Feed = ({posts,setPosts}) => {
       <hr />
       {file && (
         <div className="shareImgContainer">
-          <img  className="shareImg" src={URL.createObjectURL(file)}  alt="" />
+          <img className="shareImg" src={URL.createObjectURL(file)} name="image"  alt="" onChange={handleSelectFile}/>
           <CancelOutlinedIcon className='shareCancelImg' onClick={()=>setFile(null)}/>
         </div>
       )}
@@ -213,7 +225,11 @@ const Feed = ({posts,setPosts}) => {
                 id="file"
                 accept=".png,.jpeg,.jpg"
                 //file we7ed
-                onChange={(e) => setFile(e.target.files[0])}
+                  onChange={(e) => {
+                    setFile(e.target.files[0])
+                    handleSelectFile(e)
+                    // setImg(e)
+                  }}
                
               />
             </label>
@@ -259,6 +275,7 @@ const Feed = ({posts,setPosts}) => {
           </button>
          
         </form>
+       
         
     </div>
   </div>
@@ -267,5 +284,6 @@ const Feed = ({posts,setPosts}) => {
 );
   
 }
+
 
 export default Feed
