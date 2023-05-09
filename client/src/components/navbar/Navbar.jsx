@@ -17,11 +17,12 @@ import Notification from "../notifications/Notification";
 import NotifcationDropdown from "./NotifcationDropdown";
 import MessageDropdown from "../messages/MessageDropdown";
 import useAuth from "../../hooks/useAuth";
-import axios from "../../api/axios";
+import  { axiosPrivate } from "../../api/axios";
 import FriendRequests from './FriendRequests';
 import useSocket from "../../hooks/useSocket";
 import PeopleIcon from '@mui/icons-material/People';
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 
 const Navbar = () => {
@@ -30,11 +31,12 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const { socket } = useSocket();
+  const axios = useAxiosPrivate();
 
 
   const logout = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:8080/auth/logout', {});
+    await axios.post('/auth/logout', {});
     socket.disconnect();
     setAuth({})
     localStorage.removeItem('user');

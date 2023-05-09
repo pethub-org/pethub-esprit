@@ -3,6 +3,7 @@ const FriendRequest = require("../models/FriendRequestSchema");
 const { createConversationService } = require("../services/conversation.service");
 const { createNotificationService } = require("../services/notification.service");
 const Conversation = require("../models/ConversationSchema");
+const LoggedInUsers = require("../utils/users.socket");
 
 const sendFriendRequestService = async ({ senderId, recieverId, status }) => {
     // TODO: Promise.all for better performance
@@ -30,45 +31,63 @@ const decline = async (friendRequestId) => {
     // createNotificationService({ type: 'invitation', sender })
     return fr;
 }
-const accept = async (friendRequestId) => {
+const accept = async (req, friendRequestId) => {
+    console.log({ friendRequestId })
     const fr = await FriendRequest.findByIdAndUpdate(friendRequestId, {
         status: 'accepted'
     }, { new: true })
-
-    const senderUser = await User.findByIdAndUpdate(fr.requester, {
+    console.log({ fr })
+    const senderUser = await User.findByIdAndUpdate(fr.requester._id, {
         $addToSet: {
-            friendList: fr.recipient
+            friendList: fr.recipient._id
         }
     }, { new: true }).exec();
 
-    const recieverUser = await User.findByIdAndUpdate(fr.recipient, {
+    const recieverUser = await User.findByIdAndUpdate(fr.recipient._id, {
         $addToSet: {
-            friendList: fr.requester
+            friendList: fr.requester._id
         }
     }, { new: true }).exec();
     // TODO: create notification reciever accepted sender
     // TODO: create conversation 
-    console.log({ recieverUser })
+    // console.log({ recieverUser })
     const c = await createConversationService(recieverUser._id, senderUser._id);
     console.log({ c })
+
+
+    const io = req.app.get('socketio')
+    const loggedInUsers = LoggedInUsers.getInstance();
+    const socketId = loggedInUsers.getUser(recieverUser._id.toString())
+    console.log(socketId, recieverUser._id)
+
     const notif = await createNotificationService({ type: 'invitation', sender: senderUser._id, receiver: recieverUser._id, content: `${recieverUser.firstname} accepted the friend request` })
     console.log({ notif })
+    io.to(socketId).emit("getNewFriend", notif);
+
+    // console.log({ notif })
     return fr;
 }
 
-const deleteFriendNew = async (userId, friendId) => {
+const deleteFriendNew = async (req, userId, friendId) => {
 
     const user = await User.findByIdAndUpdate(userId, {
         $pull: {
             friendList: friendId
         }
-    }, { new: true }).exec();
-
+    }, { new: true })
+        .populate({ path: 'friendList', model: 'User' })
+        .exec();
+    console.log({ user })
+    console.log({ friendId })
     const friend = await User.findByIdAndUpdate(friendId, {
         $pull: {
             friendList: userId
         }
-    }, { new: true }).exec();
+    }, { new: true })
+        .populate({ path: 'friendList', model: 'User' })
+        .exec();
+    // console.log({ friend })
+
     return true;
     // TODO : create notification user delete friend 
     // TODO : delete conversation 
@@ -139,19 +158,20 @@ const getUserByNameService = async (name, userId) => {
 
     return users;
 }
-// const deleteFriendService = async (id, deleteUserId) => {
-//     // TODO : delete conversation
-//     await User.findByIdAndUpdate(id, {
-//         $pull: {
-//             friendList: deleteUserId
-//         }
-//     })
-//     await User.findByIdAndUpdate(deleteUserId, {
-//         $pull: {
-//             friendList: id
-//         }
-//     })
-// }
+
+const deleteFriendService = async (id, deleteUserId) => {
+    // TODO : delete conversation
+    await User.findByIdAndUpdate(id, {
+        $pull: {
+            friendList: deleteUserId
+        }
+    })
+    await User.findByIdAndUpdate(deleteUserId, {
+        $pull: {
+            friendList: id
+        }
+    })
+}
 
 const deleteConversation = async () => { }
 

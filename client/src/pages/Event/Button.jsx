@@ -25,7 +25,7 @@ const Button = ({event,isMyEvent,isParticipated,setEvents}) => {
             }
             setEvents(newEvents);
         })
-        console.log({response})
+        // console.log({response})
     }
 
     const handleUnparticipate = async (event) => {

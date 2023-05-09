@@ -61,14 +61,18 @@ const RightBar = () => {
       }
       notify(data)
       return () => {
-        socket.off('notification')
+        // socket.off('notification')
       }
+    })
+
+    socket.on('getNewFriend', (data) => {
+      console.log({data})
     })
 
     // return () => {
     //   socket.off('notification');
     // }
-  }, [socket,socket.id])
+  }, [])
 
   
   useEffect(() => {

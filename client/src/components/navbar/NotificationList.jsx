@@ -4,7 +4,7 @@ import NotificationComponent from './NotifcationComponent'
 const NotificationList = ({notifications,setNotifications}) => {
     if (notifications?.length > 0)
         return (
-            <div style={{position:'fixed',top:'20', overflowY:'visible' , background:'#454545',marginRight:'40px' , padding:'10px'}}>
+            <div style={{position:'fixed',top:'20', overflowY:'visible', background:'#454545',marginRight:'40px' , padding:'10px'}}>
                 {notifications.map(notif => <NotificationComponent notification={notif} setNotifications={setNotifications} key={notif._id} />)}
             </div>
         )

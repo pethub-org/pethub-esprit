@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { axiosPrivate } from '../../api/axios';
 import Button from './Button';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const Event = () => {
   const [toggleForm, setToggleForm] = useState(false);
@@ -14,6 +16,8 @@ const Event = () => {
   const [description, setDescription] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState('');
   const id = useId()
 
   const handleSelectFile = (e) => {
@@ -33,8 +37,12 @@ const Event = () => {
   const handleEditEvent = async(event) => {
       navigate('/events/'+event._id)
   }
-  const handleDeleteEvent = async(event) => {
-     axiosPrivate.delete('/events/' + event._id).then(res => console.log({res}))
+  const handleDeleteEvent = async (event) => {
+    setIsLoading(true)
+    axiosPrivate.delete('/events/' + event._id).then(res => {
+      console.log({ res })
+      setIsLoading(false)
+    }).catch(err => setIsLoading(false))
   }
   // TODO : fix me
   // const customClickHandler =async (event,isParticipated) => {
@@ -60,11 +68,103 @@ const Event = () => {
 
   const handleCreateEvent = async (e) => {
     e.preventDefault();
-    const res = await axiosPrivate.post('/events', { title, description, eventDate ,image},{ headers: { "Content-Type": 'multipart/form-data' } });
+    setIsLoading(true)
+       try {
+    if (!title.trim()) {
+      // setError('title can not')*
+        toast.error('Title can not be empty!', {
+        position: "top-right",
+        autoClose: 1000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "dark",
+        });
+      
+      return;
+    }
+
+     if (!description.trim()) {
+      // setError('title can not')*
+        toast.error('Description can not be empty!', {
+        position: "top-right",
+        autoClose: 1000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "dark",
+        });
+      
+      return;
+    }
+
+    if (!eventDate.trim()) {
+        toast.error('Date can not be empty!', {
+        position: "top-right",
+        autoClose: 1000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "dark",
+        });
+      
+      return;
+    }
+      if (new Date(eventDate) < Date.now()) {
+      // setError('title can not')*
+        toast.error('Date can not be in the past!', {
+        position: "top-right",
+        autoClose: 1000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "dark",
+        });
+      
+      return;
+    }
+
+    if (!image) {
+      // setError('title can not')*
+        toast.error('Image is required!', {
+        position: "top-right",
+        autoClose: 1000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "dark",
+        });
+      
+      return;
+    }
+ 
+      const res = await axiosPrivate.post('/events', { title, description, eventDate ,image},{ headers: { "Content-Type": 'multipart/form-data' } });
     setEvents(prevEvents => [...prevEvents,res.data.event])
-    setTitle('')
-    setDescription('')
-    setEventDate('')
+      setTitle('')
+      setDescription('')
+      setEventDate('')
+       toast.success('Event added sucessfully!', {
+        position: "top-right",
+        autoClose: 1000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "dark",
+        });
+      
+      return;
+
+    } catch (error) {
+        toast.error('Something went wrong!', {
+        position: "top-right",
+        autoClose: 1000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "dark",
+        });
+      setIsLoading(false)
+      return;
+       } finally {
+         
+      setIsLoading(false)
+    }
+
+
+    
   }
   useEffect(() => {
     let isMounted = true
@@ -150,7 +250,7 @@ const createEventForm = <>
                 alignItems: 'center',
                 justifyContent:'center'
               }}>
-                <button className={style.shareButton}  onClick={handleCreateEvent}>Create</button>
+                <button className={style.shareButton}  disabled={isLoading} onClick={handleCreateEvent}>Create</button>
               </div>
             </div>
           </form>
@@ -166,10 +266,10 @@ const createEventForm = <>
           <h1>Events</h1>
          
         </div>
-         <button onClick={handleToggleForm} className={style.shareButton}>{!toggleForm ? 'Create Event?' : 'Show Available Events'}  </button>
+         <button onClick={handleToggleForm}  className={style.shareButton}>{!toggleForm ? 'Create Event?' : 'Show Available Events'}  </button>
         {!toggleForm && renderEvents}
         {toggleForm && createEventForm}
-        
+        <ToastContainer/>
      </div>
     </div>
   )

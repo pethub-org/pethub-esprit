@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import {  useSearchParams } from 'react-router-dom'
 import SearchedUsersList from './SearchedUsersList';
@@ -16,7 +16,7 @@ const SearchPage = () => {
   let name = searchParams.get('name')
 
   useEffect(() => {
-      console.log({auth})
+      // console.log({auth})
       // axios.get('http://localhost:8080/users/search/' + name, { headers: { Authorization: `Bearer ${auth.token}` } }).then(response => {
       //   setSearchResult(response.data);
       // })

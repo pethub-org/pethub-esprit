@@ -15,12 +15,19 @@ const login = async (req, res) => {
             .lean();
 
         if (!user) {
-            return res.status(400).json({ error: `Invalid credentials` });
+            return res.status(400).json({ error: `Invalid credentials.` });
+        }
+        if (user.ban) {
+            return res.status(403).json({ error: 'Your account has been suspended.' });
+        }
+
+        if (!user.accountConfirmed) {
+            return res.status(403).json({ error: 'Please confirm your account.' })
         }
 
         const isValid = await bcrypt.compare(password, user.password);
         if (!isValid) {
-            return res.status(401).json({ error: 'Invalid credentials' });
+            return res.status(401).json({ error: 'Invalid credentials.' });
         }
 
         const accessToken = generateToken(user, 'access_token');
@@ -38,7 +45,7 @@ const login = async (req, res) => {
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 3600000 })
         const io = req.app.get('socketio')
         const loggedInUsers = LoggedInUsers.getInstance();
-        
+
         // const socketId = loggedInUsers.getUser()
         // const socket = io.sockets.sockets[socket.id]
         return res.status(200).json(user)
