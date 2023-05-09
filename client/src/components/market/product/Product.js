@@ -82,7 +82,7 @@ function Product(props) {
           </Link>
         </div>
         <div className="vitamin">
-          <h3 style={{fontSize:30 , fontWeight:"bold", color:"black" ,marginTop:"10px"}}>{product.name} </h3>
+          <h3 style={{fontSize:30 , fontWeight:"bold", color:"black" ,marginTop:"10px" , textAlign:"start" }}>{product.name} </h3>
         </div>
 
         <h4 style={{ color:"gray" }}>Price:  {product.price} Dt </h4>
@@ -93,7 +93,7 @@ function Product(props) {
           <Link  to={"/updateprod/" + product._id}>
           <button>update</button>
           </Link>}
-          <button onClick={() => submitorder(product._id)}>add to wishlist</button>
+          <button onClick={() => submitorder(product._id)}>save</button>
         </div>
       </div>
     </div>

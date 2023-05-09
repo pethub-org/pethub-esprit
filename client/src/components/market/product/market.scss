@@ -327,10 +327,13 @@ button {
 .vitamin {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 30px;
   
+
+  
 }
+
 .rating {
   display: flex;
   flex-direction: row-reverse;
