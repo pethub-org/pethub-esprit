@@ -20,8 +20,9 @@ const Login = () => {
   
 const loginService = async({email,password}) => {
   try {
-   const res = await axios.post('/auth/login', { email, password })
-  socket.connect();
+    const res = await axios.post('/auth/login', { email, password })
+ 
+   socket.connect();
   socket.emit('addUser',res.data._id)
   const currentPhoto = res.data.photos.find(photo => photo.isMain)
   
@@ -73,7 +74,14 @@ const loginService = async({email,password}) => {
       }
     } catch (error) {
       setIsLoading(false)
-      setError(error.message)
+      // setError(error.message)
+        toast.error('Invalid Crendentials.', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+              });
     } finally {
       setIsLoading(false)
       

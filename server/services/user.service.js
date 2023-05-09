@@ -57,7 +57,8 @@ const accept = async (req, friendRequestId) => {
 
     const io = req.app.get('socketio')
     const loggedInUsers = LoggedInUsers.getInstance();
-    const socketId = loggedInUsers.getUser(recieverUser._id)
+    const socketId = loggedInUsers.getUser(recieverUser._id.toString())
+    console.log(socketId, recieverUser._id)
 
     const notif = await createNotificationService({ type: 'invitation', sender: senderUser._id, receiver: recieverUser._id, content: `${recieverUser.firstname} accepted the friend request` })
     console.log({ notif })
