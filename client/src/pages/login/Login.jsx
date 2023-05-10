@@ -21,6 +21,7 @@ const Login = () => {
 const loginService = async({email,password}) => {
   try {
     const res = await axios.post('/auth/login', { email, password })
+    // console.log({res})
  
    socket.connect();
   socket.emit('addUser',res.data._id)
@@ -29,9 +30,13 @@ const loginService = async({email,password}) => {
   localStorage.setItem('user', JSON.stringify({ ...res.data, currentPhoto }));
 
     setAuth({ ...res.data, currentPhoto })
-  return res.data;
- } catch (error) {
-    throw new Error(error);
+  return res;
+  } catch (error) {
+    // console.log()
+    // const err = JSON.parse(error.response)
+    // console.log({err})
+    // console.log({error})
+    throw new Error(error.response.data.error);
     // setIsLoading(false)
  }
 }
@@ -62,7 +67,8 @@ const loginService = async({email,password}) => {
         
       }
       
-      const res = await loginService({ email, password });
+      const response = await loginService({ email, password });
+      const res = response.data;
 
       setIsLoading(false)
 
@@ -74,7 +80,17 @@ const loginService = async({email,password}) => {
       }
     } catch (error) {
       setIsLoading(false)
-      // setError(error.message)
+      if (error.message === 'Please confirm your account.') {
+             toast.error('Please confirm your account.', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+              });
+        return;
+      }
+      
         toast.error('Invalid Crendentials.', {
               position: "top-right",
               autoClose: 1000,
