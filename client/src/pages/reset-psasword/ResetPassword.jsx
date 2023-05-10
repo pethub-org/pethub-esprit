@@ -67,7 +67,7 @@ const ResetPassword = () => {
             <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
             
             {error && <p className="error"> {error}</p>}
-            {success && <p>Please Check Your Email ! !</p>}
+            {success && <p style={{color:'red',fontWeight:'bold'}}>Please Check Your Email ! !</p>}
             <button onClick={handleResetPassword} disabled={isLoading}>Reset Password</button>
           </form>
           <Link to="/login">Login ?</Link>

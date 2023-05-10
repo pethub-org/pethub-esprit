@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './form.scss';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 const GroupForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
   });
+
+  const [image, setImage] = useState(null);
+
   const [displayForm, setDisplayForm] = useState(false);
+  const axios = useAxiosPrivate();
 
   const { name, description } = formData;
 
@@ -16,17 +21,17 @@ const GroupForm = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const res = await axios.post(
-      'http://localhost:8080/api/groups/create',
-      formData
-    );
-    console.log(res.data);
+    const res = await axios.post('/api/groups/create', {...formData,image}, { headers: { 'Content-Type': 'multipart/form-data' } });
+    // console.log(res.data);
     setFormData({ name: '', description: '' });
   };
 
   const toggleForm = () => {
     setDisplayForm(!displayForm);
   };
+  const handleSelectFile = (e) => {
+    setImage(e.target.files[0])
+  }
   
 
   return (
@@ -68,7 +73,7 @@ const GroupForm = () => {
               }}
             ></input>
             <label htmlFor="image"> Image </label>
-            <input type='file' ></input>
+            <input type='file' name="image" onChange={handleSelectFile} ></input>
           </div>
           <button type="submit">Create Group</button>
         </form>

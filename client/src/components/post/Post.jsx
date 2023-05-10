@@ -384,7 +384,7 @@ const Post = ({ post, setPosts }) => {
           (
             <div className="content" style={{ color: "blue", lineHeight: "1.8" }}>
               {post.hashtags && <p>#{post.hashtags}</p>}
-              {post.image ? <img src={PF + post.image} alt="image" /> : <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8IHIodtO_PbMwrmVGhxM0DWGUBuQCiVcQRQ&usqp=CAU" alt="image not available" style={{ borderRadius: "20px" }} />}
+              {post.image ? <img src={post.image} alt="post" /> : <></>}
 
             </div>
           )

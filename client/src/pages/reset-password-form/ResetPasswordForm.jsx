@@ -38,7 +38,8 @@ const ResetPasswordForm = () => {
             });
           return;
         }
-         if (!password.trim() !== confirmPassword.trim()) {
+        if (password.trim() !== confirmPassword.trim()) {
+           console.log(password ===confirmPassword)
             toast.error('Password and confirm password must match!', {
               position: "top-right",
               autoClose: 1000,
@@ -87,7 +88,7 @@ const ResetPasswordForm = () => {
             <input type="password" placeholder="Confirm Password" onChange={(e) => setCnfirmPassword(e.target.value)} />
             
             {error && <p className="error"> {error}</p>}
-            {success && <p> Password Updated successfully !</p>}
+            {success && <p style={{color:'red',fontWeight:'bold'}}> Password Updated successfully !</p>}
             <button onClick={changePassword} disabled={isLoading}>Change Password</button>
           </form>
         </div>

@@ -37,14 +37,23 @@ const RightBar = () => {
       // console.log(data)
     }
     fetchUser()
+
+    return () => {
+        toast.dismiss();
+
+    }
   },[]);
 
 
   useEffect(() => {
     axiosPrivate.get(`/conversations/${auth._id}`).then(res => {
       setConversations(res.data)
+      // toast.configure({duration:'200'})
       // console.log({res})
     })
+    return () => {
+        toast.dismiss();
+    }
   },[])
 
   // show private chatbox
@@ -58,7 +67,7 @@ const RightBar = () => {
   const [friendList, setFriendList] = useState([])
 
 
-  const notify = (data) => toast(data?.content ?data.content :'You have a new notification !' , { position: 'bottom-right', duration: 1500 },);
+  const notify = (data) => toast('You have a new notification !' , { position: 'top-right'},);
   
   useEffect(() => {
     socket.on('notification', (data) => {
@@ -70,6 +79,7 @@ const RightBar = () => {
       notify(data)
       return () => {
         // socket.off('notification')
+        toast.dismiss();
       }
     })
 
@@ -77,7 +87,7 @@ const RightBar = () => {
       // console.log({data})
       // console.log(data)
       // console.log({ data })
-      console.log(data.sender === auth._id)
+      // console.log(data.sender === auth._id)
       const userId = data.sender === auth._id ? data.receiver : data.sender;
       // console.log({userId})
 
@@ -96,7 +106,10 @@ const RightBar = () => {
 
     socket.on('getMessage', (data) => {
       notify({ content: 'You have recieved a message.' })
-      return () => {}
+      return () => {
+        toast.dismiss();
+
+      }
     })
 
     // return () => {
@@ -146,7 +159,7 @@ const RightBar = () => {
    
         </div>
 
-        <Toaster />
+        <Toaster  />
         
       </div>
     </div>

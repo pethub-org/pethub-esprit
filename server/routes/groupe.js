@@ -1,16 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const userModel = require('../models/UserSchema');
+const upload = require("../configs/multer.config")
 
 const Group = require('../models/Group');
 
 // @route     POST api/groups
 // @desc      Create a group
 // @access    Private
-router.post('/create',async (req, res) => {
-  const newGroup = new Group(req.body)
+router.post('/create', upload.single('image'), async (req, res) => {
+  let file = req?.file;
+  let newGroup;
+  if (file) {
+    newGroup = new Group({ ...req.body, image: file.path })
+  } else {
+    newGroup = new Group(req.body)
+  }
   try {
-    const savedGroup= await newGroup.save();
+    const savedGroup = await newGroup.save();
     res.status(200).json(savedGroup)
   }
   catch (err) {
@@ -34,20 +41,20 @@ router.get('/all', async (req, res) => {
 // @route     GET api/groups/:id
 // @desc      Get a group by ID
 // @access    Public
-router.get('/:id',  async(req, res) =>{
+router.get('/:id', async (req, res) => {
   try {
-      const groupe = await Group.findByIdAndUpdate(req.params.id, req.body, { new: true });
-      res.send(groupe);
+    const groupe = await Group.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.send(groupe);
   } catch (err) {
-      res.status(400).send(err);
+    res.status(400).send(err);
   }
 });
 //delete
-router.delete('/:id',  async (req, res) =>{
+router.delete('/:id', async (req, res) => {
   const group = Group.findById(req.params.id);
   try {
-      await group.deleteOne();
-      res.status(200).json("the group has been deleted")
+    await group.deleteOne();
+    res.status(200).json("the group has been deleted")
 
   }
   catch (err) {
@@ -56,43 +63,43 @@ router.delete('/:id',  async (req, res) =>{
 })
 
 //update
-router.put('/:id',  async (req, res) =>{
-  
-  try {
-      
-      const post = await Group.findByIdAndUpdate(req.params.id, req.body, { new: true })
-      res.status(200).json(post)
+router.put('/:id', async (req, res) => {
 
-    }
-  
+  try {
+
+    const post = await Group.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    res.status(200).json(post)
+
+  }
+
   catch (err) {
     res.status(500).json(err)
   }
 
 })
-  
-  
-  
- 
 
-  //join
-  router.put("/:id/join", async (req, res) => {
-    try {
-      const user = await userModel.findById(req.body.userId);
-      const group = await Group.findById(req.params.id);
-      if (!user || !group) {
-        return res.status(404).json("User or group not found");
-      }
-      if (group.members.includes(user._id)) {
-        return res.status(403).json("User already joined the group");
-      }
-      await user.updateOne({ $push: { groups: group._id } });
-      await group.updateOne({ $push: { members: user._id } });
-      res.status(200).json("User has joined the group");
-    } catch (err) {
-      res.status(500).json(err);
+
+
+
+
+//join
+router.put("/:id/join", async (req, res) => {
+  try {
+    const user = await userModel.findById(req.body.userId);
+    const group = await Group.findById(req.params.id);
+    if (!user || !group) {
+      return res.status(404).json("User or group not found");
     }
-  });
+    if (group.members.includes(user._id)) {
+      return res.status(403).json("User already joined the group");
+    }
+    await user.updateOne({ $push: { groups: group._id } });
+    await group.updateOne({ $push: { members: user._id } });
+    res.status(200).json("User has joined the group");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 //leave 
 
@@ -113,5 +120,5 @@ router.put("/:id/unfollow", async (req, res) => {
     res.status(500).json(err);
   }
 });
-  module.exports = router;  
+module.exports = router;
 

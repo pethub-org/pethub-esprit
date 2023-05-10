@@ -246,7 +246,14 @@ const Profile = () => {
         progress: undefined,
         theme: "dark",
         });
-
+      setAuth(prev => {
+        return {
+              ...prev,
+          email,
+          firstname,
+           lastname
+          }
+        })
     } catch (error) {
       console.log(error)
         toast.error(error.message || error?.error[0], {
