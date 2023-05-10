@@ -3,53 +3,85 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Header from './Header'
 import useAuth from '../../hooks/useAuth';
 import { axiosPrivate } from '../../api/axios';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { toast } from 'react-toastify';
 
 
 const EditContent = () => {
     const { id } = useParams();
-    const { auth ,setAuth} = useAuth()
+    const { auth } = useAuth()
     const navigate = useNavigate();
     const [editUser, setEditUser] = useState({
         email: "",
         firstname: "",
         lastname:""
     })
+    const axios = useAxiosPrivate();
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await axiosPrivate.put(`/users/admin/update/user/${id}`, {
+    try {
+            const response = await axios.put(`/users/admin/update/user/${id}`, {
             email: editUser.email,
             firstname: editUser.firstname,
             lastname: editUser.lastname
+            });
+            toast.success(`User updated!`, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
         });
+    } catch (error) {
+         toast.error(`Something went wrong while updating user !`, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+        
+    }
+        
         //  await refreshUser();
-        console.log({ response })
+        // console.log({ response })
         // TODO : refresh local state
-        setAuth()
+        // setAuth()
     }
 
     useEffect(() => {
          if (auth.role !== 'admin') {
             navigate('/login')
         }
-         axiosPrivate.get(`/users/${id}`, {}).then((res) => {
-                 console.log({ res });
-                 setEditUser(res.data)
+         axios.get(`/users/${id}`, {}).then((res) => {
+                //  console.log({ res });
+                 setEditUser(res.data.user)
             })
   
     },[])
     
-  return (
-    <section className="home-section">
-        <Header/>
+    return (
+        <div style={{backgroundColor:'#fff',width:'100vw',height:'100vh' ,overflow:'hidden'}}>
+            <Header />
+            <div style={{width:'1px',height:'1px',borderBottom:'1px solid black'}}></div>
+      
+    <section className="home-section" style={{backgroundColor:'#fff',overflow:'hidden'}}>
 
     <div className='cart'>
-              <div className="container">
-                   <form>
-            <div className="form-group">
-                <label htmlFor='exampleInputEmail1'>Email address</label>
+        <div className="container" style={{display:'flex',justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
+            <div className="form-group" style={{marginTop:'30px'}}>
+                <label htmlFor='exampleInputEmail1' style={{marginRight:'16px'}}>Email :</label>
                       <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"
-                          value={editUser.email}
+                          
+                                style={{marginLeft:'20px',width:'250px',height:'35px',padding:'12px'}}
+                                value={editUser.email}
                           onChange={(e) => {
                               setEditUser((prev) => {
                                   return {
@@ -59,12 +91,13 @@ const EditContent = () => {
                               })
                           }}
                       />
-                <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                {/* <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small> */}
             </div>
-            <div className="form-group">
-                <label htmlFor="firstname">Firstname</label>
+            <div className="form-group" style={{marginTop:'30px'}}>
+                <label htmlFor="firstname">Firstname:</label>
                       <input type="text" className="form-control" id="firstname" placeholder="Firstname"
-                        value={editUser.firstname}
+                                value={editUser.firstname}
+                                style={{marginLeft:'16px',width:'250px',height:'35px',padding:'12px'}}
                           onChange={(e) => {
                           setEditUser((prev) => {
                               return {
@@ -75,10 +108,11 @@ const EditContent = () => {
                 }}/>
                   </div>
                   
-            <div className="form-group">
-                <label htmlFor="lastname">Lastname</label>
+            <div className="form-group" style={{marginTop:'30px'}}>
+                <label htmlFor="lastname">Lastname:</label>
                       <input type="text" className="form-control" id="lastname" placeholder="Lastname"
-                        value={editUser.lastname}   
+                                value={editUser.lastname}   
+                                style={{marginLeft:'16px',width:'250px',height:'35px',padding:'12px'}}
                        onChange={(e) => {
                           setEditUser((prev) => {
                               return {
@@ -90,12 +124,12 @@ const EditContent = () => {
                       />
             </div>
            
-            <button onClick={handleSubmit} className="btn btn-primary">Save Changes</button>
-        </form>
+            <button onClick={handleSubmit} style={{marginTop:'30px'}} className="btn btn-primary">Save Changes</button>
      
        </div>
     </div>
     </section>
+</div>
   )
 }
 
