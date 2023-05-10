@@ -136,8 +136,11 @@ const banAccount = async (req, res) => {
     }
 
     try {
-        const user = await User.findByIdAndUpdate(id, { ban: true });
-        return res.status(200).json({ message: `Account ID : ${id} has been banned` });
+        // const user = await User.findByIdAndUpdate(id, { ban: true });
+        const user = await User.findById(id, {}, { new: true });
+        user.ban = !user.ban;
+        user.save();
+        return res.status(200).json({ message: `Account ID : ${id} has been banned`, user });
     } catch (error) {
         return res.status(500).json({ error })
     }
