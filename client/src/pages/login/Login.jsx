@@ -90,6 +90,16 @@ const loginService = async({email,password}) => {
               });
         return;
       }
+      if (error.message === 'Your account has been suspended.') {
+             toast.error('Your account has been suspended.', {
+              position: "top-right",
+              autoClose: 1000,
+              closeOnClick: true,
+              progress: undefined,
+              theme: "dark",
+              });
+        return;
+      }
       
         toast.error('Invalid Crendentials.', {
               position: "top-right",

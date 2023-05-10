@@ -23,7 +23,7 @@ const User = ({ users ,setUsers,user}) => {
     const upgradeToAdmin = async () => {
         try {
             const response = await axios.put(`/users/update/role/${user._id}`, {
-                role:'admin'
+                role: user?.role === 'admin' ? 'user' :'admin'
             })
 
         if (response.status === 200)
@@ -31,10 +31,11 @@ const User = ({ users ,setUsers,user}) => {
             const filteredUsers = users.filter(u =>u._id !== user._id)
             setUsers([...filteredUsers, {
                 ...user,
-                role:'admin'
+                role:user?.role === 'admin' ? 'user' :'admin'
             }])
-            
-            toast.success(`Account is now ${user.email} Admin ! `, {
+            const role = user?.role === 'admin' ? 'User' :'Admin'
+            const successMessage = `Account ${user.email} is now ${role} ! `
+            toast.success(successMessage, {
             position: "top-right",
             autoClose: 1000,
             hideProgressBar: false,
@@ -75,29 +76,47 @@ const User = ({ users ,setUsers,user}) => {
     }
     
     
-const banAccount = async () => {
-    const response = await axios.put(`/users/ban/${user._id}`,{})
-    if (response.status === 200)
-    {
-        const filteredUsers = users.filter(u =>u._id !== user._id)
-        setUsers([...filteredUsers, {
-            ...user,
-            ban:true
-        }])
+    const banAccount = async () => {
+        try {
+            const response = await axios.put(`/users/ban/${user._id}`, {})
+            if (response.status === 200 && response.data.user.ban) {
+                const filteredUsers = users.filter(u => u._id !== user._id)
+                setUsers([...filteredUsers, {
+                    ...user,
+                    ban: true
+                }])
         
-        toast.error(`Account is now ${user.email} banned ! `, {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        });
+                toast.success(`Account is now ${user.email} banned ! `, {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
  
-    } else {
-        toast.error(`Something went wrong while banning ${user.email} !`, {
+            }
+            else if (response.status === 200 && !response.data.user.ban) {
+                const filteredUsers = users.filter(u => u._id !== user._id)
+                setUsers([...filteredUsers, {
+                    ...user,
+                    ban: false
+                }])
+                toast.success(`Account has been unbanned ${user.email} !`, {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (err) {
+                toast.error(`Something went wrong while banning ${user.email} !`, {
         position: "top-right",
         autoClose: 1000,
         hideProgressBar: false,
@@ -107,7 +126,8 @@ const banAccount = async () => {
         progress: undefined,
         theme: "light",
     });
-    }
+        }
+   
     
 }
     const deleteAccount = async () => { 
