@@ -3,41 +3,39 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash,faPen,faBan,faCheck,faUserTie } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
+// import axios from 'axios';
 import { AuthContext } from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-const BASE_URL = 'http://localhost:8080'
 
     
 const User = ({ users ,setUsers,user}) => {
     const { currentUser } = useContext(AuthContext);
     const navigate = useNavigate();
-    
+    const axios = useAxiosPrivate();
+
     const editAccount = () => {
         navigate(`/admin/update/user/${user._id}`)
     }
 
     const upgradeToAdmin = async () => {
         try {
-            const response = await axios.put(`${BASE_URL}/users/update/role/${user._id}`, {
-                role:'admin'
-            },
-            {
-            headers: {
-            'Authorization':`Bearer ${currentUser.token}`
-            }
-        })
+            const response = await axios.put(`/users/update/role/${user._id}`, {
+                role: user?.role === 'admin' ? 'user' :'admin'
+            })
+
         if (response.status === 200)
         {
             const filteredUsers = users.filter(u =>u._id !== user._id)
             setUsers([...filteredUsers, {
                 ...user,
-                role:'admin'
+                role:user?.role === 'admin' ? 'user' :'admin'
             }])
-            
-            toast.error(`Account is now ${user.email} Admin ! `, {
+            const role = user?.role === 'admin' ? 'User' :'Admin'
+            const successMessage = `Account ${user.email} is now ${role} ! `
+            toast.success(successMessage, {
             position: "top-right",
             autoClose: 1000,
             hideProgressBar: false,
@@ -62,42 +60,63 @@ const User = ({ users ,setUsers,user}) => {
         }
 
         } catch (error) {
-            console.log({error})
+            console.log({ error })
+        toast.error(`Something went wrong while changing ${user.email} to admin !`, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
         }
 
     }
     
     
-const banAccount = async () => {
-    const response = await axios.put(`${BASE_URL}/users/ban/${user._id}`,{},
-        {
-            headers: {
-            'Authorization':`Bearer ${currentUser.token}`
-            }
-        }
+    const banAccount = async () => {
+        try {
+            const response = await axios.put(`/users/ban/${user._id}`, {})
+            if (response.status === 200 && response.data.user.ban) {
+                const filteredUsers = users.filter(u => u._id !== user._id)
+                setUsers([...filteredUsers, {
+                    ...user,
+                    ban: true
+                }])
         
-    )
-    if (response.status === 200)
-    {
-        const filteredUsers = users.filter(u =>u._id !== user._id)
-        setUsers([...filteredUsers, {
-            ...user,
-            ban:true
-        }])
-        
-        toast.error(`Account is now ${user.email} banned ! `, {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        });
+                toast.success(`Account is now ${user.email} banned ! `, {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
  
-    } else {
-        toast.error(`Something went wrong while banning ${user.email} !`, {
+            }
+            else if (response.status === 200 && !response.data.user.ban) {
+                const filteredUsers = users.filter(u => u._id !== user._id)
+                setUsers([...filteredUsers, {
+                    ...user,
+                    ban: false
+                }])
+                toast.success(`Account has been unbanned ${user.email} !`, {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        } catch (err) {
+                toast.error(`Something went wrong while banning ${user.email} !`, {
         position: "top-right",
         autoClose: 1000,
         hideProgressBar: false,
@@ -107,19 +126,13 @@ const banAccount = async () => {
         progress: undefined,
         theme: "light",
     });
-    }
+        }
+   
     
 }
     const deleteAccount = async () => { 
     
-    const response = await axios.delete(`${BASE_URL}/users/${user._id}`,{},
-        {
-            headers: {
-            'Authorization':`Bearer ${currentUser.token}`
-            }
-        }
-        
-    )
+    const response = await axios.delete(`/users/${user._id}`,{})
   
         if (response.status === 200) {
          const filteredUsers = users.filter(u =>u._id !== user._id)
@@ -149,12 +162,7 @@ const banAccount = async () => {
 }
 
     const confirmAccount =async () => {
-     const response = await axios.put(`${BASE_URL}/users/admin/confirm/${user._id}`,{},
-        {
-            headers: {
-            'Authorization':`Bearer ${currentUser.token}`
-            }
-        });
+     const response = await axios.put(`/users/admin/confirm/${user._id}`,{});
             
         if (response.status === 200) {
              const filteredUsers = users.filter(u =>u._id !== user._id)
@@ -196,12 +204,12 @@ const banAccount = async () => {
                     {/* <div className='d-flex'> */}
                 <ToastContainer />
 
-                <button className="btn btn-success btn-sm" style={{marginRight:'12px'}}><FontAwesomeIcon icon={faCheck} onClick={confirmAccount} /></button>
-                <button className="btn btn-primary btn-sm" style={{marginRight:'12px'}}><FontAwesomeIcon icon={faPen} onClick={editAccount}/></button>
-                <button className="btn btn-danger btn-sm" style={{marginRight:'12px'}}><FontAwesomeIcon icon={faTrash} onClick={deleteAccount}/></button>
-                    <button className="btn btn-danger btn-sm" style={{ marginRight: '12px' }}><FontAwesomeIcon icon={faBan} onClick={banAccount} /></button>
+                <button className="btn btn-success btn-sm" style={{marginRight:'12px'}}  onClick={confirmAccount}><FontAwesomeIcon icon={faCheck} /></button>
+                <button className="btn btn-primary btn-sm" style={{marginRight:'12px'}} onClick={editAccount}><FontAwesomeIcon icon={faPen} /></button>
+                <button className="btn btn-danger btn-sm" style={{marginRight:'12px'}} onClick={deleteAccount}><FontAwesomeIcon icon={faTrash} /></button>
+                    <button className="btn btn-danger btn-sm" style={{ marginRight: '12px' }} onClick={banAccount} ><FontAwesomeIcon icon={faBan}/></button>
                     
-                <button className="btn btn-primary btn-sm" style={{marginRight:'12px'}}><FontAwesomeIcon icon={faUserTie} onClick={upgradeToAdmin}/></button>
+                <button className="btn btn-primary btn-sm" style={{marginRight:'12px'}} onClick={upgradeToAdmin}><FontAwesomeIcon icon={faUserTie}/></button>
                     
                     
                 </div>

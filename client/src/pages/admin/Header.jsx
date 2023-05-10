@@ -6,30 +6,35 @@ const Header = () => {
   const {auth} =useAuth()
   return (
       <>
-           <nav>
-      <div className="sidebar-button">
-        <i className='bx bx-menu sidebarBtn'></i>
-          <span className="dashboard">Dashboard</span>
-        </div>
-        <p style={{
-          marginLeft: '18px',
-          width:'max-content'
-        }}> You're now logged in as : <bold style={{
-            fontWeight: 'bold'
-        }}>{auth.firstname} {auth.lastname} </bold></p>
-
-      <div className="search-box">
-        {/* <input type="text" placeholder="Search..."> */}
+      <nav style={{backgroundColor:'#fff',height:'80px',display:'flex',justifyContent:'flex-end',alignItems:'center',marginBottom:'30px'}}>
+    
+      {/* <div className="search-box" style={{margin:'auto' }}>
+          <input type="text" placeholder="Search..." style={{
+            width: '300px', height: '30px', borderRadius: '16px', padding: '12px',
+            ':focus': {
+              border:'none'
+            }
+          }} />
         <i className='bx bx-search' ></i>
-      </div>
-      <div className="profile-details">
-        {/* <!--<img src="images/profile.jpg" alt="">--> */}
+      </div> */}
+        <p style={{
+          marginRight: '18px',
+          width: 'max-content',
+        }}> You're now logged in as : <h3 style={{
+            fontWeight: 'bold',
+            display: 'inline',
+          textTransform:'capitalize'
+        }}>{auth.firstname} {auth.lastname} </h3></p>
+
+
+      {/* <div className="profile-details">
+        <!--<img src="images/profile.jpg" alt="">-->
         <span className="admin_name">Prem Shahi</span>
         <i className='bx bx-chevron-down' ></i>
-      </div>
+      </div> */}
     </nav>
 
-    <div className="home-content">
+    {/* <div className="home-content">
       <div className="overview-boxes">
         <div className="box">
           <div className="right-side">
@@ -76,7 +81,7 @@ const Header = () => {
           <i className='bx bxs-cart-download cart four' ></i>
         </div>
       </div>
-          </div>
+          </div> */}
     </>
   )
 }

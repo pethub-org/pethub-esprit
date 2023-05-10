@@ -10,22 +10,24 @@ const Content = ({users,setUsers}) => {
  
   
   return (
-   
-      <section className="home-section">
+    <div style={{marginBottom:'30px'}}>
+    
         <Header/>
+
+      <section className="home-section" style={{backgroundColor:'#fff',display:'flex',justifyContent:'center',alignItems:'center'}}>
 
         <div className='cart'>
      
         <table className="table">
         <thead>
     <tr>
-      <th scope="col">Email</th>
+      <th scope="col" >Email</th>
       <th scope="col">Firstname</th>
       <th scope="col">Lastname</th>
-      <th scope="col">role</th>
-      <th scope="col">ban</th>
-      <th scope="col">confirmed</th>
-      <th scope="col">actions</th>
+      <th scope="col">Role</th>
+      <th scope="col">Banned</th>
+      <th scope="col">Confirmed</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
             <tbody>
@@ -34,6 +36,8 @@ const Content = ({users,setUsers}) => {
   </table>
       </div>
   </section>
+    
+    </div>
   )
 }
 
