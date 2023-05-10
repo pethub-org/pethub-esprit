@@ -53,7 +53,7 @@ const GroupList = () => {
                       display: "flex",
                       alignItems: "center",
                       marginLeft:"25px"
-            }}> 1.1K Members . 8 posts per day</span>
+            }}> {group.members.length} Members . 8 posts per day</span>
             {group.members.includes(currentUser._id) ? (
               <button disabled>Already a Member</button>
             ) : (

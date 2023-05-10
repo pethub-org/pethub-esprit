@@ -50,8 +50,7 @@ const Game = () => {
         <div className="game-card" key={game._id}>
           <div
             className="game-image"
-            style={{ backgroundImage: `url(${game.image})` }}
-          ></div>
+          ><SportsEsportsOutlinedIcon style={{fontSize:"70px",marginLeft:"30px",marginTop:"15px"}}/></div>
           <h2 className="game-title" style={{color:"black",fontSize:"20px"}}>{game.title}</h2>
           <button onClick={() => window.open(game.link, '_blank', 'width=800,height=600,toolbar=no')} >
   Play
